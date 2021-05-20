@@ -12,9 +12,9 @@ function Index({children}) {
   
    
     return (
-        <Container disableGutters={true} maxWidth='xl'>
+        <div style={{minHeight:'100vh'}}>
          
-          <Navbar />
+        <Navbar />
           
         <main>
         {children}
@@ -24,7 +24,7 @@ function Index({children}) {
         All Rights Reserved © {new Date().getFullYear()} - TeamBudget
         </Footer>)}
        
-        </Container>
+       </div>
     )
 }
 
