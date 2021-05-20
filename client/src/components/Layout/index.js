@@ -12,7 +12,7 @@ function Index({children}) {
   
    
     return (
-        <div style={{height:'100%'}}>
+        <div style={{height:'100vh'}}>
          
           <Navbar />
           
