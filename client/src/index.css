@@ -11,7 +11,8 @@ html,body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
    min-height: 100vh !important; 
-
+   height: -webkit-fill-available;
+   min-height: -webkit-fill-available;
 }
 
 code {

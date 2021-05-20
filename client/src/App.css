@@ -7,7 +7,7 @@
   text-align: center;
   min-height: 100vh !important;
   overflow-y: hidden;
-  
+  height: -webkit-fill-available;
 }
 
 ::-webkit-scrollbar {
