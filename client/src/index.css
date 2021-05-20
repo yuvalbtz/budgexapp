@@ -10,7 +10,7 @@ html,body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-   height: -webkit-fill-available;
+  min-height: -webkit-fill-available;
   height: 100% !important;  
    
    

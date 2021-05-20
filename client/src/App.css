@@ -5,9 +5,9 @@
 }
  .App {
   text-align: center;
-  height: 100% !important;
   overflow-y: hidden;
-  height: -webkit-fill-available;
+  min-height: -webkit-fill-available;
+  height: 100% !important;  
 } 
 
 ::-webkit-scrollbar {
