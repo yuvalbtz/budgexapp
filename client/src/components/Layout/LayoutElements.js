@@ -10,7 +10,6 @@ export const Footer = styled.footer`
     color: aliceblue; 
     font-size: smaller;
     background:#242333;
-    //justify-content:center;
     align-items:'center';
     z-index:12;
     
