@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   Fab:{
     position:'fixed',
     right:theme.spacing(2),
-    bottom:theme.spacing(1),
+    bottom:theme.spacing(2),
     zIndex:3
   }
 }));
