@@ -57,9 +57,9 @@ const styles = theme => ({
     root: {
       backgroundColor: theme.palette.background.paper,
       width: '100%',
-      position: 'relative',
+      
       overflowY:'hidden',
-      minHeight:'100%',
+      
     
       
      },
@@ -67,7 +67,7 @@ const styles = theme => ({
     
     
      fab: {
-      position: 'absolute',
+      position: 'fixed',
       bottom: theme.spacing(2),
       right: theme.spacing(2),
       zIndex:12

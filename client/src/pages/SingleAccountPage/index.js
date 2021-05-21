@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
-        height:'100%',
+        height:'calc(100% - 60px)',
         width:'100%',
          
     },
@@ -210,12 +210,13 @@ const useStyles = makeStyles((theme) => ({
         margin:'0 auto',
         display:'flex',
         background:'transparent',
-        bottom:'3%',
         border:'white solid 2px'
        },
        FabWrapper:{
+        position:'fixed',
+        bottom:0,
         width:'100%',
-        height:'12%', 
+        minHeight:'12%', 
         zIndex:3, 
         display:'flex', 
         flex:'wrap',

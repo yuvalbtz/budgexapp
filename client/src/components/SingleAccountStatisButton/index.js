@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
   flex: 1,
   },
   Fab:{
-    position:'absolute',
-    right:theme.spacing(3),
-    bottom:'2%',
+    position:'fixed',
+    right:theme.spacing(2),
+    bottom:theme.spacing(1),
     zIndex:3
   }
 }));

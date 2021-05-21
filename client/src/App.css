@@ -7,8 +7,8 @@
   text-align: center;
   overflow-y: hidden;
   min-height: -webkit-fill-available;
-  height: calc(var(--vh, 1vh) * 100);
   height: 100% !important; 
+  
   
 } 
 
@@ -21,6 +21,7 @@
   height: '100%';
   overflow: hidden;
   display: block;
+  
 }
 
 .MuiBadge-anchorOriginBottomRightRectangle.MuiBadge-invisible {

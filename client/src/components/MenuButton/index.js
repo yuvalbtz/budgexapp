@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1, 0),
   },
   speedDial: {
-    position: 'absolute',
+    position: 'fixed',
     zIndex:12,
     '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
       bottom: theme.spacing(10),
