@@ -205,7 +205,7 @@ ButtonBases.propTypes = {
 export default withStyles(styles)(ButtonBases);
 
 const GET_USER_ACCOUNTS = gql`
-{
+ {
   getUserAccounts{
     id
     createdAt

@@ -26,17 +26,19 @@ const authLink = setContext(() => {
 
 
 const client = new ApolloClient({
-  link: createUploadLink({
+   
+    link: createUploadLink({
     uri: '/graphql',
     credentials:'include',
     
-}),
-  cache: new InMemoryCache(),
+  }),
+   
+cache: new InMemoryCache(),
 
- 
-  
-  
-});
+ });
+
+
+
 
 export default (
   <ApolloProvider client={client}>

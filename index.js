@@ -21,7 +21,7 @@ const app = express()
 
 //enable cors
  var corsOptions = {
-  origin: 'https://arcane-lake-94941.herokuapp.com/',
+  origin: '/',
   credentials: true, // <-- REQUIRED backend setting
  
 }; 

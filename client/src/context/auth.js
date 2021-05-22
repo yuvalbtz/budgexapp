@@ -34,6 +34,7 @@ if(loading){
 }
 
 
+
   
   return (
     <AuthContext.Provider
@@ -46,11 +47,12 @@ if(loading){
 export { AuthContext, AuthProvider };
 
 const GET_USER_STATE = gql`
-query{
+ {
     getUserState{
       email
       id
       username
+      profileImageUrl
     }
   }
 

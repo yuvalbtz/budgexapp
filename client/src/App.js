@@ -75,7 +75,7 @@ console.log("APP", user);
 export default App;
 
 const GET_USER_STATE = gql`
-query{
+{
     getUserState{
       email
       id

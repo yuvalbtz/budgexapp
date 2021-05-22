@@ -75,7 +75,7 @@ type userState{
     email:String
     id:String
     username:String
-    profileImageUrl:String!
+    profileImageUrl:String
 }
 
 
