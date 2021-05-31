@@ -21,7 +21,7 @@ const app = express()
 
 //enable cors
  var corsOptions = {
-  origin: ['/','http://localhost:3000'],
+  origin: '/',
   credentials: true, // <-- REQUIRED backend setting
  
 }; 
