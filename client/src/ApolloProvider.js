@@ -28,7 +28,7 @@ const authLink = setContext(() => {
 const client = new ApolloClient({
    
     link: createUploadLink({
-    uri: '/graphql',
+    uri: 'https://salty-ridge-45014.herokuapp.com//graphql',
     credentials:'include',
     
   }),
