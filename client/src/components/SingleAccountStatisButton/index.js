@@ -24,6 +24,8 @@ import {
 	Coordinate,
 } from "bizcharts";
 import { DialogTitle } from '@material-ui/core';
+import { Link, useParams } from 'react-router-dom';
+import history from '../../util/history';
 
 
 
@@ -43,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
     position:'fixed',
     right:theme.spacing(2),
     bottom:theme.spacing(2),
-    zIndex:3
+    zIndex:3,
+  
   }
 }));
 
@@ -89,6 +92,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function FullScreenDialog({totalSpending, totalEarning}) {
   
+  const params = useParams()
   
   const accountData = useSelector(state => state.uiReducer.getCurrentAccountUi)
   
@@ -163,14 +167,12 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
     }
 
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const open = window.location.pathname === `/myAccounts/${params.accountId}/statis`
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  
 
   const handleClose = () => {
-    setOpen(false);
+    history.goBack()
   };
 
  
@@ -216,8 +218,8 @@ const cols = {
     
     <div>
       
-      <Fab className={classes.Fab} size="medium" color="secondary" aria-label="statistics" onClick={handleClickOpen}>
-      <PieChartRoundedIcon />
+      <Fab  className={classes.Fab} size="medium" color="secondary" aria-label="statistics" >
+     <IconButton component={Link} style={{color:'white'}} to={`/myAccounts/${params.accountId}/statis`}><PieChartRoundedIcon /></IconButton> 
       </Fab>
       <Dialog dir='rtl' style={{textAlign:'center'}} fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
@@ -240,15 +242,19 @@ const cols = {
            </Typography>
         
 
-
-          <DialogTitle style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{Math.abs(totalEarning).toFixed(2)} :הכנסות</DialogTitle>
-          <PieChart data={array3} cols={cols} />
+          {totalEarning > 0 && (<>
+            <DialogTitle style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{Math.abs(totalEarning).toFixed(2)} :הכנסות</DialogTitle>
+            <PieChart data={array3} cols={cols} />
+            </>
+          )}
+          
        
 
        
           
-          <DialogTitle  style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{ -Math.abs(totalSpending).toFixed(2)} :הוצאות</DialogTitle>
-          <PieChart data={array2} cols={cols} />
+          {totalSpending < 0 && (<>
+            <DialogTitle  style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{ -Math.abs(totalSpending).toFixed(2)} :הוצאות</DialogTitle>
+          <PieChart data={array2} cols={cols} /></>) }
        
        
        

@@ -28,7 +28,7 @@ display:flex;
 align-items:center; 
 
 height:80px;
-z-index:1;
+z-index:0;
 width:100%;
 max-width:1000px;
 
@@ -52,14 +52,19 @@ border-top:${({click}) => click === "true" ? "2px solid white" : "none"};
 
 
 export const NavTitle = styled.h2`
-
-display:flex;
-flex-direction:column;
-justify-content:flex-end;
+white-space:nowrap;
+display: inline-block;
 color:#F1F9FD;
-padding:0px 0px 0px 12px;
-margin:0;
-`;  
+padding:0 0 0 8px;
+overflow:hidden; 
+text-overflow: ellipsis; 
+-o-text-overflow:ellipsis;
+-ms-text-overflow:ellipsis; 
+max-width:50%;
+@media screen and (max-width:425px){
+  max-width:75%;
+}
+ `;  
 
 export const LinkList = styled.ul`
 display:flex;
@@ -79,7 +84,7 @@ display: none;
   position:absolute;
   top:0;
   right:0;
-  transform: translate(-60%, 40%);
+  transform: translate(-30%, 30%);
   font-size:1.8rem;
   cursor:pointer;
  
@@ -91,27 +96,29 @@ export const NavMenu = styled.ul`
 position:relative;
 display:flex;
 align-items:center;
+justify-content:space-evenly;
 text-align:center;
 white-space:nowrap;
 padding:0;
-margin:15%;
-justify-content:space-between;
+margin-right:10%;
+
 width:300px;
 @media screen and (max-width:960px ){
   display:flex;
   flex-direction:column-reverse;
   justify-content:flex-end;
   margin:0;
-  width:40%;
-  height:95vh;
+  width:150px;
+  height:100vh;
   position:absolute;
-  left:${({click}) => click ? "60%" : "1000px" };
-  top:${({click}) => click ? "100%" : "-1000px"};;
+  //left:${({click}) => click ? "60%" : "1000px" };
+  right:0;
+  top:${({click}) => click ? "100%" : "-1000px"};
   opacity:1;
   background:#242333;
   overflow-y:auto;
-  padding:0px 0 0px 0;
-  transition: all 0.2s ease;
+  padding:0;
+  transition: all 0.3s ease;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
   
 }
@@ -123,31 +130,34 @@ width:300px;
 export const LinkStyle = styled(Link)`
 
     font-weight: bold;
-    
+    list-style:none; 
     color: whitesmoke;
     display: flex;
     align-items: center;
     
     text-decoration: none;
-    padding: 0 1rem 0rem 1rem;
-    height: 100%;
+    padding: 1em 1em 1em 1em;
+    
     cursor: pointer;
-    font-size: 1rem;
-    transition:all 0.2s ease;
+    font-size:1rem;
+    transition:all 0.3s ease;
     &:hover {
-      border-bottom:1px solid white;
-      }
+     background-color:white;
+     color:#242333;
+     
+    }
 
     @media screen and (max-width:960px ){
-      padding: 0;
-      font-size: 2rem;
+      padding: 3px;
+      font-size: 1.5rem;
       align-items:none;
-      height:8rem;
-      &:hover {
-      border-top:1px solid white;
-      border-radius:50%;
-      transform: translate(0px,-12px);
+      height:3rem;
       
+      &:hover {
+      border:2px solid white;
+      transform: translate(0px,-6px);
+      color:white;
+      background-color:#242333;
     }
     }
 
@@ -155,12 +165,11 @@ export const LinkStyle = styled(Link)`
 
 export const HelloToUser = styled.h3`
 color:whitesmoke;
-
+margin-left:10%;
 @media screen and (max-width:960px ){
-    top:2%;
-    right:16%;
+  
     white-space:nowrap;
-    display:'none'
+   
        
 }
 

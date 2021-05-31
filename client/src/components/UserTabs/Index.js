@@ -20,6 +20,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {SET_Account_Modal_Open, SET_MatualAccount_Modal_Open, SET_Profile_Modal_Open} from '../../Redux/actionTypes'
 import CloseIcon from '@material-ui/icons/Close';
 import MenuButton from '../../components/MenuButton'
+import { IconButton } from '@material-ui/core';
 
 const styles = theme => ({
     
@@ -131,10 +132,10 @@ function FloatingActionButtonZoom(props)  {
     let [value,setValue] = useState(1)
     const dispatch = useDispatch()
     const { classes, theme } = props;
-    
-    if(window.location.pathname === '/matualAccounts'){
+    console.log("split",window.location.pathname.split('/')[1]);
+    if(window.location.pathname.split('/')[1] === 'matualAccounts'){
         value = 0
-      }else if(window.location.pathname === '/profile'){
+      }else if(window.location.pathname.split('/')[1] === 'profile'){
          value = 2 
       }else{
          value = 1
@@ -186,29 +187,32 @@ function getUrltab(value){
       {
         color: 'primary',
         className: classes.fab,
-        icon: ModalMatualAccountIsOpen ? <CloseIcon
-        onClick={() => dispatch({type:SET_MatualAccount_Modal_Open})} 
-        className={classes.iconFullPadding}/> : <AddIcon className={classes.iconFullPadding} 
-        onClick={() => dispatch({type:SET_MatualAccount_Modal_Open})} />,
+        icon: window.location.pathname === '/matualAccounts/addAccount' ? <CloseIcon
+        onClick={() => history.goBack()} 
+        className={classes.iconFullPadding}/> : <IconButton style={{color:'white'}} component={Link} to={`/matualAccounts/addAccount`}>
+          <AddIcon 
+          className={classes.iconFullPadding}/>
+        </IconButton>,
         cssColor:'#3c57f2'
       },
       {
         color: 'secondary',
         className: classes.fab,
-        icon: ModalAccountIsOpen ? <CloseIcon
-        onClick={() => dispatch({type:SET_Account_Modal_Open})}
+        icon: window.location.pathname === '/myAccounts/addAccount' ? <CloseIcon
+        onClick={() => history.goBack()}
         className={classes.iconFullPadding}/> : <AddIcon className={classes.iconFullPadding}
-        onClick={() => dispatch({type:SET_Account_Modal_Open})} />,
+        onClick={() => history.push('/myAccounts/addAccount')} />,
         cssColor:'#ff0054',
         
       },
       {
         color: 'inherit',
         className: classes.fab,
-        icon: ModalProfileIsOpen ? <CloseIcon
-        onClick={() => dispatch({type:SET_Profile_Modal_Open})}
-        className={classes.iconFullPadding}/> : <EditIcon className={classes.iconFullPadding}
-        onClick={() => dispatch({type:SET_Profile_Modal_Open})} />,
+        icon: window.location.pathname === '/profile/edit' ? <CloseIcon
+        onClick={() => history.goBack()}
+        className={classes.iconFullPadding}/> : <IconButton  component={Link} to={`/profile/edit`}>
+          <EditIcon className={classes.iconFullPadding} />
+        </IconButton>,
         cssColor:'white',
       },
     ];

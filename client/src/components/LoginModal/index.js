@@ -16,7 +16,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useForm } from '../../hooks/useForm';
-import { useMutation } from '@apollo/react-hooks';
+import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {useHistory, Link, withRouter,Redirect} from 'react-router-dom'
 import { AuthContext } from '../../context/auth';
@@ -58,9 +58,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign:'left'
   },
   phone:{
-    marginTop:'0',
+    marginLeft:'12px',
     [theme.breakpoints.down('sm')]: {
-      marginTop:'50px',
+      marginTop:'10px',
+      marginBottom:'10px'
     },},
 
     HeadLine:{
@@ -129,7 +130,7 @@ function CustomizedDialogs(props) {
     values.password = ""
     
 }
-
+  
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(
       _,
@@ -142,10 +143,12 @@ function CustomizedDialogs(props) {
         console.log(userData);
         dispatch({type:SET_USER, payload:userData});
         cleanFeilds()
-        history.push('/myAccounts')
-        localStorage.setItem("id",userData.id,)
+        localStorage.setItem("id",userData.id)
+        window.location.href = '/myAccounts'
+       
         
     },
+   
     onError(err) {
     setErrors(err.graphQLErrors[0].extensions.exception.errors)
    
@@ -295,7 +298,21 @@ export default withRouter(CustomizedDialogs);
         username
         createdAt
         token
-        
+        profileImageUrl
       }
     }
   `;
+
+
+  const GET_USER_STATE = gql`
+query{
+    getUserState{
+      email
+      id
+      username
+      profileImageUrl
+    }
+  }
+
+
+`;

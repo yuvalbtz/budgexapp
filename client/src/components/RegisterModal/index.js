@@ -21,7 +21,8 @@ import { useForm } from '../../hooks/useForm';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {useHistory} from 'react-router-dom'
-
+import { SET_USER } from '../../Redux/actionTypes';
+import {useDispatch} from 'react-redux'
 
 
 
@@ -56,9 +57,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign:'left'
   },
   phone:{
-    marginTop:'0',
+    marginLeft:'15px',
     [theme.breakpoints.down('sm')]: {
-      marginTop:'50px',
+      marginTop:'10px',
+      marginBottom:'30px'
     },},
 
     HeadLine:{
@@ -96,7 +98,7 @@ const DialogActions = withStyles((theme) => ({
  function CustomizedDialogs(props) {
   const [open, setOpen] = React.useState(false);
   const [phone , setPhone] = useState(false);
- 
+  const dispatch = useDispatch()
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
@@ -119,10 +121,16 @@ const DialogActions = withStyles((theme) => ({
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(
       _,
+        {
+          data: { register: userData }  
+        } 
+      
        ) {
       setOpen(false);
-      cleanFeilds();
-      history.push('/');
+       dispatch({type:SET_USER, payload:userData});
+        cleanFeilds()
+        localStorage.setItem("id",userData.id)
+        window.location.href = '/myAccounts'
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
@@ -137,7 +145,7 @@ const DialogActions = withStyles((theme) => ({
 
   const handleClickOpen = () => {
     
-  if(window.innerWidth <= 760){
+  if(window.innerWidth <= 960){
         setPhone(true)
       } else{
         setPhone(false) 
@@ -330,6 +338,7 @@ const REGISTER_USER = gql`
       username
       createdAt
       token
+      profileImageUrl
     }
   }
 `;

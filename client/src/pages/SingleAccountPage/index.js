@@ -2,7 +2,7 @@ import React from 'react'
 import Layout from '../../components/Layout'
 import {useSelector, useDispatch} from 'react-redux'
 import { makeStyles} from '@material-ui/core/styles';
-import { Container} from '@material-ui/core';
+import { Container, IconButton} from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AddItemModal from '../../components/AddItemModal';
@@ -19,6 +19,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import NumericLabel from 'react-pretty-numbers';
 import Tooltip from '@material-ui/core/Tooltip';
 import SingleItem from '../../components/SingleItemAccount'
+import history from '../../util/history';
+import { Link, Redirect, useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -210,7 +212,8 @@ const useStyles = makeStyles((theme) => ({
         margin:'0 auto',
         display:'flex',
         background:'transparent',
-        border:'white solid 2px'
+        border:'white solid 2px',
+        
        },
        FabWrapper:{
         position:'fixed',
@@ -237,28 +240,39 @@ function Index({match}) {
   
    const dispatch = useDispatch()
     const classes = useStyles()
-   const ModalIsOpen = useSelector(state => state.uiReducer.AddItemModalIsOpen)
-   
+   //const ModalIsOpen = useSelector(state => state.uiReducer.AddItemModalIsOpen)
+   const params = useParams()
+   const ModalIsOpen = window.location.pathname === `/myAccounts/${match.params.accountId}/addItem`
+
     let SumEarningstas; 
     let SumSpendingstas;
 
    const accountId = match.params.accountId
  
-   const {data, loading} = useQuery(GET_USER_ACCOUNT,{variables:{accountId}, onCompleted:() => scrollToBottom()})
+   const {data, loading} = useQuery(GET_USER_ACCOUNT,{variables:{accountId}, 
+   onCompleted:() => scrollToBottom(), 
+   onError:(err) => {
+     history.push('/AccountNotFound/')
+     
+    }})
    
 
-
+   
 
    React.useEffect(() => {
   if(data){
     dispatch({type:SET_Current_Account_Ui, payload:data.getUserAccount})
   }
-      
+
     
+  
+   
     
    },[data])
 
 
+
+   
 
    function getEarningLength(data){
     const result = data.filter(i => i.amount > 0).length
@@ -312,6 +326,8 @@ const FormatOptions = {
   'title':true,
   
 };
+
+
 
 
    return (
@@ -415,13 +431,16 @@ const FormatOptions = {
    
     <div className={classes.FabWrapper}>  
     <Fab 
-    disableFocusRipple={true} 
-    onClick={() => {dispatch({type:SET_AddItem_Modal_Open})}} 
+     disableFocusRipple={true}  
     size="medium" 
     className={classes.Fab} 
-      color='secondary' 
-      aria-label="add">
-      {ModalIsOpen ? <CloseRoundedIcon/> :  <AddIcon />  } 
+    color='secondary' 
+     aria-label="add">
+      {ModalIsOpen ? 
+      
+      <CloseRoundedIcon style={{color:'white', padding:'10px 10px'}} onClick={() => history.goBack()}  /> :  
+      <IconButton style={{color:'white'}} component={Link} to={`/myAccounts/${accountId}/addItem`}><AddIcon  /></IconButton> 
+     } 
       </Fab> 
       
       </div>

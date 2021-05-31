@@ -10,12 +10,15 @@ import {
     LinkList,
     MobileIcon,
     NavMenu,
-    HelloToUser
+    HelloToUser,
+    LinkStyle
   } from './NavbarElements';
 import { useSelector } from 'react-redux';
  
 import {makeStyles} from '@material-ui/core'
-
+import history from '../../util/history';
+import { Redirect, useParams } from 'react-router-dom';
+import PageNotFound from '../../pages/PageNotFound'
 
 const useStyles = makeStyles((theme) => ({
 
@@ -34,14 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
      
 
-
-
-
-
-
-
-
- function Index(){
+function Index(){
     
    
 
@@ -49,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     const user = useSelector(state => state.userReducer.userDetails)
     const user2 = useSelector(state => state.userReducer.isAuthenticated)
     const currentAccount = useSelector(state => state.uiReducer.getCurrentAccountUi)
-    
+    const params = useParams()
     
     console.log("authenticated!",user2);
     console.log("from", user);
@@ -66,14 +62,7 @@ const useStyles = makeStyles((theme) => ({
           }
       }
     
-   useEffect(() => {
-      changNav()
-  
-     window.addEventListener("scroll", changNav)
-      
-     return function cl(){window.removeEventListener("scroll", changNav)}  
-       
-    },[])
+ 
   
     const handleOnclick  = () => setClick(!click)
     
@@ -94,9 +83,7 @@ const useStyles = makeStyles((theme) => ({
        { currentAccount ? currentAccount.title : 'BudgeX'}   
          </NavTitle>
         
-        <LinkList>
-       
-        </LinkList>
+        
       
       </NavbarContainer>
      
@@ -106,14 +93,32 @@ const useStyles = makeStyles((theme) => ({
      
 
      <NavMenu  click={click}>
+     <LinkStyle to='/security'>
+       <li>אבטחה</li>
+        </LinkStyle>
+     
       
+       <LinkStyle to='/policy'>
+       <li>מדיניות</li>
+      </LinkStyle>
+        
+        <LinkStyle to='/aboutme'>
+       <li>עלי</li>
+      </LinkStyle>
+      
+        <LinkStyle to='/setting'>
+       <li>הגדרות</li>
+        </LinkStyle>
+
+       
+     
+     {!user && 
+     (<><RegisterModalBtn/><LoginModalBtn/></>) } 
+       
         <HelloToUser>
         { user ? `${user.username + ' שלום'}` : "שלום, אורח"}  
         </HelloToUser>
-     
-     {!user && (<><RegisterModalBtn/>
-        
-        <LoginModalBtn/></>) } 
+       
         </NavMenu>
    </Nav>
         </header>

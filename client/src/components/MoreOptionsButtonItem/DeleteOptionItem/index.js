@@ -11,6 +11,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { CircularProgress } from '@material-ui/core';
+import history from '../../../util/history';
+import { Link, useParams } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -50,46 +52,51 @@ const useStyles = makeStyles((theme) => ({
     return <Slide direction="up" ref={ref} {...props} />;
   });
  
-function Index({accountId, setOpen, itemId}) {
+function Index({itemId}) {
     
     const classes = useStyles();
-    
-    const [open, setOpenModal] = React.useState(false);
+    const params = useParams()
+   
+
+  const ModalIsOpen = window.location.pathname === `/myAccounts/${params.accountId}/deleteItem/${params.itemId}` 
+
 
   const handleClickOpen = () => {
-     setOpenModal(true);
+    
+   
   };
-
-  const handleClose = () => {
-    setOpenModal(false);
-  };
-
 
     const [deleteItem,{loading}] = useMutation(DELETE_ITEM,
         {
         onCompleted:() =>{
-            setOpen(false)
-            setOpenModal(false);
+        history.goBack()
+         
+         
+           
             
         },
 
         onError:(err) => console.log(err),
        
         variables: {
-           accountId,
-           itemId
+           accountId:params.accountId,
+           itemId:params.itemId
         }
       });
     
     return (
         <>
-        <MenuItem className={classes.Delete} onClick={handleClickOpen} >מחק פריט</MenuItem>
+        <MenuItem 
+        className={classes.Delete} 
+        component={Link} 
+        to={`/myAccounts/${params.accountId}/deleteItem/${itemId}`} 
+        onClick={handleClickOpen} >מחק פריט</MenuItem>
         
       <Dialog
-        open={open}
+        open={ModalIsOpen}
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleClose}
+        onClose={() => !ModalIsOpen}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         style={{textAlign:'center'}}
@@ -110,7 +117,7 @@ function Index({accountId, setOpen, itemId}) {
                 style={{color:'red', margin:'0 auto'}}/>
              ) : (
             <>
-            <Button onClick={handleClose} color="primary"  >
+            <Button onClick={() => history.goBack()} color="primary"  >
             לא
           </Button>
           <Button onClick={deleteItem} color="primary">

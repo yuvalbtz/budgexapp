@@ -71,14 +71,14 @@ module.exports = {
 
              const token = generateToken(user);
          
-             res.cookie("id", token, {
+            res.cookie("id", token, {
                  httpOnly:true,
                  secure:false,
                  maxAge:1000 * 60 * 60 * 24 * 7 // 7 days    
 
              });
 
-             res.cookie("id2", user._id, {
+              res.cookie("id2", user._id, {
                 httpOnly:false,
                 secure:false,
                 maxAge:1000 * 60 * 60 * 24 * 7 // 7 days    
@@ -99,7 +99,7 @@ module.exports = {
           
         },context,info){
        
-            const userF = null;
+            let userF = null;
         const {errors, valid} = validatorsRegisterInput(username,email,password,confirmPassword)
         if(!valid){
             throw new UserInputError('Errors',{errors});
@@ -141,8 +141,31 @@ module.exports = {
            
             const token = generateToken(res)
                
-                return {...res._doc, id: res._id, token, firebase_user_id:userF.user.uid }
-        }, 
+               
+            context.res.cookie("id", token, {
+                httpOnly:true,
+                secure:false,
+                maxAge:1000 * 60 * 60 * 24 * 7 // 7 days    
+
+            });
+
+            context.res.cookie("id2", res._id, {
+               httpOnly:false,
+               secure:false,
+               maxAge:1000 * 60 * 60 * 24 * 7 // 7 days    
+
+           });  
+            
+            
+            
+            
+            return {...res._doc, id: res._id, token, firebase_user_id:userF.user.uid }
+        
+        
+        
+        
+        
+            }, 
 
 
         

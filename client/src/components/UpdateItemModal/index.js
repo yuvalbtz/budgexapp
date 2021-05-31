@@ -24,6 +24,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useParams } from 'react-router-dom';
+import history from '../../util/history';
 
 
 const styles = (theme) => ({
@@ -113,7 +115,7 @@ function NumberFormatCustom(props) {
 
 const Transition = React.forwardRef(function Transition(props, ref) {
  
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref}  {...props} />;
   });
 
 
@@ -145,15 +147,23 @@ export default function SimpleSlide({accountId}) {
     const classes = useStyles();
     const FormClasses = useFormStyles()
     const dispatch = useDispatch()
-   
-    const ModalIsOpen = useSelector(state => state.uiReducer.UpdateItemModalIsOpen.isOpen)
+    const params = useParams()
+    //const ModalIsOpen = useSelector(state => state.uiReducer.UpdateItemModalIsOpen.isOpen)
+    
     const itemDetails = useSelector(state => state.uiReducer.UpdateItemModalIsOpen.itemDetails)
+    
+    const ModalIsOpen = window.location.pathname === `/myAccounts/${accountId}/updateItem/${params.itemId}` 
+    
+    
 
     const [radioValue, setRadioValue] =useState('') 
     const [errors, setErrors] = useState({});
     const [category, setCategory] = useState('')  
     const [numberformat ,setNumberformat] = useState('')
+   
     
+
+
     const { onChange, onSubmit, values } = useForm(updateItemCallback, {
     title:'',
     description:'',
@@ -163,6 +173,8 @@ export default function SimpleSlide({accountId}) {
   });
 
   
+ 
+
   function CheckRadioValue(){
     if(itemDetails){
        
@@ -188,8 +200,9 @@ export default function SimpleSlide({accountId}) {
 
     const [updateItem, { loading }] = useMutation(UPDATE_ITEM, {
         onCompleted:() => {
+        history.goBack()
         dispatch({type:SET_UpdateItem_Modal_Open, payload:null})  
-        },
+       },
         update(_,result){
             values.title = ''
             values.description = ''
@@ -202,7 +215,7 @@ export default function SimpleSlide({accountId}) {
         },
         variables:{
             accountId, 
-            itemId:itemDetails && itemDetails.id,
+            itemId:params.itemId,
             title: category,
             description:values.description,
             amount: radioValue === "spending" ? -Math.abs(numberformat) : Math.abs(numberformat),
@@ -263,12 +276,17 @@ export default function SimpleSlide({accountId}) {
         }
     }
 
-React.useEffect(() => UpdateFeildsOnOpen() ,[ModalIsOpen])
+React.useEffect(() =>{ 
+  UpdateFeildsOnOpen()
+  
+
+
+} 
+  
+  ,[ModalIsOpen])
     
   return (
     
-  
-
       <div>
      
       <Dialog
@@ -283,7 +301,8 @@ React.useEffect(() => UpdateFeildsOnOpen() ,[ModalIsOpen])
       >
         <form  onSubmit={onSubmit} noValidate>
         <DialogTitle id="alert-dialog-slide-title" onClose={() => {
-            dispatch({type:SET_UpdateItem_Modal_Open, payload:null})
+            history.goBack()
+            ///dispatch({type:SET_UpdateItem_Modal_Open, payload:null})
             setRadioValue('')
             
             }} style={{textAlign:'center'}}> 

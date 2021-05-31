@@ -23,6 +23,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import history from '../../util/history';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -106,7 +108,9 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
     const classes = useStyles();
     const FormClasses = useFormStyles()
     const dispatch = useDispatch()
-    const ModalIsOpen = useSelector(state => state.uiReducer.AddItemModalIsOpen)
+    //const ModalIsOpen = useSelector(state => state.uiReducer.AddItemModalIsOpen)
+    const ModalIsOpen = window.location.pathname === `/myAccounts/${accountId}/addItem`
+    
     const [radioValue, setRadioValue] =useState('')
     const [errors, setErrors] = useState({});
     const [category, setCategory] = useState('')  
@@ -120,12 +124,14 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
   });
 
   
+   
+  
   
 
     const [addItem, { loading }] = useMutation(ADD_ITEM, {
      onCompleted:() => {
-      dispatch({type:SET_AddItem_Modal_Open})  
-      scrollToBottom()
+       history.goBack()
+       scrollToBottom()
 
      },
         update(_,result){
@@ -260,7 +266,7 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
           type="submit"
           onClick={onSubmit}
           disabled={ category.trim() === "" || isNaN(parseFloat(numberformat))}
-
+           
         >
          <CheckIcon />
         </Fab>)}

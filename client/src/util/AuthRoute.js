@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Route, Redirect} from 'react-router-dom';
+import { Route, Redirect, useParams} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux'
 import { SET_USER_LOGOUT } from '../Redux/actionTypes';
 import UserTabs from '../pages/UserPage/Index'
@@ -11,7 +11,7 @@ function AuthRoute({ component: Component, userf,...rest}) {
   
   
 
- return (
+return (
     <Route
       {...rest}
       render={(props) => 

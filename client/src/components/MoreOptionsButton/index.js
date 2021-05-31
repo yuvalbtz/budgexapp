@@ -10,6 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteMenuItem from './DeleteOptionAccount';
 import UpdateMenuItem from './UpdateOptionAccount'
 import {useDispatch, useSelector} from 'react-redux';
+import history from '../../util/history';
+import { useParams } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,8 +46,12 @@ function Index({accountId, accountDetails}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+  const params = useParams()
 
   const handleToggle = () => {
+    if(params.accountId){
+       history.goBack()
+    }
     setOpen((prevOpen) => !prevOpen);
   };
 

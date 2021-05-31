@@ -11,6 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteMenuItem from '../MoreOptionsButtonItem/DeleteOptionItem';
 import UpdateMenuItem from '../MoreOptionsButtonItem/UpdateOptionItem'
 import RemoveImageItem from '../MoreOptionsButtonItem/RemoveImageOptionItem'
+import { useParams } from 'react-router-dom';
+import history from '../../util/history';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,8 +41,12 @@ function Index({accountId, itemId, item}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-
+  const params = useParams()
   const handleToggle = () => {
+    if(params.itemId){
+      history.replace(`/myAccounts/${accountId}`)
+    }
+   
     setOpen((prevOpen) => !prevOpen);
   };
 

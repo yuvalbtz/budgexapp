@@ -22,6 +22,19 @@ import CheckIcon from '@material-ui/icons/Check';
 import {themeModal} from '../../util/themeModal'
 import Dialog from '@material-ui/core/Dialog';
 import { SET_MatualAccount_Modal_Open } from '../../Redux/actionTypes';
+import { useLazyQuery, useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag'
+import Checkbox from '@material-ui/core/Checkbox';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import { useState } from 'react';
+import history from '../../util/history';
+
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles((theme) => ({
     
@@ -101,11 +114,6 @@ const useFormStyles = makeStyles(() => ({
 }));
 
 
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
 
 
 
@@ -115,50 +123,33 @@ function sleep(delay = 0) {
 export default function SimpleSlide() {
     const classes = useStyles();
     const FormClasses = useFormStyles()
-    const ModalIsOpen = useSelector(state => state.uiReducer.MatualAccountIsOpen)
+   // const ModalIsOpen = useSelector(state => state.uiReducer.MatualAccountIsOpen)
+     const ModalIsOpen = window.location.pathname === `/matualAccounts/addAccount`
+    
+    
     const dispatch = useDispatch();
-
-
-
+    const [getAllUsers,{ data, loading}] = useLazyQuery(GET_ALL_USERS)
+    const [selectedFreinds, setSelectedFreinds] = useState([])
+  
+    console.log(selectedFreinds.map(f => f.id));
 
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
-    const loading = open && options.length === 0;
-  
-
     const input = React.useRef()
-    setTimeout(() => {
-      if(ModalIsOpen){
-       input.current.focus()
-       }
-    },100) 
+  
     React.useEffect(() => {
-      let active = true;
-  
-      if (!loading) {
-        return true;
+      
+    if(data){
+        const users = data.getAllUsers;
+         
+        setOptions(users);
+          console.log("users",options);
+       
       }
-  
-      (async () => {
-        const response = await fetch('https://country.register.gov.uk/records.json?page-size=5000');
-        await sleep(1e3); // For demo purposes.
-        const countries = await response.json();
-  
-        if (active) {
-          setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
-        }
-      })();
-  
-      return () => {
-        active = false;
-      };
-    }, [loading]);
-
-    React.useEffect(() => {
-      if (!open) {
-        setOptions([]);
-      }
-    }, [open]);
+     
+      
+       
+    }, [open, data]);
 
   
   return (
@@ -166,7 +157,7 @@ export default function SimpleSlide() {
       <div>
      
       <Dialog
-        onEscapeKeyDown={() => dispatch({type:SET_MatualAccount_Modal_Open})}
+        onEscapeKeyDown={() => history.goBack()}
         open={ModalIsOpen}
         TransitionComponent={Transition}
         keepMounted
@@ -176,10 +167,12 @@ export default function SimpleSlide() {
         style={{zIndex:1, textAlign:'center'}}
       >
         <form>
-        <DialogTitle id="alert-dialog-slide-title">  <Typography component="div" variant="h5" className={FormClasses.HeadLine}>:יצירת חשבון משותף</Typography></DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">
+          <Typography component="div" variant="h5" className={FormClasses.HeadLine}>:יצירת חשבון משותף</Typography>
+          </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-          :רשום את שם החשבון שברצונך ליצור והוסף חברים לחשבון
+          :צור חשבון והוסף חברים לחשבון
           </DialogContentText>
           
           <div>
@@ -207,35 +200,61 @@ export default function SimpleSlide() {
        <div>
       <FormControl className={classes.margin}>
       <Autocomplete
-      multiple
+       multiple
+      disableCloseOnSelect
       id="asynchronous-demo"
       name="addFreinds"
-      style={{minWidth:220}}
+      style={{maxWidth:250,minWidth:220}}
       open={open}
       onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
-      getOptionSelected={(option, value) => option.name === value.name}
-      getOptionLabel={(option) => option.name}
+        getAllUsers();
+         setOpen(true);
+       }}
+     
+      onClose={() => { setOpen(false);}}
+      
+      getOptionSelected={(option, value) => option.id === value.id}
+      onChange={(e,val, res) => setSelectedFreinds(val)}
+      getOptionLabel={(option) => option.username}
+     
+      renderOption={(option, { selected }) => (
+        <React.Fragment>
+       <Checkbox
+            icon={icon}
+            checkedIcon={checkedIcon}
+            checked={selected}
+          />
+        <Avatar 
+        src={option.profileImageUrl} 
+        style={{marginRight:'12px', width:35, height:35}}/>
+          {option.username}
+      </React.Fragment>
+      )}
       options={options}
       loading={loading}
+      
+      renderTags={(tagValue, getTagProps) =>
+       
+        tagValue.map((option, index) => (
+          <Chip
+            label={option.username}
+            avatar={<Avatar src={option.profileImageUrl} />}
+            {...getTagProps({ index })}
+            
+          />
+        ))
+      }
       renderInput={(params) => (
         <TextField
-          {...params}
+        {...params}
+           multiline
+          rowsMax={4}  
           label=":הוסף חברים"
-          style={{width:'100%'}}
-          InputProps={{
+        
+         InputProps={{
             ...params.InputProps,
-            startAdornment:(<GroupRoundedIcon/>),
-            endAdornment: (
-              <React.Fragment>
-                 {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </React.Fragment>
-            ),
+            startAdornment: (<>{selectedFreinds.length === 0 && (<GroupRoundedIcon/>)} {params.InputProps.startAdornment}</>),
+            
           }}
         />
       )}
@@ -265,3 +284,16 @@ export default function SimpleSlide() {
 
   );
 }
+
+
+const GET_ALL_USERS = gql`
+query{
+  getAllUsers{
+    id
+    username
+    profileImageUrl
+    
+  }
+}
+
+`;

@@ -21,29 +21,33 @@ const app = express()
 
 //enable cors
  var corsOptions = {
-  origin: '/',
+  origin: ['/','http://localhost:3000'],
   credentials: true, // <-- REQUIRED backend setting
  
 }; 
   app.use(cors(corsOptions));
 
 app.use("/graphql",
+         bodyParser.json(),
          cookieParser(),
          (req,res,next) => {
-           
-          try{
+          
+            try{
               
               const user =  jwt.verify(req.cookies.id, SECRET_KEY)
             
               req.user = user
               console.log("user middleware",user);
-             console.log("id cookie!!!!!" );
+              console.log("id cookie!!!!!" );
             
               
               }catch(err){
-               console.log(err);
-              
-           }
+               
+              console.log(err);
+            
+              }
+        
+         
            return next();
          })
 

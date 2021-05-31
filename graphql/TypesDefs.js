@@ -94,6 +94,8 @@ type Query{
      
      getUserAccounts:[Account!]!
      getUserAccount(accountId:ID!):Account!
+
+     getAllUsers:[User!]!
     }
 
  type Mutation{

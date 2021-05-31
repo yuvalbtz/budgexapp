@@ -12,6 +12,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { CircularProgress } from '@material-ui/core';
+import history from '../../../util/history';
+import { Link, Redirect, useParams } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -59,24 +61,28 @@ function Index({accountId, setOpen}) {
     const classes = useStyles();
     
     const [open, setOpenModal] = React.useState(false);
+    
+    const params = useParams()
+  
+   const ModalIsOpen = window.location.pathname === `/myAccounts/deleteAccount/${params.accountId}`
 
-  const handleClickOpen = () => {
-     setOpenModal(true);
+
+
+
+
+  const handleClickOpen = () => { 
+    setOpenModal(true);
   };
 
-  const handleClose = () => {
-    setOpenModal(false);
-  };
-
+  
 
     const [deleteAccount,{loading}] = useMutation(DELETE_ACCOUNT,
         {
         refetchQueries:[{query:GET_USER_ACCOUNTS}],
-        onCompleted:() =>{
-            setOpen(false)
-            setOpenModal(false);
-            
-        },
+        onCompleted:() => {
+         history.goBack()
+         setOpen(false)
+       },
 
         onError:(err) => console.log(err),
         variables: {
@@ -86,13 +92,13 @@ function Index({accountId, setOpen}) {
     
     return (
         <>
-        <MenuItem className={classes.Delete} onClick={handleClickOpen} >מחק חשבון</MenuItem>
+        <MenuItem className={classes.Delete} component={Link} to={`/myAccounts/deleteAccount/${accountId}`} onClick={handleClickOpen} >מחק חשבון</MenuItem>
         
       <Dialog
-        open={open}
+        open={ModalIsOpen}
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleClose}
+        onClose={() => ModalIsOpen}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         style={{textAlign:'center'}}
@@ -114,7 +120,7 @@ function Index({accountId, setOpen}) {
             style={{color:'red', margin:'0 auto'}}/>
           ) : (
             <>
-            <Button onClick={handleClose} color="primary"  >
+            <Button onClick={() => history.goBack()} color="primary"  >
             לא
           </Button>
           <Button onClick={deleteAccount} color="primary">

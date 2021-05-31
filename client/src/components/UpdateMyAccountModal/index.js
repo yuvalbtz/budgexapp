@@ -22,6 +22,8 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import history from '../../util/history';
+import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -89,8 +91,18 @@ export default function SimpleSlide() {
     const classes = useStyles();
     const FormClasses = useFormStyles()
     const dispatch = useDispatch()
-    const ModalIsOpen = useSelector(state => state.uiReducer.UpdateAccountModalIsOpen.isOpen)
+    const params = useParams()
+    
+    // const ModalIsOpen = useSelector(state => state.uiReducer.UpdateAccountModalIsOpen.isOpen)
+   
+  
+   
     const accountDetails = useSelector(state => state.uiReducer.UpdateAccountModalIsOpen.accountDetails)
+    
+    const ModalIsOpen = window.location.pathname === `/myAccounts/updateAccount/${params.accountId}` && accountDetails !== null  
+    
+   
+    
     const [title, setTitle] = useState('');
     const input = React.useRef()
     
@@ -114,7 +126,8 @@ export default function SimpleSlide() {
         
       },
       onCompleted:() =>{
-        dispatch({type:SET_UpdateAccount_Modal_Open, payload:null})
+        history.goBack()
+        
       }
 
       
@@ -151,7 +164,7 @@ export default function SimpleSlide() {
       <div>
      
       <Dialog
-        onEscapeKeyDown={() => dispatch({type:SET_UpdateAccount_Modal_Open, payload:null})}
+        onEscapeKeyDown={() => ModalIsOpen}
         open={ModalIsOpen}
         TransitionComponent={Transition}
         keepMounted
@@ -164,9 +177,7 @@ export default function SimpleSlide() {
         <form onSubmit={onSubmit} noValidate>
         
         
-            <DialogTitle id="alert-dialog-slide-title" onClose={() => {
-            dispatch({type:SET_UpdateAccount_Modal_Open, payload:null})
-            }} style={{textAlign:'center'}}> 
+            <DialogTitle id="alert-dialog-slide-title" onClose={() => history.goBack()} style={{textAlign:'center'}}> 
         <Typography component="div" variant="h5" className={FormClasses.HeadLine}>:עריכת חשבון</Typography>
         </DialogTitle>
         

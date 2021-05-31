@@ -26,6 +26,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { useEffect } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Axios from 'axios'
+import history from '../../util/history';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -186,9 +187,10 @@ return (
 export default function SimpleSlide() {
     const classes = useStyles();
     const FormClasses = useFormStyles()
-    const ModalIsOpen = useSelector(state => state.uiReducer.ModalProfileIsOpen)
+   /// const ModalIsOpen = useSelector(state => state.uiReducer.ModalProfileIsOpen)
     const [profileImageUrl, setProfileImageUrl] = useState('')
     
+    const ModalIsOpen = window.location.pathname === `/profile/edit`
     
     
     const user = useSelector(state => state.userReducer.userDetails)
@@ -196,7 +198,7 @@ export default function SimpleSlide() {
     const input = React.useRef()
     
     const [UpdateProfileCallback,{data,loading}] = useMutation(UPDATE_USER_PROFILE,{variables:{profileImage:profileImageUrl},
-      onCompleted:() => dispatch({type:SET_Profile_Modal_Open}), 
+      onCompleted:() => history.goBack(), 
       onError:(err) => console.log(err)})
      
     useEffect(() =>{
@@ -222,7 +224,7 @@ export default function SimpleSlide() {
       <div>
      
       <Dialog
-         onEscapeKeyDown={() => dispatch({type:SET_Profile_Modal_Open})}
+         onEscapeKeyDown={() =>history.goBack()}
         open={ModalIsOpen}
         TransitionComponent={Transition}
         keepMounted

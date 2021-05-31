@@ -19,6 +19,7 @@ import {useMutation} from '@apollo/react-hooks'
 import {useForm} from '../../hooks/useForm'
 import { SET_Account_Modal_Open } from '../../Redux/actionTypes';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import history from '../../util/history';
 
 
 
@@ -121,7 +122,8 @@ export default function SimpleSlide({scrollToTop}) {
         });
         data.getUserAccounts = [result.data.createAccount, ...data.getUserAccounts];
         proxy.writeQuery({ query: GET_USER_ACCOUNTS, data });
-        dispatch({type:SET_Account_Modal_Open})
+        history.push('/myAccounts/')
+        //dispatch({type:SET_Account_Modal_Open})
         values.title = ''
         
         
@@ -153,10 +155,10 @@ export default function SimpleSlide({scrollToTop}) {
      
       <Dialog
         onEscapeKeyDown={() => dispatch({type:SET_Account_Modal_Open})}
-        open={ModalIsOpen}
+        open={window.location.pathname === '/myAccounts/addAccount'}
         TransitionComponent={Transition}
         keepMounted
-        onClose={() => !ModalIsOpen}
+        onClose={() => window.location.pathname === '/myAccounts/addAccount'}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         style={{zIndex:1, textAlign:'center'}}
@@ -166,7 +168,7 @@ export default function SimpleSlide({scrollToTop}) {
         <DialogTitle id="alert-dialog-slide-title"> <Typography component="div" variant="h5" className={FormClasses.HeadLine}>:יצירת חשבון</Typography></DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-          :  רשום את שם החשבון שברצונך ליצור
+          : צור חשבון
           </DialogContentText>
         
           

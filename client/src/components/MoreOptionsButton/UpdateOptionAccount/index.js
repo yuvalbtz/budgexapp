@@ -3,6 +3,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import {useDispatch} from 'react-redux'
 import { SET_UpdateAccount_Modal_Open } from '../../../Redux/actionTypes';
+import history from '../../../util/history';
+import { Link } from 'react-router-dom';
 const useStyles = makeStyles(() => ({
 
     Update:{
@@ -21,7 +23,11 @@ function Index({accountDetails}) {
     return (
         <MenuItem 
         className={classes.Update} 
-        onClick={() => dispatch({type:SET_UpdateAccount_Modal_Open, payload:accountDetails})}>
+        component={Link}
+        to={`/myAccounts/updateAccount/${accountDetails.id}`}
+        onClick={() =>{ 
+            dispatch({type:SET_UpdateAccount_Modal_Open, payload:accountDetails})
+           }}>
             עדכן חשבון
             </MenuItem>
     )
