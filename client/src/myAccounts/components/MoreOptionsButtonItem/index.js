@@ -3,61 +3,57 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import MoreVertRoundedIcon from '@material-ui/icons/MoreVertRounded';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteMenuItem from './DeleteOptionAccount';
-import UpdateMenuItem from './UpdateOptionAccount'
-import {useDispatch, useSelector} from 'react-redux';
-import history from '../../util/history';
-import { useParams } from 'react-router-dom';
 
+import DeleteMenuItem from '../MoreOptionsButtonItem/DeleteOptionItem';
+import UpdateMenuItem from '../MoreOptionsButtonItem/UpdateOptionItem'
+import RemoveImageItem from '../MoreOptionsButtonItem/RemoveImageOptionItem'
+import { useParams } from 'react-router-dom';
+import history from '../../../util/history';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',
-      zIndex:13
-    },
+     zIndex:1
     
+    },
+    paper: {
+    
+    
+    },
+
     OptionBar:{
-        position:'absolute',
-        zIndex:13,
-        top:8,
-        left:2, 
-        color:'white',
+        
+    
         
       },
-      Delete:{
-          color:'#d50000',
-          fontFamily:'Varela Round',
-          fontWeight:'bold'
-      },
-      
+     
 
      
   }));
 
 
 
-function Index({accountId, accountDetails}) {
-   const dispatch = useDispatch()
-
+function Index({accountId, itemId, item}) {
+  
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const params = useParams()
-
   const handleToggle = () => {
-    if(params.accountId){
-       history.goBack()
+    if(params.itemId){
+      history.replace(`/myAccounts/${accountId}`)
     }
+   
     setOpen((prevOpen) => !prevOpen);
   };
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
+      return
     }
 
     setOpen(false);
@@ -72,32 +68,34 @@ function Index({accountId, accountDetails}) {
 
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
+  
   React.useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
 
     prevOpen.current = open;
+  
+  
   }, [open]);
     
     
      return (
         
         <div className={classes.root}>
-      
-    
-      <div style={{position:'relative'}}>
+       <div >
         <IconButton 
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
-            className={classes.OptionBar}>
+          size="small"
+          className={classes.OptionBar}>
           <MoreVertRoundedIcon  />
           </IconButton>
           </div>
          
-        <Popper  open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+        <Popper  open={open} anchorEl={anchorRef.current} role={undefined} placement="left-start" transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
@@ -106,8 +104,9 @@ function Index({accountId, accountDetails}) {
               <Paper className={classes.paper}>
                  <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <UpdateMenuItem accountId={accountId} accountDetails={accountDetails} />
-                    <DeleteMenuItem accountId={accountId} setOpen={setOpen}/>
+                    <RemoveImageItem accountId={accountId} itemId={itemId} image={item.media} setOpen={setOpen}/> 
+                    <UpdateMenuItem accountId={accountId} itemId={itemId} item={item}  />
+                    <DeleteMenuItem accountId={accountId} itemId={itemId} setOpen={setOpen}/>
                   </MenuList>
                   </ClickAwayListener>
               </Paper>

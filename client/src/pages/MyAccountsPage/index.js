@@ -6,10 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import images from '../../util/bg-images.json'
 import Grid from '@material-ui/core/Grid';
 import { useQuery } from '@apollo/react-hooks';
-import MyAccountModal from '../../components/ModalMyAccounts';
-import UpdateAccountModal from '../../components/UpdateMyAccountModal'
+import MyAccountModal from '../../myAccounts/components/ModalMyAccounts';
+import UpdateAccountModal from '../../myAccounts/components/UpdateMyAccountModal'
 import gql from 'graphql-tag'
-import MenuOptionsBar from '../../components/MoreOptionsButton/index'
+import MenuOptionsBar from '../../myAccounts/components/MoreOptionsButton'
 import { Link } from 'react-router-dom';
 import {useDispatch} from 'react-redux'
 import { SET_BG_SINGLE_ACCOUNT, SET_Current_Account_Ui } from '../../Redux/actionTypes';
@@ -132,8 +132,7 @@ function ButtonBases(props) {
       <Grid  
       container
        direction="row"
-       justify="center"
-       alignItems="center"    
+         
        spacing={0}
       
        ref={input} 

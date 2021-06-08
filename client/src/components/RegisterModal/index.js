@@ -20,9 +20,10 @@ import { AuthContext } from '../../context/auth';
 import { useForm } from '../../hooks/useForm';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import {useHistory} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import { SET_USER } from '../../Redux/actionTypes';
 import {useDispatch} from 'react-redux'
+import history from '../../util/history';
 
 
 
@@ -48,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
   },
   loader: {
     position:'relative',
-    margin: '0 auto'
+    margin: '0 auto',
+    color:'#242333'
 },
   title:{
     textAlign:'center'
@@ -58,13 +60,15 @@ const useStyles = makeStyles((theme) => ({
   },
   phone:{
     marginLeft:'15px',
+
     [theme.breakpoints.down('sm')]: {
       marginTop:'10px',
-      marginBottom:'30px'
+      marginBottom:'30px',
+     
     },},
 
     HeadLine:{
-      background:'#3f51b5',
+      background:'#242333',
       color:'whitesmoke',
       fontFamily: 'Varela Round',
       borderRadius:'12px'
@@ -96,7 +100,7 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
  function CustomizedDialogs(props) {
-  const [open, setOpen] = React.useState(false);
+  const open = window.location.pathname === `/register`
   const [phone , setPhone] = useState(false);
   const dispatch = useDispatch()
   const context = useContext(AuthContext);
@@ -116,7 +120,7 @@ const DialogActions = withStyles((theme) => ({
       values.confirmPassword = ""
 }
 
-  const history = useHistory();
+ 
   
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(
@@ -126,7 +130,6 @@ const DialogActions = withStyles((theme) => ({
         } 
       
        ) {
-      setOpen(false);
        dispatch({type:SET_USER, payload:userData});
         cleanFeilds()
         localStorage.setItem("id",userData.id)
@@ -143,19 +146,14 @@ const DialogActions = withStyles((theme) => ({
   }
 
 
-  const handleClickOpen = () => {
-    
-  if(window.innerWidth <= 960){
-        setPhone(true)
-      } else{
-        setPhone(false) 
-      }
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+  window.addEventListener('resize', () => {
+    if(window.innerWidth <= 760){
+      setPhone(true)
+    } else{
+      setPhone(false) 
+    }
+  },() => window.removeEventListener('resize'));
+  
 
 
   const [FormValues, setValues] = React.useState({
@@ -184,13 +182,19 @@ const DialogActions = withStyles((theme) => ({
   const classes = useStyles();
   return (
    <>
-      <Button className={classes.phone} variant="outlined" style={{color:"whitesmoke", borderColor:'whitesmoke'}} onClick={handleClickOpen}>
+      <Button 
+      className={classes.phone} 
+      component={Link}
+      to={`/register`}
+      variant="outlined" 
+      style={{color:"whitesmoke", borderColor:'whitesmoke', backgroundColor:'#242333'}} 
+      >
         הירשם
       </Button>
-      <Dialog fullScreen={phone} onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog fullScreen={phone} onClose={() => history.goBack()} aria-labelledby="customized-dialog-title" open={open}>
         
         <form onSubmit={onSubmit}  noValidate >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose} style={{textAlign:'center'}}>
+        <DialogTitle id="customized-dialog-title" onClose={() => history.goBack()} style={{textAlign:'center'}}>
            <Typography component="div" variant="h6" className={classes.HeadLine}>:הרשמה</Typography>
         </DialogTitle>
         <DialogContent style={{textAlign:'center'}} >
@@ -303,7 +307,7 @@ const DialogActions = withStyles((theme) => ({
              )}
 
         <DialogActions>
-       {!loading ? <Button type="submit" autoFocus fullWidth  variant="contained" onClick={onSubmit} color="primary">
+       {!loading ? <Button type="submit" style={{backgroundColor:'#242333', color:'whitesmoke'}}  fullWidth  variant="contained" onClick={onSubmit} >
             הירשם
           </Button> :  <CircularProgress className={classes.loader} />}
                

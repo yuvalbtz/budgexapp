@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
   },
   loader: {
     position:'relative',
-    margin: '0 auto'
+    margin: '0 auto',
+    color:'#242333'
 },
   title:{
     textAlign:'center'
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     },},
 
     HeadLine:{
-      background:'#3f51b5',
+      background:'#242333',
       color:'whitesmoke',
       fontFamily: 'Varela Round',
       borderRadius:'12px'
@@ -115,7 +116,10 @@ function CustomizedDialogs(props) {
   
 
 
-  const [open, setOpen] = React.useState(false);
+  //const [open, setOpen] = React.useState(false);
+  
+  const open = window.location.pathname === '/login'
+  
   const [phone , setPhone] = useState(false);
  
   const [errors, setErrors] = useState({});
@@ -139,7 +143,6 @@ function CustomizedDialogs(props) {
       } 
       ) {
         setErrors({});
-        setOpen(false);
         console.log(userData);
         dispatch({type:SET_USER, payload:userData});
         cleanFeilds()
@@ -162,17 +165,26 @@ function CustomizedDialogs(props) {
      
   }
 
-  const handleClickOpen = () => {
-    setOpen(true);  
-  if(window.innerWidth <= 760){
+  
+ 
+    window.addEventListener('resize', () => {
+      if(window.innerWidth <= 760){
         setPhone(true)
       } else{
         setPhone(false) 
       }
-    };
-  const handleClose = () => {
-    setOpen(false);
-  };
+    },() => window.removeEventListener('resize'));
+
+
+
+    
+  /* React.useEffect(() => {
+    if(window.innerWidth <= 760){
+      setPhone(true)
+    } else{
+      setPhone(false) 
+    }
+  },[window.innerWidth]) */
 
 
 
@@ -196,13 +208,20 @@ function CustomizedDialogs(props) {
   const classes = useStyles();
   return (
   <>
-      <Button className={classes.phone} variant="outlined" style={{color:"whitesmoke", borderColor:'whitesmoke'}} onClick={handleClickOpen}>
+      <Button 
+      className={classes.phone} 
+      component={Link} 
+      to={`/login`} 
+      variant="outlined" 
+      style={{color:"whitesmoke", 
+      borderColor:'whitesmoke'}} 
+     >
         התחבר
       </Button>
-      <Dialog fullScreen={phone} onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog fullScreen={phone} onClose={() => history.goBack()} aria-labelledby="customized-dialog-title" open={open}>
          <form onSubmit={onSubmit} noValidate >
         
-        <DialogTitle id="customized-dialog-title" onClose={handleClose} style={{textAlign:'center'}}>
+        <DialogTitle id="customized-dialog-title" onClose={() => history.goBack()} style={{textAlign:'center'}}>
         <Typography component="div" variant="h6" className={classes.HeadLine}>:כניסה</Typography>
         </DialogTitle>
         
@@ -273,7 +292,7 @@ function CustomizedDialogs(props) {
        
         <DialogActions>
        
-       {!loading ?  <Button type="submit" fullWidth  variant="contained" onClick={onSubmit} color="primary">
+       {!loading ?  <Button type="submit" fullWidth style={{backgroundColor:'#242333', color:'whitesmoke'}}  variant="contained" onClick={onSubmit} color="primary">
             התחבר
           </Button> :  <CircularProgress className={classes.loader} />}
              

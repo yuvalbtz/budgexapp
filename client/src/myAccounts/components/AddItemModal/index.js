@@ -14,8 +14,7 @@ import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 import gql from 'graphql-tag'
 import {useMutation} from '@apollo/react-hooks'
-import {useForm} from '../../hooks/useForm'
-import { SET_AddItem_Modal_Open } from '../../Redux/actionTypes';
+import {useForm} from '../../../hooks/useForm'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
@@ -23,7 +22,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import history from '../../util/history';
+import history from '../../../util/history';
 import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({

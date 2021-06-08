@@ -15,8 +15,8 @@ import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 import gql from 'graphql-tag'
 import {useMutation} from '@apollo/react-hooks'
-import {useForm} from '../../hooks/useForm'
-import {SET_UpdateItem_Modal_Open } from '../../Redux/actionTypes';
+import {useForm} from '../../../hooks/useForm'
+import {SET_UpdateItem_Modal_Open } from '../../../Redux/actionTypes';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
@@ -25,7 +25,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useParams } from 'react-router-dom';
-import history from '../../util/history';
+import history from '../../../util/history';
 
 
 const styles = (theme) => ({

@@ -13,7 +13,7 @@ import gql from 'graphql-tag';
 import {useSelector, useDispatch} from 'react-redux'
 import { SET_USER, SET_USER_LOGOUT } from './Redux/actionTypes';
 import history from './util/history';
-import AddItemModal from './components/ModalMyAccounts'
+
 
 
 function App() {
@@ -60,6 +60,9 @@ console.log("APP", user);
    
      <Switch>
      <Route exact path="/" component={HomePage}/>
+
+     <Route exact path="/login" component={HomePage}/>
+     <Route exact path="/register" component={HomePage}/>
      
      <AuthRoute exact path='/profile' userf={user} component={UserPage} />
      <AuthRoute exact path='/profile/edit' userf={user} component={UserPage} />

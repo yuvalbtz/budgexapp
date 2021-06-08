@@ -5,8 +5,8 @@ import { makeStyles} from '@material-ui/core/styles';
 import { Container, IconButton} from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import AddItemModal from '../../components/AddItemModal';
-import UpdateItemModal from '../../components/UpdateItemModal';
+import AddItemModal from '../../myAccounts/components/AddItemModal';
+import UpdateItemModal from '../../myAccounts/components/UpdateItemModal';
 import { SET_AddItem_Modal_Open, SET_Current_Account_Ui } from '../../Redux/actionTypes';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import {useQuery} from '@apollo/react-hooks'
@@ -14,11 +14,11 @@ import gql from 'graphql-tag'
 import {animateScroll} from 'react-scroll'
 import bgImages from '../../util/bg-images.json' 
 import Badge from '@material-ui/core/Badge';
-import StatisticButton from '../../components/SingleAccountStatisButton'
+import StatisticButton from '../../myAccounts/components/SingleAccountStatisButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NumericLabel from 'react-pretty-numbers';
 import Tooltip from '@material-ui/core/Tooltip';
-import SingleItem from '../../components/SingleItemAccount'
+import SingleItem from '../../myAccounts/components/SingleItemAccount'
 import history from '../../util/history';
 import { Link, Redirect, useParams } from 'react-router-dom';
 
@@ -219,7 +219,7 @@ const useStyles = makeStyles((theme) => ({
         position:'fixed',
         bottom:0,
         width:'100%',
-        minHeight:'12%', 
+        minHeight:'10vh', 
         zIndex:3, 
         display:'flex', 
         flex:'wrap',
@@ -243,20 +243,23 @@ function Index({match}) {
    //const ModalIsOpen = useSelector(state => state.uiReducer.AddItemModalIsOpen)
    const params = useParams()
    const ModalIsOpen = window.location.pathname === `/myAccounts/${match.params.accountId}/addItem`
-
+   const accountIdReducer = useSelector(state => state.uiReducer.getCurrentAccountUi)
+   const accountId = match.params.accountId
+  
     let SumEarningstas; 
     let SumSpendingstas;
 
-   const accountId = match.params.accountId
+   
  
    const {data, loading} = useQuery(GET_USER_ACCOUNT,{variables:{accountId}, 
    onCompleted:() => scrollToBottom(), 
-   onError:(err) => {
-     history.push('/AccountNotFound/')
+   onError:(err) => history.goBack()
      
-    }})
+    })
    
+ 
 
+ 
    
 
    React.useEffect(() => {
@@ -264,11 +267,7 @@ function Index({match}) {
     dispatch({type:SET_Current_Account_Ui, payload:data.getUserAccount})
   }
 
-    
-  
-   
-    
-   },[data])
+ },[data])
 
 
 
@@ -410,7 +409,7 @@ const FormatOptions = {
        </Container> 
         
        
-       <Container maxWidth="sm" className={classes.ItemsWrapper} id="containerScroll">
+       <Container fixed maxWidth="sm" className={classes.ItemsWrapper} id="containerScroll">
 
         {loading && (<CircularProgress style={{marginTop:'50px'}} color='secondary' size={200} thickness={0.5}/>)}
 

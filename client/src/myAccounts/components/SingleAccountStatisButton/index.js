@@ -25,7 +25,7 @@ import {
 } from "bizcharts";
 import { DialogTitle } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
-import history from '../../util/history';
+import history from '../../../util/history';
 
 
 
@@ -44,9 +44,19 @@ const useStyles = makeStyles((theme) => ({
   Fab:{
     position:'fixed',
     right:theme.spacing(2),
-    bottom:theme.spacing(2),
+    bottom:theme.spacing(1),
     zIndex:3,
   
+  },
+
+  stasWrapper:{
+    height:'100%', 
+    width:'100%', 
+    [theme.breakpoints.up('md')]:{
+      display:'flex', 
+      alignItems:'center', 
+      justifyContent:'center'
+    }
   }
 }));
 
@@ -228,10 +238,11 @@ const cols = {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              סטטיסטיקה
+              פילוח נתונים
             </Typography>
           </Toolbar>  
         </AppBar>
+       
         <div style={{height:'100%', width:'100%'}} dir='ltr' >
            
            <Typography 
@@ -241,21 +252,22 @@ const cols = {
            ₪ {totalEarning + totalSpending } :מאזן נוכחי
            </Typography>
         
-
-          {totalEarning > 0 && (<>
+          <div className={classes.stasWrapper}>
+          
+          {totalEarning > 0 && (<div style={{display:'flex', flexDirection:'column', height:'100%',  width:'100%'}}>
             <DialogTitle style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{Math.abs(totalEarning).toFixed(2)} :הכנסות</DialogTitle>
             <PieChart data={array3} cols={cols} />
-            </>
+            </div>
           )}
           
        
 
        
           
-          {totalSpending < 0 && (<>
+          {totalSpending < 0 && (<div style={{display:'flex', flexDirection:'column', height:'100%', width:'100%'}}>
             <DialogTitle  style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{ -Math.abs(totalSpending).toFixed(2)} :הוצאות</DialogTitle>
-          <PieChart data={array2} cols={cols} /></>) }
-       
+          <PieChart data={array2} cols={cols} /></div>) }
+          </div>
        
        
         </div>

@@ -19,9 +19,7 @@ import { Typography,
 } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
-import {themeModal} from '../../util/themeModal'
 import Dialog from '@material-ui/core/Dialog';
-import { SET_MatualAccount_Modal_Open } from '../../Redux/actionTypes';
 import { useLazyQuery, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
 import Checkbox from '@material-ui/core/Checkbox';
@@ -30,7 +28,7 @@ import Chip from '@material-ui/core/Chip';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { useState } from 'react';
-import history from '../../util/history';
+import history from '../../../util/history';
 
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;

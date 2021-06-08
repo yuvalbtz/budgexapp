@@ -2,8 +2,7 @@ import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import {useDispatch} from 'react-redux'
-import { SET_UpdateAccount_Modal_Open } from '../../../Redux/actionTypes';
-import history from '../../../util/history';
+import { SET_UpdateAccount_Modal_Open } from '../../../../Redux/actionTypes';
 import { Link } from 'react-router-dom';
 const useStyles = makeStyles(() => ({
 

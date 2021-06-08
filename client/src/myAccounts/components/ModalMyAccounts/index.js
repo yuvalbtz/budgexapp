@@ -16,10 +16,9 @@ import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 import gql from 'graphql-tag'
 import {useMutation} from '@apollo/react-hooks'
-import {useForm} from '../../hooks/useForm'
-import { SET_Account_Modal_Open } from '../../Redux/actionTypes';
+import {useForm} from '../../../hooks/useForm'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import history from '../../util/history';
+import history from '../../../util/history';
 
 
 
@@ -98,11 +97,11 @@ const useFormStyles = makeStyles(() => ({
     }
 }));
 
-export default function SimpleSlide({scrollToTop}) {
+export default function SimpleSlide() {
     const classes = useStyles();
     const FormClasses = useFormStyles()
     const dispatch = useDispatch()
-    const ModalIsOpen = useSelector(state => state.uiReducer.AccountModalIsOpen)
+    const ModalIsOpen = window.location.pathname === '/myAccounts/addAccount'
     const input = React.useRef()
     
     const [errors, setErrors] = useState({});
@@ -122,14 +121,10 @@ export default function SimpleSlide({scrollToTop}) {
         });
         data.getUserAccounts = [result.data.createAccount, ...data.getUserAccounts];
         proxy.writeQuery({ query: GET_USER_ACCOUNTS, data });
-        history.push('/myAccounts/')
-        //dispatch({type:SET_Account_Modal_Open})
-        values.title = ''
-        
-        
-      },
+         values.title = ''
+        },
       onCompleted:() =>{
-        scrollToTop()
+        history.goBack()
       }
 
       
@@ -154,11 +149,11 @@ export default function SimpleSlide({scrollToTop}) {
       <div>
      
       <Dialog
-        onEscapeKeyDown={() => dispatch({type:SET_Account_Modal_Open})}
-        open={window.location.pathname === '/myAccounts/addAccount'}
+        onEscapeKeyDown={() => !ModalIsOpen}
+        open={ModalIsOpen}
         TransitionComponent={Transition}
         keepMounted
-        onClose={() => window.location.pathname === '/myAccounts/addAccount'}
+        onClose={() => history.goBack()}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         style={{zIndex:1, textAlign:'center'}}

@@ -1,8 +1,8 @@
 import React from 'react'
 import {makeStyles, MenuItem} from '@material-ui/core'
 import { useDispatch } from 'react-redux'
-import { SET_UpdateItem_Modal_Open } from '../../../Redux/actionTypes'
-import history from '../../../util/history'
+import { SET_UpdateItem_Modal_Open } from '../../../../Redux/actionTypes'
+
 import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({

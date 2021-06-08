@@ -5,7 +5,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import images from '../../util/bg-images.json'
 import Grid from '@material-ui/core/Grid';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import MatualAccountModal from '../../components/ModalMatualAccount'
+import MatualAccountModal from '../../matualAccounts/components/ModalMatualAccount'
 
 const styles = theme => ({
   root: {

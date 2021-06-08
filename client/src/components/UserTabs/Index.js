@@ -17,9 +17,8 @@ import MyAccounts from '../../pages/MyAccountsPage'
 import MatualAccounts from '../../pages/MatualAccountsPage'
 import Profile from '../../pages/ProfilePage'
 import {useDispatch, useSelector} from 'react-redux'
-import {SET_Account_Modal_Open, SET_MatualAccount_Modal_Open, SET_Profile_Modal_Open} from '../../Redux/actionTypes'
 import CloseIcon from '@material-ui/icons/Close';
-import MenuButton from '../../components/MenuButton'
+import MenuButton from '../../myAccounts/components/MenuButton'
 import { IconButton } from '@material-ui/core';
 
 const styles = theme => ({
@@ -200,8 +199,11 @@ function getUrltab(value){
         className: classes.fab,
         icon: window.location.pathname === '/myAccounts/addAccount' ? <CloseIcon
         onClick={() => history.goBack()}
-        className={classes.iconFullPadding}/> : <AddIcon className={classes.iconFullPadding}
-        onClick={() => history.push('/myAccounts/addAccount')} />,
+        className={classes.iconFullPadding}/> :<IconButton style={{color:'white'}} component={Link} to={'/myAccounts/addAccount'} >
+          <AddIcon 
+          className={classes.iconFullPadding}
+        />
+        </IconButton> ,
         cssColor:'#ff0054',
         
       },

@@ -1,15 +1,18 @@
 import React from 'react'
 import { SRLWrapper } from "simple-react-lightbox";
-import {options} from '../../util/lightboxConfig'
-import AddItemImageButton from '../../components/AddItemImageButton'
-import NoImage from '../../util/assets/no-image.svg'
-import MoreOptionsItem from '../../components/MoreOptionsButtonItem' 
+import {options} from '../../../util/lightboxConfig'
+import AddItemImageButton from '../AddItemImageButton'
+import NoImage from '../../../util/assets/no-image.svg'
+import MoreOptionsItem from '../MoreOptionsButtonItem' 
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import NumericLabel from 'react-pretty-numbers';
 import Badge from '@material-ui/core/Badge';
 import { makeStyles} from '@material-ui/core/styles';
+import { Link, Redirect } from 'react-router-dom';
+
+import { IconButton } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
    
    details: {
@@ -259,25 +262,30 @@ const FormatOptions = {
                 key={item.id}
                 style={{
                  display:'flex', 
-                 borderTop:'2px solid rgba(0,0,0,1)',
+                 borderTop:'1px solid rgba(0,0,0,1)',
                  width:'100%',
                  height:'100%',
-                 borderRight:'2px solid rgba(0,0,0,1)',
+                 borderRight:'1px solid rgba(0,0,0,1)',
+                 padding:0,
+                 margin:0,
                  backgroundSize:'cover'}}
-                 image={item.media ? item.media : NoImage}
-                 
+                 image={NoImage}
+                
                 >
-                <SRLWrapper options={options} >
+                
+                <SRLWrapper  options={options} >
                  {item.media && ( <img 
                  style={{
                  display:'flex', 
-                 verticalAlign:'middle',
-                 cursor:'pointer'
+                 
+                 
+                 cursor:'pointer',  
                  }} height='100%' width='100%'  src={item.media} alt={item.description} />)}
                 </SRLWrapper>
+              
                 </CardMedia>
                   
-               <AddItemImageButton accountId={accountId} itemId={item.id}/>
+              {!item.media && ( <AddItemImageButton accountId={accountId} itemId={item.id}/>)}
                
              
              </div>
@@ -292,7 +300,7 @@ const FormatOptions = {
                  
               <MoreOptionsItem 
                accountId={accountId} 
-               itemId={item.id} 
+               itemId={item.id}   
                item={item}
                />
            

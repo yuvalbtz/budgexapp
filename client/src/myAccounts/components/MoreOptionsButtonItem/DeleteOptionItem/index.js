@@ -11,7 +11,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { CircularProgress } from '@material-ui/core';
-import history from '../../../util/history';
+import history from '../../../../util/history';
 import { Link, useParams } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     root: {

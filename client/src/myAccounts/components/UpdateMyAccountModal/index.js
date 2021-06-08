@@ -16,13 +16,12 @@ import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 import gql from 'graphql-tag'
 import {useMutation} from '@apollo/react-hooks'
-import {useForm} from '../../hooks/useForm'
-import {SET_UpdateAccount_Modal_Open } from '../../Redux/actionTypes';
+import {useForm} from '../../../hooks/useForm'
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import history from '../../util/history';
+import history from '../../../util/history';
 import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({

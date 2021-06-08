@@ -16,10 +16,11 @@ import {
 import { useSelector } from 'react-redux';
  
 import {makeStyles} from '@material-ui/core'
-import history from '../../util/history';
-import { Redirect, useParams } from 'react-router-dom';
-import PageNotFound from '../../pages/PageNotFound'
 
+import { useParams } from 'react-router-dom';
+
+import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 const useStyles = makeStyles((theme) => ({
 
    HelloToUser:{
@@ -47,20 +48,14 @@ function Index(){
     const currentAccount = useSelector(state => state.uiReducer.getCurrentAccountUi)
     const params = useParams()
     
+    const currentPage = window.location.pathname.split('/')[1]
     console.log("authenticated!",user2);
     console.log("from", user);
 
     const [click, setClick] = useState(false)
     const [scroll, setScroll] = useState(false)
     
-    const changNav = () => {
-      if(window.scrollY >= 80){
-        setScroll(true)
-      }else{
-           setScroll(false)
-          
-          }
-      }
+    
     
  
   
@@ -75,9 +70,11 @@ function Index(){
             <Nav active={scroll} click={click}>
       <NavbarContainer>
         
-        {user && (<LogOutButton/>)}
+        {user && !params.accountId &&  (<LogOutButton/>)}
         
-
+        {user && currentPage === 'myAccounts' && params.accountId  && (<PersonRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
+        
+        {user && currentPage === 'matualAccounts' && params.accountId  && (<GroupRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
 
         <NavTitle>
        { currentAccount ? currentAccount.title : 'BudgeX'}   
