@@ -21,6 +21,10 @@ import { useParams } from 'react-router-dom';
 
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
+
+import NotificationsButton from '../NotificationsModal' 
+
+
 const useStyles = makeStyles((theme) => ({
 
    HelloToUser:{
@@ -70,14 +74,14 @@ function Index(){
             <Nav active={scroll} click={click}>
       <NavbarContainer>
         
-        {user && !params.accountId &&  (<LogOutButton/>)}
+        {user && !currentAccount &&  (<LogOutButton/>)}
         
-        {user && currentPage === 'myAccounts' && params.accountId  && (<PersonRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
+        {user && currentPage === 'myAccounts' && currentAccount  && (<PersonRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
         
-        {user && currentPage === 'matualAccounts' && params.accountId  && (<GroupRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
+        {user && currentPage === 'matualAccounts' && currentAccount  && (<GroupRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
 
         <NavTitle>
-       { currentAccount ? currentAccount.title : 'BudgeX'}   
+       { params && currentAccount && params.accountId ? currentAccount.title : 'BudgeX'}   
          </NavTitle>
         
         
@@ -90,6 +94,10 @@ function Index(){
      
 
      <NavMenu  click={click}>
+     
+      <NotificationsButton/>
+     
+     
      <LinkStyle to='/security'>
        <li>אבטחה</li>
         </LinkStyle>

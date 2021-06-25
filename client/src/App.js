@@ -8,12 +8,13 @@ import HomePage from './pages/HomePage'
 import UserPage from './pages/UserPage/Index'
 import PageNotFound from './pages/PageNotFound'
 import SingleAccount from './pages/SingleAccountPage'
+import SingleMatualAccount from './pages/SingleMatualAccountPage'
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {useSelector, useDispatch} from 'react-redux'
 import { SET_USER, SET_USER_LOGOUT } from './Redux/actionTypes';
 import history from './util/history';
-
+import NotificationModal from './components/NotificationsModal'
 
 
 function App() {
@@ -64,9 +65,18 @@ console.log("APP", user);
      <Route exact path="/login" component={HomePage}/>
      <Route exact path="/register" component={HomePage}/>
      
+    
+    {/* notifications Route */}
+    <AuthRoute exact path='/notifications' userf={user} component={NotificationModal} />
+    
+    
+
+    {/* profile Routs */}
      <AuthRoute exact path='/profile' userf={user} component={UserPage} />
      <AuthRoute exact path='/profile/edit' userf={user} component={UserPage} />
+    
 
+     {/* my Accounts Routs */}
      <AuthRoute exact path='/myAccounts' userf={user} component={UserPage} />
      <AuthRoute exact path='/myAccounts/addAccount' userf={user} component={UserPage}/>
      <AuthRoute exact path='/myAccounts/deleteAccount/:accountId' userf={user} component={UserPage}/>
@@ -79,8 +89,25 @@ console.log("APP", user);
      <AuthRoute exact path='/myAccounts/:accountId/deleteItem/:itemId' userf={user} component={SingleAccount} />
      <AuthRoute exact path='/myAccounts/:accountId/statis' userf={user} component={SingleAccount} />
      
+
+
+
+     {/* my matualAccounts Routs */}
      <AuthRoute exact path='/matualAccounts' userf={user} component={UserPage} />
      <AuthRoute exact path='/matualAccounts/addAccount' userf={user} component={UserPage}/>
+     <AuthRoute exact path='/matualAccounts/deleteAccount/:accountId' userf={user} component={UserPage}/>
+     <AuthRoute exact path='/matualAccounts/updateAccount/:accountId' userf={user} component={UserPage}/>
+
+
+     <AuthRoute exact path='/matualAccounts/:accountId' userf={user} component={SingleMatualAccount} />
+     <AuthRoute exact path='/matualAccounts/:accountId/addItem' userf={user} component={SingleMatualAccount} />
+     <AuthRoute exact path='/matualAccounts/:accountId/updateItem/:itemId' userf={user} component={SingleMatualAccount} />
+     <AuthRoute exact path='/matualAccounts/:accountId/deleteItem/:itemId' userf={user} component={SingleMatualAccount} />
+     <AuthRoute exact path='/matualAccounts/:accountId/statis' userf={user} component={SingleMatualAccount} />
+   
+    
+    
+    
      <Route component={PageNotFound}/>
      </Switch>
    </div>

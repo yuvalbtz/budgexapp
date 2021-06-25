@@ -56,6 +56,21 @@ type Account{
      updatedAt:String!
      
 }
+
+type MatualAccount{
+    id:ID!
+    owner:ID!
+    ownerName:String!
+    members:[FreindsRequest]!
+    title:String!
+    list:[ItemList]!
+    createdAt:String!
+    updatedAt:String!
+    
+}
+
+
+
  
 type ItemList {
     id:ID!
@@ -85,17 +100,46 @@ type imageDetails {
     error: String
 }
 
+type Notification{
+    senderName:String!
+    senderImageUrl:String!
+    accountTitle:String!
+    from:ID!
+    to:[String]!
+    body:String!
+    seen:Boolean!
+    isConfirmed:Boolean!
+    ignored:Boolean!
+}
+
+
+type FreindsRequest{
+    userId:String!
+    isConfirmed:Boolean!
+    isIgnored:Boolean!
+}
+
+
+
 
 type Query{
-     getPosts:[Post!]!
-     getPost(postId:ID!):Post
-     
      getUserState:userState
      
+    
+     """
+     //myAccounts
+     """
      getUserAccounts:[Account!]!
      getUserAccount(accountId:ID!):Account!
 
+     
+     """
+     //matualAccounts
+     """
+     getUserMatualAccounts:[MatualAccount!]!
+     getUserMatualAccount(accountId:ID!):MatualAccount!
      getAllUsers:[User!]!
+   
     }
 
  type Mutation{
@@ -107,27 +151,54 @@ type Query{
     
     likePost(postId:ID!):Post!
     
-    
+    """
+    //myAccounts
+    """
     createAccount(title:String!):Account!
     updateAccount(accountId:ID!,title:String!):Account!
     deleteAccount(accountId:ID!):String!
-
-
 
     addItem(accountId:ID!, title:String!, description:String!,media:String,amount:Float):Account!
     updateItem(accountId:ID!, itemId:ID!, title:String!, description:String!, amount:Float):Account!
     deleteItem(accountId:ID!, itemId:ID!):Account!
     addItemImage(accountId:ID!, itemId:ID!, imageURL:String!):Boolean!
     deleteItemImage(accountId:ID!, itemId:ID!):Boolean!
+   
+    """
+   //matualAccount
+    """
+    createMatualAccount(title:String!, freinds:[String]!):MatualAccount!
+    updateMatualAccount(accountId:ID!,title:String!,freinds:[String]!):MatualAccount!
+    deleteMatualAccount(accountId:ID!):String!
+   
+    addMatualItem(accountId:ID!, title:String!, description:String!,media:String,amount:Float):MatualAccount!
+    updateMatualItem(accountId:ID!, itemId:ID!, title:String!, description:String!, amount:Float):MatualAccount!
+    deleteMatualItem(accountId:ID!, itemId:ID!):MatualAccount!
+    addItemMatualImage(accountId:ID!, itemId:ID!, imageURL:String!):Boolean!
+    deleteIteMatualmImage(accountId:ID!, itemId:ID!):Boolean!
 
-
+    """
+    //profile
+    """
     updateUserProfile(profileImage:String!):User!
     
+    
+    
+    
+    
     uploadFile(file:Upload!):String!
+
+
+
 }
+
+
+
 
 type Subscription{
      getallitems:message! 
+
+     addRequestToList:Notification!
 }`
 
 

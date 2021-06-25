@@ -8,19 +8,20 @@ const matualAccountSchema = new Schema({
     ownerName:String, 
     title:String,     
     members:[{
-            type:Schema.Types.ObjectId,
-            ref:'users'
+            userId:String,
+            isConfirmed:Boolean,
+            isIgnored:Boolean
          }],
         
          list:[
-             {
+              {
                  title:String,
                  description:String,
                  media:String,
                  amount:Number,
                  createdAt: { type: Date, default: Date.now },
                  updatedAt: { type: Date, default: Date.now }
-                 }
+              }
          ],
         
 })

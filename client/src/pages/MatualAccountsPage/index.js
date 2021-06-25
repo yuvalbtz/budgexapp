@@ -6,7 +6,13 @@ import images from '../../util/bg-images.json'
 import Grid from '@material-ui/core/Grid';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import MatualAccountModal from '../../matualAccounts/components/ModalMatualAccount'
-
+import gql from 'graphql-tag'
+import { useQuery } from '@apollo/react-hooks';
+import MenuBarButton from '../../matualAccounts/components/MoreOptionsButton'
+import { Link } from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux'
+import {SET_BG_SINGLE_ACCOUNT} from '../../Redux/actionTypes'
+import UpdateMatualAccountModal from '../../matualAccounts/components/UpdateMatualAccountModal'
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -79,49 +85,71 @@ const styles = theme => ({
     left: 'calc(50% - 9px)',
     transition: theme.transitions.create('opacity'),
   },
+
+  button:{
+    display: 'flex',
+    flexWrap: 'wrap',
+    },
 });
 
 
 
 function ButtonBases(props) {
   const { classes } = props;
-   console.log("myMatual page");
-  return (
+   
+  const accountMembers = useSelector(state => state.uiReducer.UpdateAccountUsers)
+  
+  console.log("myMatual page");
+  
+   const dispatch = useDispatch()
+
+
+
+   const {
+    data,
+  
+  } = useQuery(GET_USER_MATUAL_ACCOUNTS);
+  
+  
+  
+  
+  console.log('data',data);
+  
+   return (
     <div className={classes.root}>
       <Grid  container 
         direction="row"
-        justify="center"
-        alignItems="center"
-       >
+      >
       
-      <Grid container spacing={0} justify="center" >
-      {images.map(image => (
-        <Grid key={image.title} item xs={12} sm={4}>
+      {data && data.getUserMatualAccounts.map((account, index) => (
+        <Grid key={account.id} item xs={12} sm={4}>
        
+       <div className={classes.button}>
+       <MenuBarButton accountId={account.id} accountDetails={account}/>
+       </div>
+      
+
        <ButtonBase
           focusRipple
-          
-          key={image.title}
+          key={account.id}
           className={classes.image}
           focusVisibleClassName={classes.focusVisible}
+          component={Link}
+          to={`/matualAccounts/${account.id}`}
+          onClick={() => dispatch({type:SET_BG_SINGLE_ACCOUNT,payload:images[data.getUserMatualAccounts.length-index-1].img})}
+         >
          
-        >
-         
-       <span
+         <span
             className={classes.imageSrc}
             style={{
-              backgroundImage: `url(${image.img})`,
+              backgroundImage: `url(${images[10].img})`,
             }}
           />
           <span className={classes.imageBackdrop} />
           
-            
-       
-         
-          <GridListTileBar
-              title={image.title}
-              subtitle={<span>created by: {image.author}</span>}
-             
+        <GridListTileBar
+              title={account.title}
+              subtitle={<span>created by: {account.ownerName}</span>}
             />
         
         </ButtonBase>
@@ -129,11 +157,15 @@ function ButtonBases(props) {
         </Grid>
        
     ))}
-  </Grid>
+  
   
 </Grid>
    
 <MatualAccountModal/>
+    
+<UpdateMatualAccountModal/>
+    
+    
     </div>
   );
 }
@@ -144,3 +176,23 @@ ButtonBases.propTypes = {
 
 export default withStyles(styles)(ButtonBases);
 
+
+
+const GET_USER_MATUAL_ACCOUNTS = gql`
+ {
+  getUserMatualAccounts{
+    id
+    createdAt
+    updatedAt
+    owner
+    ownerName
+    title
+    members {
+      userId  
+      isConfirmed
+      isIgnored
+    
+  }
+}
+}
+`;

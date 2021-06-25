@@ -90,9 +90,11 @@ module.exports = {
                     account.list.push({title, description,media, amount})
                     await account.save()
                    
-                    const str = "you got a new message!"
+                    const str = "you got a new message!";
                     arr.push(str)
+                    
                     context.pubsub.publish('user1', {getallitems:{msg:`you got a ${arr.length} messages!`}})
+                    
                     return  account; 
                 
                 }else throw new UserInputError('Account not found!');
@@ -291,10 +293,7 @@ module.exports = {
 
             getUserAccount: async (_,{accountId},context) => {
                  
-                
-                const userId = context.req.user.id;
-               
-               try{
+                try{
                    const account = await Account.findById(accountId)
                
                    if(account){

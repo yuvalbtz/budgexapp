@@ -5,7 +5,8 @@ import {SET_Account_Modal_Open,
         SET_BG_SINGLE_ACCOUNT,
         SET_Current_Account_Ui,
         SET_UpdateItem_Modal_Open,
-        SET_UpdateAccount_Modal_Open
+        SET_UpdateAccount_Modal_Open,
+        SET_UpdateAccount_Users
     
     } from '../actionTypes'
 
@@ -24,8 +25,13 @@ const InitialState = {
     },
     UpdateAccountModalIsOpen:{
         isOpen:false,
-        accountDetails:null
+        accountDetails:null,
+       
     },
+
+    UpdateAccountUsers:{
+        accountMembers:[]
+    }
 
 }
 
@@ -71,9 +77,18 @@ export function uiReducer(state = InitialState, action){
                                ...state,
                                UpdateAccountModalIsOpen:{
                                 isOpen:!state.UpdateAccountModalIsOpen.isOpen,
-                                accountDetails:action.payload
+                                accountDetails:action.payload,
+                                
                                }
                              } 
+
+                             case SET_UpdateAccount_Users:
+                                return {
+                                       ...state,
+                                       UpdateAccountUsers:{
+                                        accountMembers:action.payload
+                                        }
+                                     } 
                        
                        case SET_Current_Account_Ui:
                         return {

@@ -9,15 +9,13 @@ const expressPlayground = require('graphql-playground-middleware-express').defau
 const expressJwt = require("express-jwt");
 const {SECRET_KEY} = require("./credentials.json")
 const typeDefs = require("./graphql/TypesDefs")
-const graphqlHTTP = require('express-graphql');
 const resolvers = require("./graphql/resolvers")
-const {AuthenticationError} = require("apollo-server")
 const {username, password, dbName} = require("./credentials.json")
 const checkAuth = require("./util/check-auth")
 const pubsub = new PubSub();
 const path = require('path');
 const app = express()
-
+const http = require('http');
 
 //enable cors
  var corsOptions = {
@@ -26,6 +24,10 @@ const app = express()
  
 }; 
   app.use(cors(corsOptions));
+
+
+
+
 
 app.use("/graphql",
          bodyParser.json(),
@@ -54,14 +56,21 @@ app.use("/graphql",
 
          const server = new ApolloServer({ 
           typeDefs,
-          resolvers, 
-          context:({req,res}) => ({req,res,pubsub, user: req.user}),
+          resolvers,
+          context:  ({req,res, connection}) => ({req,res,pubsub, user: !connection ? req.user : null}),
         
        })
 
+       const httpServer = http.createServer(app);
+       
+       
        server.applyMiddleware({app, cors:corsOptions}) 
+       
+       server.installSubscriptionHandlers(httpServer);
 
-       app.get("/playground",expressPlayground({ endpoint: "/graphql" })) 
+      
+       
+       app.get("/graphiql",expressPlayground({endpoint: "/graphql" })) 
 
      
         
@@ -74,13 +83,23 @@ app.use("/graphql",
 
 
 
+    const port = 4000   
+
+
 
 mongoose
 .connect('mongodb+srv://' + encodeURIComponent(`${username}:${password}`) +`@cluster0.z1c7r.mongodb.net/${dbName}?retryWrites=true&w=majority`,{useUnifiedTopology:true, useNewUrlParser:true})
   .then(() => {
-    return app.listen({port: process.env.PORT || 4000}, () => {
+    return httpServer.listen({port: process.env.PORT || 4000}, () => {
+      console.log(
+        `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`,
+      );
+      console.log(
+        `🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`,
+      );
+    });    /* app.listen({port: process.env.PORT || 4000}, () => {
       console.log(`server is running at ${server.graphqlPath}`)
-    })
+    }) */
   })
  .catch(err => {
     console.log(err);

@@ -20,7 +20,7 @@ import { Typography,
 import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 import Dialog from '@material-ui/core/Dialog';
-import { useLazyQuery, useQuery } from '@apollo/react-hooks';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
 import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
@@ -29,6 +29,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { useState } from 'react';
 import history from '../../../util/history';
+import { useForm } from '../../../hooks/useForm';
 
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -125,29 +126,70 @@ export default function SimpleSlide() {
      const ModalIsOpen = window.location.pathname === `/matualAccounts/addAccount`
     
     
-    const dispatch = useDispatch();
-    const [getAllUsers,{ data, loading}] = useLazyQuery(GET_ALL_USERS)
+    
+    const [getAllUsers,{ data}] = useLazyQuery(GET_ALL_USERS)
     const [selectedFreinds, setSelectedFreinds] = useState([])
   
-    console.log(selectedFreinds.map(f => f.id));
+    const [errors, setErrors] = useState({});
+  
+    const { onChange, onSubmit, values } = useForm(createAccountCallback, {
+      title: '',
+    
+     
+    });
+      const selectedFreindsId =  selectedFreinds.map(f => f.id)
+      console.log(selectedFreindsId);
+      
+      
+      
+      const [createAccount,{loading}] = useMutation(CREATE_MATUAL_ACCOUNT, {
+        variables: {
+          title:values.title,
+          freinds:selectedFreindsId
+        },
+        update(proxy, result) {
+          const data = proxy.readQuery({
+            query: GET_USER_MATUAL_ACCOUNTS
+          });
+          data.getUserMatualAccounts = [result.data.createMatualAccount, ...data.getUserMatualAccounts];
+          proxy.writeQuery({ query: GET_USER_MATUAL_ACCOUNTS, data });
+           values.title = ''
+         },
+        onCompleted:() =>{
+          setSelectedFreinds([])
+          history.goBack()
+        }
+  
+        
+      });
+    
+      function createAccountCallback() {
+        createAccount();
+      }
 
+   
+   
+   
+   
+   
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
     const input = React.useRef()
   
+    
+    
+    
+    
     React.useEffect(() => {
-      
     if(data){
         const users = data.getAllUsers;
          
         setOptions(users);
-          console.log("users",options);
+       
+        console.log("users",options);
        
       }
-     
-      
-       
-    }, [open, data]);
+     }, [open, data]);
 
   
   return (
@@ -164,7 +206,7 @@ export default function SimpleSlide() {
         aria-describedby="alert-dialog-slide-description"
         style={{zIndex:1, textAlign:'center'}}
       >
-        <form>
+        <form onSubmit={onSubmit} noValidate>
         <DialogTitle id="alert-dialog-slide-title">
           <Typography component="div" variant="h5" className={FormClasses.HeadLine}>:יצירת חשבון משותף</Typography>
           </DialogTitle>
@@ -181,10 +223,10 @@ export default function SimpleSlide() {
           type="text"
           name="title"
           inputRef={input}
-         /*  value={values.username}
+          value={values.title}
           onChange={onChange}
-          error={errors.username ? true : false}
-          helperText={errors.username} */
+          error={errors.title ? true : false}
+          helperText={errors.title}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -195,10 +237,11 @@ export default function SimpleSlide() {
         />
       </FormControl>
       </div>
+       
        <div>
       <FormControl className={classes.margin}>
       <Autocomplete
-       multiple
+      multiple
       disableCloseOnSelect
       id="asynchronous-demo"
       name="addFreinds"
@@ -209,8 +252,8 @@ export default function SimpleSlide() {
          setOpen(true);
        }}
      
-      onClose={() => { setOpen(false);}}
-      
+      onClose={() => setOpen(false)}
+      groupBy={(option) => data && `${data.getAllUsers.length + ' users'}`}
       getOptionSelected={(option, value) => option.id === value.id}
       onChange={(e,val, res) => setSelectedFreinds(val)}
       getOptionLabel={(option) => option.username}
@@ -229,8 +272,8 @@ export default function SimpleSlide() {
       </React.Fragment>
       )}
       options={options}
-      loading={loading}
-      
+      /* loading */
+      value={selectedFreinds.length === 0 ? [] : selectedFreinds}
       renderTags={(tagValue, getTagProps) =>
        
         tagValue.map((option, index) => (
@@ -252,25 +295,28 @@ export default function SimpleSlide() {
          InputProps={{
             ...params.InputProps,
             startAdornment: (<>{selectedFreinds.length === 0 && (<GroupRoundedIcon/>)} {params.InputProps.startAdornment}</>),
-            
-          }}
+        }}
         />
       )}
     />
       </FormControl>   
       </div> 
+       
         </DialogContent>
         <DialogActions>
-        <Fab
+       {loading ? (<CircularProgress size={35} style={{margin:'0 auto', color:'green'}} />) : (
+          <Fab
           aria-label="save"
           color="primary"
           style={{margin:'0 auto',backgroundColor:'green'}}
           size={'small'}
-          
-          /* onClick={handleButtonClick}  */
+          type='submit'
+          onClick={onsubmit}
+          disabled={values.title.trim() === ""} 
         >
          <CheckIcon />
         </Fab>
+       )}
         </DialogActions>
        
         </form>
@@ -284,13 +330,53 @@ export default function SimpleSlide() {
 }
 
 
+const CREATE_MATUAL_ACCOUNT = gql`
+mutation createMatualAccount($title:String!, $freinds:[String]!) {
+  createMatualAccount(title:$title, freinds:$freinds){
+    id
+    createdAt
+    updatedAt
+    title
+    owner
+    ownerName
+    members {
+        userId
+        isConfirmed
+        isIgnored
+      
+    }
+   
+    }
+ }
+`;
+
+
+const GET_USER_MATUAL_ACCOUNTS = gql`
+{
+  getUserMatualAccounts{
+    id
+    createdAt
+    updatedAt
+    owner
+    ownerName
+    title
+    members {
+      userId
+      isConfirmed
+      isIgnored
+    
+  }
+}
+}
+`;
+
+
 const GET_ALL_USERS = gql`
 query{
   getAllUsers{
     id
     username
     profileImageUrl
-    
   }
 }
 

@@ -177,7 +177,7 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
     }
 
   const classes = useStyles();
-  const open = window.location.pathname === `/myAccounts/${params.accountId}/statis`
+  const open = window.location.pathname === `/matualAccounts/${params.accountId}/statis`
 
   
 
@@ -228,11 +228,11 @@ const cols = {
     
     <div>
       
-      <Fab  className={classes.Fab} size="medium" color="secondary" aria-label="statistics" >
-     <IconButton component={Link} style={{color:'white'}} to={`/myAccounts/${params.accountId}/statis`}><PieChartRoundedIcon /></IconButton> 
+      <Fab  className={classes.Fab} size="medium" color="primary" aria-label="statistics" >
+     <IconButton component={Link} style={{color:'white'}} to={`/matualAccounts/${params.accountId}/statis`}><PieChartRoundedIcon /></IconButton> 
       </Fab>
       <Dialog dir='rtl' style={{textAlign:'center'}} fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-        <AppBar color='secondary' className={classes.appBar}>
+        <AppBar color='primary' className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
               <CloseIcon />
