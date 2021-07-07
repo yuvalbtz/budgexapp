@@ -82,7 +82,10 @@ const styles = theme => ({
    },
   
    iconFullPadding:{
-      padding:'15px 15px',
+      
+     
+      
+
       
   },
   
@@ -179,9 +182,7 @@ function getUrltab(value){
       exit: theme.transitions.duration.leavingScreen,
     };
 
-    const ModalAccountIsOpen = useSelector(state => state.uiReducer.AccountModalIsOpen)
-    const ModalMatualAccountIsOpen = useSelector(state => state.uiReducer.MatualAccountIsOpen)
-    const ModalProfileIsOpen =  useSelector(state => state.uiReducer.ModalProfileIsOpen)
+   
     const fabs = [
       {
         color: 'primary',
@@ -193,15 +194,17 @@ function getUrltab(value){
           className={classes.iconFullPadding}/>
         </IconButton>,
         cssColor:'#3c57f2'
-      },
+      },  
       {
         color: 'secondary',
         className: classes.fab,
         icon: window.location.pathname === '/myAccounts/addAccount' ? <CloseIcon
+        
         onClick={() => history.goBack()}
-        className={classes.iconFullPadding}/> :<IconButton style={{color:'white'}} component={Link} to={'/myAccounts/addAccount'} >
+        className={classes.iconFullPadding}/> :<IconButton  style={{color:'white'}} component={Link} to={'/myAccounts/addAccount'} >
           <AddIcon 
           className={classes.iconFullPadding}
+          
         />
         </IconButton> ,
         cssColor:'#ff0054',
@@ -266,6 +269,7 @@ function getUrltab(value){
             </Fab>
           </Zoom>
         ))}
+     
      
       </div>
     );

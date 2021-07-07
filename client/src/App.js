@@ -14,7 +14,7 @@ import gql from 'graphql-tag';
 import {useSelector, useDispatch} from 'react-redux'
 import { SET_USER, SET_USER_LOGOUT } from './Redux/actionTypes';
 import history from './util/history';
-import NotificationModal from './components/NotificationsModal'
+
 
 
 function App() {
@@ -67,9 +67,9 @@ console.log("APP", user);
      
     
     {/* notifications Route */}
-    <AuthRoute exact path='/notifications' userf={user} component={NotificationModal} />
+    <AuthRoute exact path='/notifications' userf={user} component={UserPage} />
     
-    
+   
 
     {/* profile Routs */}
      <AuthRoute exact path='/profile' userf={user} component={UserPage} />
@@ -88,7 +88,7 @@ console.log("APP", user);
      <AuthRoute exact path='/myAccounts/:accountId/updateItem/:itemId' userf={user} component={SingleAccount} />
      <AuthRoute exact path='/myAccounts/:accountId/deleteItem/:itemId' userf={user} component={SingleAccount} />
      <AuthRoute exact path='/myAccounts/:accountId/statis' userf={user} component={SingleAccount} />
-     
+     <AuthRoute exact path='/myAccounts/:accountId/showImage' userf={user} component={SingleAccount} />
 
 
 
@@ -97,6 +97,7 @@ console.log("APP", user);
      <AuthRoute exact path='/matualAccounts/addAccount' userf={user} component={UserPage}/>
      <AuthRoute exact path='/matualAccounts/deleteAccount/:accountId' userf={user} component={UserPage}/>
      <AuthRoute exact path='/matualAccounts/updateAccount/:accountId' userf={user} component={UserPage}/>
+     <AuthRoute exact path='/matualAccounts/LeaveAccount/:accountId' userf={user} component={UserPage}/>
 
 
      <AuthRoute exact path='/matualAccounts/:accountId' userf={user} component={SingleMatualAccount} />

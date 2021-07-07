@@ -13,4 +13,4 @@ export const SET_AddItem_Modal_Open = "SET_AddItem_Modal_Open";
 export const SET_UpdateItem_Modal_Open = "SET_UpdateItem_Modal_Open";
 export const SET_Current_Account_Ui = "SET_Current_Account_Ui";
 export const SET_UpdateAccount_Modal_Open = "SET_UpdateAccount_Modal_Open";
-export const SET_UpdateAccount_Users = "SET_UpdateAccount_Users";
+export const SET_LightBoxImage = "SET_LightBoxImage";

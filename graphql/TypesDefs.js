@@ -101,15 +101,19 @@ type imageDetails {
 }
 
 type Notification{
+    id:ID!
     senderName:String!
     senderImageUrl:String!
     accountTitle:String!
+    accountId:ID!
     from:ID!
     to:[String]!
     body:String!
-    seen:Boolean!
-    isConfirmed:Boolean!
-    ignored:Boolean!
+    seen:[String]!
+    isConfirmed:[String]!
+    isIgnored:[String]!
+    createdAt:String!
+    updatedAt:String!
 }
 
 
@@ -140,6 +144,14 @@ type Query{
      getUserMatualAccount(accountId:ID!):MatualAccount!
      getAllUsers:[User!]!
    
+     """
+     //notifications
+     """
+     getNotifications:[Notification]!
+
+
+
+
     }
 
  type Mutation{
@@ -177,10 +189,22 @@ type Query{
     addItemMatualImage(accountId:ID!, itemId:ID!, imageURL:String!):Boolean!
     deleteIteMatualmImage(accountId:ID!, itemId:ID!):Boolean!
 
+    
     """
     //profile
     """
     updateUserProfile(profileImage:String!):User!
+    
+    
+    
+    """
+    //notifications
+    """
+    
+    confirmRequest(accountId:ID!, userId:ID!):[Notification]!
+    
+    
+    
     
     
     
@@ -198,7 +222,7 @@ type Query{
 type Subscription{
      getallitems:message! 
 
-     addRequestToList:Notification!
+     addRequestToList:[Notification]!
 }`
 
 

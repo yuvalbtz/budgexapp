@@ -137,11 +137,7 @@ export default function SimpleSlide() {
     
     
     
-    setTimeout(() => {
-      if(ModalIsOpen){
-       input.current.focus()
-       }
-    },100) 
+    
    
   return (
     

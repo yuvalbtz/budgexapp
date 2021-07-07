@@ -113,16 +113,10 @@ const useFormStyles = makeStyles(() => ({
 }));
 
 
-
-
-
-
-
-
 export default function SimpleSlide() {
     const classes = useStyles();
     const FormClasses = useFormStyles()
-   // const ModalIsOpen = useSelector(state => state.uiReducer.MatualAccountIsOpen)
+   
      const ModalIsOpen = window.location.pathname === `/matualAccounts/addAccount`
     
     

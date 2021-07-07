@@ -97,18 +97,14 @@ const styles = theme => ({
 function ButtonBases(props) {
   const { classes } = props;
    
-  const accountMembers = useSelector(state => state.uiReducer.UpdateAccountUsers)
   
   console.log("myMatual page");
   
    const dispatch = useDispatch()
+   const user = useSelector(state => state.userReducer.userDetails)
 
 
-
-   const {
-    data,
-  
-  } = useQuery(GET_USER_MATUAL_ACCOUNTS);
+   const {data} = useQuery(GET_USER_MATUAL_ACCOUNTS);
   
   
   
@@ -123,9 +119,9 @@ function ButtonBases(props) {
       
       {data && data.getUserMatualAccounts.map((account, index) => (
         <Grid key={account.id} item xs={12} sm={4}>
-       
+      
        <div className={classes.button}>
-       <MenuBarButton accountId={account.id} accountDetails={account}/>
+       {user && ( <MenuBarButton accountId={account.id} accountDetails={account} IsUserOwner={account.owner === user.id}/>)}
        </div>
       
 
@@ -149,7 +145,7 @@ function ButtonBases(props) {
           
         <GridListTileBar
               title={account.title}
-              subtitle={<span>created by: {account.ownerName}</span>}
+              subtitle={<span>created by: {user && account.ownerName === user.username ? 'You' : account.ownerName}</span>}
             />
         
         </ButtonBase>

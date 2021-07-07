@@ -30,6 +30,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { SET_UpdateAccount_Modal_Open } from '../../../Redux/actionTypes';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -144,14 +145,6 @@ export default function SimpleSlide() {
         title: title,
         freinds:selectedFreindsId
       },
-      update(proxy, result) {
-        /* const data = proxy.readQuery({
-          query: GET_USER_MATUAL_ACCOUNTS
-        });
-        data.getUserMatualAccounts = [result.data.updateMatualAccount, ...data.getUserMatualAccounts];
-        proxy.writeQuery({ query: GET_USER_MATUAL_ACCOUNTS, data }); */
-        values.title = ''
-       },
       onCompleted:() =>{
         history.goBack()
         
@@ -177,10 +170,12 @@ export default function SimpleSlide() {
     function UpdateAccountFeild(){
         if(accountDetails){
             setTitle(accountDetails.title)
-            if(accountDetails.members.length > 0 ){
+            
+            if(accountDetails.members && accountDetails.members.length > 0 ){
               const AccountMembers = accountDetails.members.map(m => m.userId)
               const MembersAlreadyInAccount = options.filter(({id}) => AccountMembers.includes(id))
               setMembersInAccount(MembersAlreadyInAccount)
+              setSelectedFreinds(MembersAlreadyInAccount)
               console.log("answer", MembersAlreadyInAccount);
              }else{
               console.log("cancel event");  
@@ -198,10 +193,7 @@ export default function SimpleSlide() {
     
    console.log("options!!",options);
    React.useEffect(() => {
-    if(!ModalIsOpen){
-      setSelectedFreinds([])
-    }
-    
+    setSelectedFreinds([])
     getAllUsers();
       UpdateAccountFeild()
      
@@ -211,7 +203,9 @@ export default function SimpleSlide() {
     if(data){
         const users = data.getAllUsers;
         setOptions(users);
+       
         console.log("users",options);
+       
       }
      }, [data]);
 
@@ -236,9 +230,13 @@ export default function SimpleSlide() {
         <form onSubmit={onSubmit} noValidate>
         
         
-            <DialogTitle id="alert-dialog-slide-title" onClose={() => {
+            <DialogTitle id="alert-dialog-slide-title" 
+            onClose={() => {
+              dispatch({type:SET_UpdateAccount_Modal_Open, payload:null})
               setSelectedFreinds([])
-              history.goBack()}} style={{textAlign:'center'}}> 
+              history.goBack()
+              }} 
+              style={{textAlign:'center'}}> 
         <Typography component="div" variant="h5" className={FormClasses.HeadLine}>:עריכת חשבון</Typography>
         </DialogTitle>
         
@@ -289,7 +287,7 @@ export default function SimpleSlide() {
               onChange={(e,val, res) => {
                 if(MembersInAccount.length > 0 && res === "clear"){
                   setMembersInAccount([])
-                  val = null
+                 
                 } else {
                   setSelectedFreinds(val)
                 }
@@ -360,7 +358,7 @@ export default function SimpleSlide() {
             size={'small'}
             type="submit"
             onClick={onSubmit}
-            disabled={accountDetails && (title.trim() === "" || title.trim() === accountDetails.title) && selectedFreinds.length === 0 }
+            disabled={accountDetails && ((title.trim() === "" || title.trim() === accountDetails.title) && (accountDetails.members && JSON.stringify(selectedFreindsId) === JSON.stringify(accountDetails.members.map(id => id.userId))))}
           >
            <CheckIcon />
           </Fab>)}

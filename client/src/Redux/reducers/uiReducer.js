@@ -6,7 +6,7 @@ import {SET_Account_Modal_Open,
         SET_Current_Account_Ui,
         SET_UpdateItem_Modal_Open,
         SET_UpdateAccount_Modal_Open,
-        SET_UpdateAccount_Users
+        SET_LightBoxImage
     
     } from '../actionTypes'
 
@@ -29,8 +29,8 @@ const InitialState = {
        
     },
 
-    UpdateAccountUsers:{
-        accountMembers:[]
+    LightBoxImage:{
+        ImageUrl:''
     }
 
 }
@@ -82,11 +82,11 @@ export function uiReducer(state = InitialState, action){
                                }
                              } 
 
-                             case SET_UpdateAccount_Users:
+                             case SET_LightBoxImage:
                                 return {
                                        ...state,
-                                       UpdateAccountUsers:{
-                                        accountMembers:action.payload
+                                       LightBoxImage:{
+                                        ImageUrl:action.payload
                                         }
                                      } 
                        

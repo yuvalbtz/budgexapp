@@ -10,9 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import NumericLabel from 'react-pretty-numbers';
 import Badge from '@material-ui/core/Badge';
 import { makeStyles} from '@material-ui/core/styles';
-import { Link, Redirect } from 'react-router-dom';
-
+import { Link, Redirect, useParams } from 'react-router-dom';
 import { IconButton } from '@material-ui/core';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { useDispatch } from 'react-redux';
+import { SET_LightBoxImage } from '../../../Redux/actionTypes';
 const useStyles = makeStyles((theme) => ({
    
    details: {
@@ -200,10 +203,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 function Index({item, accountId}) {
+   dayjs.extend(relativeTime)
+  
+   const dispatch = useDispatch() 
+  
+  const classes = useStyles() 
    
-   const classes = useStyles() 
-   
-   
+   const params = useParams()
 
 //Number Format Options
 const FormatOptions = {
@@ -269,20 +275,21 @@ const FormatOptions = {
                  padding:0,
                  margin:0,
                  backgroundSize:'cover'}}
-                 image={NoImage}
+                 image={item.media ? item.media :  NoImage}
+                 component={item.media ? Link : 'span'}
+                 to={item.media && `/myAccounts/${params && params.accountId}/showImage`}
+                 onClick={() => item.media && dispatch({type:SET_LightBoxImage, payload:item.media}) }
+               >
                 
-                >
-                
-                <SRLWrapper  options={options} >
-                 {item.media && ( <img 
+               {/*  <SRLWrapper  options={options} >
+                 {item.media && (  <a href={item.media} data-attribute="SRL"><img 
                  style={{
                  display:'flex', 
-                 
-                 
                  cursor:'pointer',  
-                 }} height='100%' width='100%'  src={item.media} alt={item.description} />)}
-                </SRLWrapper>
+                 }} height='100%' width='100%' src={item.media} alt={item.description} /></a>)}
+                </SRLWrapper> */}
               
+                 
                 </CardMedia>
                   
               {!item.media && ( <AddItemImageButton accountId={accountId} itemId={item.id}/>)}
@@ -320,7 +327,7 @@ const FormatOptions = {
                 variant="subtitle2" 
                 color="textSecondary" 
                 className={classes.createdAtDetail}>
-                 {item.createdAt} :נוצר לאחרונה
+              {dayjs(parseInt(item.createdAt)).fromNow()} :נוצר לאחרונה
                </Typography>
               </div>
               

@@ -13,9 +13,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import history from '../../../util/history';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import gql from 'graphql-tag'
-
-
+import RemoveParticaipantItem from './RemoveParticipant'
+import { SET_UpdateAccount_Modal_Open } from '../../../Redux/actionTypes';
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -42,14 +41,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function Index({accountId, accountDetails}) {
+function Index({accountId, accountDetails, IsUserOwner}) {
    const dispatch = useDispatch()
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const params = useParams()
-
+  
+    
 
   
    
@@ -112,8 +112,10 @@ function Index({accountId, accountDetails}) {
               <Paper className={classes.paper}>
                  <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <UpdateMenuItem accountId={accountId} accountDetails={accountDetails} />
-                    <DeleteMenuItem accountId={accountId} setOpen={setOpen}/>
+                    {IsUserOwner ? (<div><UpdateMenuItem accountId={accountId} accountDetails={accountDetails} />
+                    <DeleteMenuItem accountId={accountId} setOpen={setOpen}/></div>) : (<RemoveParticaipantItem accountId={accountId} setOpen={setOpen}/>) }
+                    
+                    
                   </MenuList>
                   </ClickAwayListener>
               </Paper>

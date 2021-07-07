@@ -11,31 +11,52 @@ import {store} from './Redux/Store'
 import {Router} from 'react-router-dom';
 import history from './util/history'
 import {createUploadLink} from 'apollo-upload-client'
-
-
-const authLink = setContext(() => {
+import {WebSocketLink} from '@apollo/client/link/ws'
+import { getMainDefinition } from '@apollo/client/utilities';
+import {split} from '@apollo/client'
+import { HttpLink } from '@apollo/client'
+/* const authLink = setContext(() => {
   const token = localStorage.getItem('jwtToken');
   return {
     headers: {
       Authorization: token ? `Bearer ${token}` : ''
     }
   };
+}); */
+
+const httpLink = new HttpLink({
+  uri: 'http://localhost:4000/graphql',
+  credentials:'include',
 });
 
 
+const wsLink = new WebSocketLink({
+  uri: 'ws://localhost:4000/graphql',
+  options: {
+    reconnect: true
+  }
+});
 
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
 
 const client = new ApolloClient({
    
-    link: createUploadLink({
-    uri: 'http://localhost:4000/graphql',
-    credentials:'include',
-    
-  }),
+    link: splitLink,
+    cache: new InMemoryCache(),
    
-cache: new InMemoryCache(),
+    
 
- });
+});
 
 
 

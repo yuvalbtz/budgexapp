@@ -139,7 +139,7 @@ export default function SimpleSlide() {
     
     
     
-    setTimeout(() => ModalIsOpen && input.current.focus(),100) 
+   
    
     function UpdateAccountFeild(){
         

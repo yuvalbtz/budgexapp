@@ -22,7 +22,6 @@ import { useParams } from 'react-router-dom';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 
-import NotificationsButton from '../NotificationsModal' 
 
 
 const useStyles = makeStyles((theme) => ({
@@ -95,7 +94,9 @@ function Index(){
 
      <NavMenu  click={click}>
      
-      <NotificationsButton/>
+     {user &&  <LinkStyle to='/notifications'>
+            התראות  
+          </LinkStyle>  }
      
      
      <LinkStyle to='/security'>

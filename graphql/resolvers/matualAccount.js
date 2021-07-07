@@ -1,8 +1,9 @@
 const User = require("../../models/User")
 const MatualAccount = require("../../models/matualAccount");
+const Notifications = require("../../models/notifications")
 const cloudinary = require('cloudinary').v2;
-const { AuthenticationError, UserInputError } = require("apollo-server")
-
+const { AuthenticationError, UserInputError } = require("apollo-server");
+const { uuid } = require("uuidv4");
 
 
 module.exports = {
@@ -12,10 +13,14 @@ module.exports = {
             const userId = context.req.user.id;
                 
             try{
-                const accounts = await MatualAccount.find({owner:userId})
-            
+               
+               const accounts = await MatualAccount.find()
                 if(accounts){
-                    return accounts.reverse();
+                    
+            const filteredAccounts = accounts.filter(item => item.members.find(i =>  i.userId === userId && i.isConfirmed === true) || item.owner == userId); 
+                    
+                    
+                    return filteredAccounts.reverse();
                 }
             }catch(err){
                  console.log(err);
@@ -56,12 +61,11 @@ module.exports = {
           Mutation:{
 
           async createMatualAccount(_,{title, freinds},context){
-            
+          
             const userId = context.req.user.id
             const userName = context.req.user.username
             const userImageUrl = context.req.user.profileImageUrl 
-              
-           // console.log(userName, userId, userImageUrl);
+           
             
             
             
@@ -82,25 +86,33 @@ module.exports = {
                 
              const account = await newMatualAccount.save()  
              
+
+              const newNotification = new Notifications({
+                senderName:userName,
+                senderImageUrl:userImageUrl,
+                accountTitle:title,
+                accountId:account._id,
+                from:userId,
+                to:freinds,
+                isConfirmed:[],
+                isIgnored:[],
+                seen:[],
+                body:'שלח/ה לך בקשת הצטרפות לחשבון',
+                createdAt:new Date().toISOString()    
+            })
+
+                await newNotification.save()
+              
+               const userNotifications = await Notifications.find()  
+           
+               
+              
+               /*  account.members.map(m => m.userId === userId && m.isConfirmed === true && m.userId) */
+               if(userNotifications){
+                context.pubsub.publish('requestAdded', {addRequestToList:userNotifications})
+                console.log("working notification!!!");  
+            }
              
-                const notification = {
-                    senderName:userName,
-                    senderImageUrl:userImageUrl,
-                    accountTitle:title,
-                    from:userId,
-                    to:freinds,
-                    isConfirmed:false,
-                    ignore:false,
-                    seen:false,
-                    body:'שלח/ה לך בקשת הצטרפות לחשבון'
-                 }
-             
-             
-            
-             
-             
-             
-             context.pubsub.publish('requestAdded', {addRequestToList:notification})
              
              
              return account;
@@ -111,30 +123,58 @@ module.exports = {
 
           async updateMatualAccount(_,{accountId, title, freinds},context){
                try {
-               const account = await MatualAccount.findById(accountId)
-                       if(account){
+                const userId = context.req.user.id
+                const userName = context.req.user.username
+                const userImageUrl = context.req.user.profileImageUrl 
+                
+                const account = await MatualAccount.findById(accountId)
+                const accountNotification = await Notifications.findOne({accountId})    
+                      if(account){
                             account.title = title
                             let members = account.members; 
-                           
                             let id3 = members.filter((obj) => freinds.indexOf(obj.userId) == -1);  // for delete user
                             id3.map((delId) => {
                             const userIndex = account.members.findIndex(m => m.userId == delId.userId)
                             account.members.splice(userIndex, 1)
-                           // array.filter(x => x.faveColor === 'blue').forEach(x => array.splice(array.indexOf(x), 1));
+                            if(accountNotification){
+                                let ntfnIndex = accountNotification.to.findIndex(ntf => ntf == userId) // remove user from  notification
+                                let isConfirmIndex =  accountNotification.isConfirmed.findIndex(ntf => ntf == userId)
+                                accountNotification.to.splice(ntfnIndex,1)
+                                accountNotification.isConfirmed.splice(isConfirmIndex,1)
+                                
+                            
+                                
+                            }
                         })
                           
                           
                           
                             
                             freinds.map(id => {
-                                let id2 = members.find(id2 => id2.userId === id) // for adding user
+                                let id2 = members.find(id2 => id2.userId === id) // for adding new users
                                  console.log("add new ids",id2);
-                               return !id2 && account.members.push({userId:id, isConfirmed:false, isIgnored:false})
+                                
+                                 return !id2 && account.members.push({userId:id, isConfirmed:false, isIgnored:false})  
                             })
                             account.members.filter(item => !freinds.includes(item.userId))
+                            accountNotification.to = freinds
+                            
+                           
+                           
+                            await accountNotification.save()
                             await account.save()
-                          return account;
-                        }   
+                           
+                            const notifications = await Notifications.find()
+                            if(notifications){
+                              context.pubsub.publish('requestAdded', {addRequestToList:notifications})  
+                            
+                            }
+                         
+                      
+                            return account;
+                        }  
+                        
+                        
                } catch (error) {
                    console.log(error);
                }
@@ -143,13 +183,14 @@ module.exports = {
         async deleteMatualAccount(_,{accountId},context){
                try {
                 const account = await MatualAccount.findById(accountId);
-                if(account){
+                const notification = await Notifications.findOne({accountId}) 
+                if(account && notification){
                   await account.delete()
-
+                  await notification.delete()
                   return "account deleted succesfully!"
                 }  
                } catch (error) {
-                   
+                  console.log(error); 
                }
         },
 

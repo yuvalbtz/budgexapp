@@ -21,7 +21,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import SingleItem from '../../myAccounts/components/SingleItemAccount'
 import history from '../../util/history';
 import { Link, Redirect, useParams } from 'react-router-dom';
-
+import ImageModal from '../../myAccounts/components/ImageModal'
 const useStyles = makeStyles((theme) => ({
     root: {
       height:'100vh',
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
     bgImage:{
         position:'absolute',
-        background:`url(${bgImages[parseInt(Math.random() * (15-1) + 1)].img}) no-repeat center center`,
+        background:`url(https://www.moneycrashers.com/wp-content/uploads/2011/02/woman-making-budget.jpg) no-repeat center center`,
         filter: 'blur(5px)',
         width: '100%',
         height:'100vh',
@@ -456,6 +456,7 @@ const FormatOptions = {
       
       <AddItemModal accountId={accountId} scrollToBottom={scrollToBottom} /> 
       <UpdateItemModal accountId={accountId} />
+      <ImageModal/>
        </Layout>
        
     )

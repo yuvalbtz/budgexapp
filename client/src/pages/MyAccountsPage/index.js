@@ -5,7 +5,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 import images from '../../util/bg-images.json'
 import Grid from '@material-ui/core/Grid';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 import MyAccountModal from '../../myAccounts/components/ModalMyAccounts';
 import UpdateAccountModal from '../../myAccounts/components/UpdateMyAccountModal'
 import gql from 'graphql-tag'
@@ -83,6 +83,8 @@ const styles = theme => ({
   imageTitle: {
     position: 'relative',
     padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(2)}px`,
+    fontFamily:'Varela Round',
+    fontSize:18,
     
     
   },
@@ -131,11 +133,9 @@ function ButtonBases(props) {
       <Container disableGutters maxWidth={false} className={classes.root}>
       <Grid  
       container
-       direction="row"
-         
-       spacing={0}
-      
-       ref={input} 
+      direction="row"
+      spacing={0}
+      ref={input} 
       >
        {data &&  data.getUserAccounts.map((account, index) => (
       
@@ -158,7 +158,7 @@ function ButtonBases(props) {
           <span
             className={classes.imageSrc}
             style={{
-              backgroundImage: `url(${images[data.getUserAccounts.length-index-1].img})`,
+              backgroundImage: `url(https://www.moneycrashers.com/wp-content/uploads/2011/02/woman-making-budget.jpg)`,
             }}
           />
        
@@ -186,12 +186,13 @@ function ButtonBases(props) {
   
   </Grid>
   
-
+  
 
 <MyAccountModal scrollToTop={scrollToTop}/>
 
 <UpdateAccountModal/>
   
+
 </Container>
   
   );
