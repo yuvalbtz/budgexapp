@@ -18,11 +18,12 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import { useQuery, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Container, Divider, Modal} from '@material-ui/core';
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import ConfirmRequestButton from '../../notifications/components/ConfirmRequestButton'
+import { SET_NotificationsCount } from '../../Redux/actionTypes';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -186,7 +187,7 @@ function Index() {
   const [filteredNtf,setFilterdNtf] = React.useState([])
   
    
-
+ const dispatch = useDispatch()
 
   const {data,loading} = useQuery(GET_NOTIFICATIONS,{
     onCompleted:() => {
@@ -203,6 +204,9 @@ function Index() {
     onSubscriptionData:({subscriptionData}) => {
      if(subscriptionData){
         setFilterdNtf(subscriptionData.data.addRequestToList)
+        console.log('filterSubs',countingNotifications(subscriptionData.data.addRequestToList) - countingNotifications(data.getNotifications));
+        dispatch({type:SET_NotificationsCount, payload:countingNotifications(subscriptionData.data.addRequestToList) - countingNotifications(data.getNotifications)}) 
+        
         console.log("filter subs", subscriptionData.data.addRequestToList);
      }
         
@@ -212,6 +216,31 @@ function Index() {
      
    }})
   
+
+   function countingNotifications(data){
+    const notificationsCount = []
+    if(user){
+      
+      data.forEach(item => {
+       
+          item.from === user.id &&  item.isConfirmed.length > 0 && item.isConfirmed.forEach(id => { //user accept ntf
+            notificationsCount.push(id)
+        }) 
+        
+       
+      
+      if(!item.isConfirmed.includes(user.id) && item.to.includes(user.id)){ //  request sent to user
+         notificationsCount.push(item.id)
+      }
+  })
+   
+  }
+    
+  return  notificationsCount.length 
+   
+  }
+
+
 
 console.log(error);
  

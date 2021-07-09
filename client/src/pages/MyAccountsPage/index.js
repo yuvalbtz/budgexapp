@@ -140,11 +140,11 @@ function ButtonBases(props) {
        {data &&  data.getUserAccounts.map((account, index) => (
       
       <Grid  key={account.id} item xs={12} sm={4} >
-      
+        
         <div className={classes.button}>
        <MenuOptionsBar accountId={account.id} accountDetails={account}/>
         </div>
-        
+       
         <ButtonBase
           focusRipple
           key={account.id}
@@ -177,7 +177,7 @@ function ButtonBases(props) {
             </Typography>
           </span>
          
-        
+         
         </ButtonBase>
        
         </Grid>
@@ -212,6 +212,9 @@ const GET_USER_ACCOUNTS = gql`
     updatedAt
     owner
     title
+    list{
+      id
+    }
     }
 }
 `;

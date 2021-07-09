@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
     bgImage:{
         position:'absolute',
-        background:`url(${bgImages[parseInt(Math.random() * (15-1) + 1)].img}) no-repeat center center`,
+        background:`url(https://creditkarma-cms-ca.imgix.net/wp-content/uploads/sites/2/2020/08/50-30-20-rule932275488.jpg?w=1024&auto=compress) no-repeat center center`,
         filter: 'blur(5px)',
         width: '100%',
         height:'100vh',
@@ -240,7 +240,6 @@ function Index({match}) {
   
    const dispatch = useDispatch()
     const classes = useStyles()
-   //const ModalIsOpen = useSelector(state => state.uiReducer.AddItemModalIsOpen)
    const params = useParams()
    const ModalIsOpen = window.location.pathname === `/matualAccounts/${match.params.accountId}/addItem`
    const accountIdReducer = useSelector(state => state.uiReducer.getCurrentAccountUi)
@@ -411,7 +410,7 @@ const FormatOptions = {
        
        <Container fixed maxWidth="sm" className={classes.ItemsWrapper} id="containerScroll">
 
-        {loading && (<CircularProgress style={{marginTop:'50px'}} color='secondary' size={200} thickness={0.5}/>)}
+        {loading && (<CircularProgress style={{marginTop:'50px'}} color='primary' size={200} thickness={0.5}/>)}
 
         {data && data.getUserMatualAccount.list.map((item, index) => (
          
@@ -433,7 +432,7 @@ const FormatOptions = {
      disableFocusRipple={true}  
     size="medium" 
     className={classes.Fab} 
-    color='secondary' 
+    color='primary' 
      aria-label="add">
       {ModalIsOpen ? 
       

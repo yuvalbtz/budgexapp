@@ -13,7 +13,7 @@ import {
     HelloToUser,
     LinkStyle
   } from './NavbarElements';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
  
 import {makeStyles} from '@material-ui/core'
 
@@ -21,8 +21,10 @@ import { useParams } from 'react-router-dom';
 
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
-
-
+import Badge from '@material-ui/core/Badge';
+import gql from 'graphql-tag'
+import {useQuery, useSubscription } from '@apollo/react-hooks';
+import { SET_NotificationsCount } from '../../Redux/actionTypes';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -30,12 +32,18 @@ const useStyles = makeStyles((theme) => ({
        
     [theme.breakpoints.down('lg')]:{
       display:'none'
-    },
-    
-   
-   }
+    }
+},
 
+customBadge:{
+  '&.MuiBadge-anchorOriginTopLeftRectangle': {
+    transform:'translate(0%, 30%)',
+  }
+},
 
+dismiss:{
+  display: 'none'
+}
 
 }));
 
@@ -49,6 +57,7 @@ function Index(){
     const user = useSelector(state => state.userReducer.userDetails)
     const user2 = useSelector(state => state.userReducer.isAuthenticated)
     const currentAccount = useSelector(state => state.uiReducer.getCurrentAccountUi)
+    const badgeCount = useSelector(state => state.uiReducer.NotificationsCount.Badge)
     const params = useParams()
     
     const currentPage = window.location.pathname.split('/')[1]
@@ -58,16 +67,15 @@ function Index(){
     const [click, setClick] = useState(false)
     const [scroll, setScroll] = useState(false)
     
+    const [ntfCount, setNtfCount] = React.useState(0)
+    const [subsCount, setSubsCount] = React.useState(0)
     
-    
+    const dispatch = useDispatch()
  
-  
     const handleOnclick  = () => setClick(!click)
     
     
-   
-    
-    
+
     return (
         <header>
             <Nav active={scroll} click={click}>
@@ -94,9 +102,17 @@ function Index(){
 
      <NavMenu  click={click}>
      
-     {user &&  <LinkStyle to='/notifications'>
+     {user && <Badge  badgeContent={badgeCount} max={99} 
+      invisible={false}
+      color='secondary'
+      classes={{ badge:badgeCount > 0 ? classes.customBadge : classes.dismiss}}
+      anchorOrigin={{
+        vertical: 'top',
+       horizontal: 'left',
+       }}
+     > <LinkStyle onClick={() => dispatch({type:SET_NotificationsCount, payload:0})} to='/notifications'>
             התראות  
-          </LinkStyle>  }
+          </LinkStyle></Badge>  }
      
      
      <LinkStyle to='/security'>
@@ -132,3 +148,48 @@ function Index(){
 }
 
 export default Index
+
+
+const NOTIFICATIONS = gql`
+subscription AddRequestToList{
+  addRequestToList{
+    id
+    seen
+    senderName
+    senderImageUrl
+    accountId
+    isConfirmed
+    isIgnored
+    to
+    from
+    accountTitle
+    body
+    createdAt
+    updatedAt
+  }
+}
+
+
+`;
+
+
+
+
+const GET_NOTIFICATIONS = gql`
+{
+  getNotifications{
+    id
+    seen
+    senderName
+    senderImageUrl
+    accountId
+    isConfirmed
+    isIgnored
+    to
+    from
+    accountTitle
+    body
+    createdAt
+    updatedAt
+  }
+}`;

@@ -139,7 +139,7 @@ function FloatingActionButtonZoom(props)  {
         value = 0
       }else if(window.location.pathname.split('/')[1] === 'profile'){
          value = 2 
-      }else{
+      }else if(window.location.pathname.split('/')[1] === 'myAccounts'){
          value = 1
       }
 

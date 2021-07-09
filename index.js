@@ -19,7 +19,7 @@ const http = require('http');
 
 //enable cors
  var corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://salty-ridge-45014.herokuapp.com/',
   credentials: true, // <-- REQUIRED backend setting
  
 }; 

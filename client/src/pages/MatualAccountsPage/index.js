@@ -138,7 +138,7 @@ function ButtonBases(props) {
          <span
             className={classes.imageSrc}
             style={{
-              backgroundImage: `url(${images[10].img})`,
+              backgroundImage: `url(https://creditkarma-cms-ca.imgix.net/wp-content/uploads/sites/2/2020/08/50-30-20-rule932275488.jpg?w=1024&auto=compress)`,
             }}
           />
           <span className={classes.imageBackdrop} />

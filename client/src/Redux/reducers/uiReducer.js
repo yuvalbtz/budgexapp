@@ -6,7 +6,8 @@ import {SET_Account_Modal_Open,
         SET_Current_Account_Ui,
         SET_UpdateItem_Modal_Open,
         SET_UpdateAccount_Modal_Open,
-        SET_LightBoxImage
+        SET_LightBoxImage,
+        SET_NotificationsCount
     
     } from '../actionTypes'
 
@@ -31,6 +32,10 @@ const InitialState = {
 
     LightBoxImage:{
         ImageUrl:''
+    },
+
+    NotificationsCount:{
+       Badge:0
     }
 
 }
@@ -94,7 +99,19 @@ export function uiReducer(state = InitialState, action){
                         return {
                                ...state,
                                getCurrentAccountUi: action.payload
-                           }       
+                           }
+
+                           case SET_NotificationsCount:
+                        
+                        return {
+                               ...state,
+                               NotificationsCount:{
+                                Badge:action.payload
+                               }
+                           }
+                           
+                           
+
               default:
                   return state
             }          

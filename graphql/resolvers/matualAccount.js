@@ -187,6 +187,12 @@ module.exports = {
                 if(account && notification){
                   await account.delete()
                   await notification.delete()
+                 const notifications = await Notifications.find()
+                  if(notifications){
+                    context.pubsub.publish('requestAdded', {addRequestToList:notifications})  
+                  
+                  }
+                 
                   return "account deleted succesfully!"
                 }  
                } catch (error) {
