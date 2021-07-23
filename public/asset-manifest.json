@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/salty-ridge-45014.herokuapp.com/static/css/main.1e2f7558.chunk.css",
-    "main.js": "/salty-ridge-45014.herokuapp.com/static/js/main.a4d8e7e0.chunk.js",
-    "main.js.map": "/salty-ridge-45014.herokuapp.com/static/js/main.a4d8e7e0.chunk.js.map",
-    "runtime-main.js": "/salty-ridge-45014.herokuapp.com/static/js/runtime-main.68f41a11.js",
-    "runtime-main.js.map": "/salty-ridge-45014.herokuapp.com/static/js/runtime-main.68f41a11.js.map",
-    "static/css/2.ab18fb39.chunk.css": "/salty-ridge-45014.herokuapp.com/static/css/2.ab18fb39.chunk.css",
-    "static/js/2.d67449a7.chunk.js": "/salty-ridge-45014.herokuapp.com/static/js/2.d67449a7.chunk.js",
-    "static/js/2.d67449a7.chunk.js.map": "/salty-ridge-45014.herokuapp.com/static/js/2.d67449a7.chunk.js.map",
-    "static/js/3.c0ffae8a.chunk.js": "/salty-ridge-45014.herokuapp.com/static/js/3.c0ffae8a.chunk.js",
-    "static/js/3.c0ffae8a.chunk.js.map": "/salty-ridge-45014.herokuapp.com/static/js/3.c0ffae8a.chunk.js.map",
-    "index.html": "/salty-ridge-45014.herokuapp.com/index.html",
-    "static/css/2.ab18fb39.chunk.css.map": "/salty-ridge-45014.herokuapp.com/static/css/2.ab18fb39.chunk.css.map",
-    "static/css/main.1e2f7558.chunk.css.map": "/salty-ridge-45014.herokuapp.com/static/css/main.1e2f7558.chunk.css.map",
-    "static/js/2.d67449a7.chunk.js.LICENSE.txt": "/salty-ridge-45014.herokuapp.com/static/js/2.d67449a7.chunk.js.LICENSE.txt",
-    "static/media/no-image.15228ead.svg": "/salty-ridge-45014.herokuapp.com/static/media/no-image.15228ead.svg"
+    "main.css": "/static/css/main.1e2f7558.chunk.css",
+    "main.js": "/static/js/main.dbc1a0cc.chunk.js",
+    "main.js.map": "/static/js/main.dbc1a0cc.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.67e40541.js",
+    "runtime-main.js.map": "/static/js/runtime-main.67e40541.js.map",
+    "static/css/2.ab18fb39.chunk.css": "/static/css/2.ab18fb39.chunk.css",
+    "static/js/2.5ed6151d.chunk.js": "/static/js/2.5ed6151d.chunk.js",
+    "static/js/2.5ed6151d.chunk.js.map": "/static/js/2.5ed6151d.chunk.js.map",
+    "static/js/3.c0ffae8a.chunk.js": "/static/js/3.c0ffae8a.chunk.js",
+    "static/js/3.c0ffae8a.chunk.js.map": "/static/js/3.c0ffae8a.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.ab18fb39.chunk.css.map": "/static/css/2.ab18fb39.chunk.css.map",
+    "static/css/main.1e2f7558.chunk.css.map": "/static/css/main.1e2f7558.chunk.css.map",
+    "static/js/2.5ed6151d.chunk.js.LICENSE.txt": "/static/js/2.5ed6151d.chunk.js.LICENSE.txt",
+    "static/media/no-image.15228ead.svg": "/static/media/no-image.15228ead.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.68f41a11.js",
+    "static/js/runtime-main.67e40541.js",
     "static/css/2.ab18fb39.chunk.css",
-    "static/js/2.d67449a7.chunk.js",
+    "static/js/2.5ed6151d.chunk.js",
     "static/css/main.1e2f7558.chunk.css",
-    "static/js/main.a4d8e7e0.chunk.js"
+    "static/js/main.dbc1a0cc.chunk.js"
   ]
 }

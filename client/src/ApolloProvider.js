@@ -27,7 +27,7 @@ import { HttpLink } from '@apollo/client'
 }); */
 
 const httpLink = new HttpLink({
-  uri: 'http://salty-ridge-45014.herokuapp.com/graphql',
+  uri: 'https://salty-ridge-45014.herokuapp.com/graphql',
   credentials:'include',
 });
 
