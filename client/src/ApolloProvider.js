@@ -27,13 +27,13 @@ import { HttpLink } from '@apollo/client'
 }); */
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'http://salty-ridge-45014.herokuapp.com/graphql',
   credentials:'include',
 });
 
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql', //wss in production
+  uri: 'wss://salty-ridge-45014.herokuapp.com/graphql', //wss in production
   options: {
     reconnect: true
   }

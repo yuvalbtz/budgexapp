@@ -1,13 +1,11 @@
-import React,{useContext} from 'react'
+import React from 'react'
 import Navbar from '../Navbar'
 import {Footer} from './LayoutElements'
-import {useSelector} from 'react-redux'
-import { Container } from '@material-ui/core'
+
 
 
 function Index({children}) {
    
-    const user = useSelector(state => state.userReducer.userDetails)
    
   
    

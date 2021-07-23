@@ -16,10 +16,9 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useForm } from '../../hooks/useForm';
-import { useLazyQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import {useHistory, Link, withRouter,Redirect} from 'react-router-dom'
-import { AuthContext } from '../../context/auth';
+import {Link, withRouter} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import {SET_USER} from '../../Redux/actionTypes'
 import history from '../../util/history'

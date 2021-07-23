@@ -3,13 +3,14 @@ import IconButton from '@material-ui/core/IconButton';
 import {makeStyles, withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import {Fab, Paper, Slide } from '@material-ui/core';
-import {useParams } from 'react-router-dom';
+import {Link, useParams } from 'react-router-dom';
 import {useMutation } from '@apollo/client';
 import gql from 'graphql-tag'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useSelector } from 'react-redux';
-
+import CloseIcon from '@material-ui/icons/Close';
+import history from '../../../util/history';
 
 const CssTextField = withStyles({
   root: {
@@ -131,28 +132,24 @@ export default function SearchAppBar() {
  
   
   const params = useParams()
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(!open);
-  };
-
-
   const accountId = params.accountId
+
+  const open  = window.location.pathname === `/myAccounts/${accountId}/search`
+
+  
+
+
+  
  
  const [searchQuery, setSearchQuery] = React.useState("")
  const accountIdReducer = useSelector(state => state.uiReducer.getCurrentAccountUi)
  const [options, setOptions] = React.useState([])
-const input = React.useRef()
- 
-
 
  React.useEffect(() => {
-  if(!open){
+ /*  if(!open){
     setSearchQuery('')
     searchItem()
-}
+} */
   if(accountIdReducer){
    
  const unic =  accountIdReducer.list.filter((v,i,a)=>a.findIndex(t=>(t.title === v.title))===i)
@@ -192,18 +189,20 @@ const input = React.useRef()
 
   return (
     <div >
-    
     <Fab  
-    onClick={handleClickOpen}
     className={classes.FabSearch} 
     size="medium" 
     color="secondary" 
     aria-label="search" >
      <IconButton 
-      component='span'  
+      disableFocusRipple 
+      disableRipple
+      component={Link}  
      style={{color:'white'}} 
-     /* to={`/myAccounts/${params.accountId}/statis`} */>
-       <SearchIcon /> 
+     to={`/myAccounts/${params.accountId}/search`}>
+       <>
+       {open ? <IconButton disableFocusRipple disableRipple style={{color:'white'}} onClick={() => history.goBack()}><CloseIcon /></IconButton>: <SearchIcon/>}
+       </>
       </IconButton> 
       </Fab>
       
@@ -211,7 +210,7 @@ const input = React.useRef()
      <Paper className={classes.paper}> 
          <div  className={classes.search}>
             <Autocomplete
-                id="grouped-demoAItem"
+                id="grouped-demoAItem123"
                 classes={{inputRoot:classes.SearchField}}
                 closeIcon={false}
                 options={options}

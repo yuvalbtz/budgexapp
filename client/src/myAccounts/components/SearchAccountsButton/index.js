@@ -8,6 +8,7 @@ import gql from 'graphql-tag'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useSelector } from 'react-redux';
+import history from '../../../util/history';
 
 
 const CssTextField = withStyles({
@@ -131,10 +132,10 @@ const [searchQuery, setSearchQuery] = React.useState("")
 const {data} = useQuery(GET_USER_ACCOUNTS)
 
  React.useEffect(() => {
-  if(!open){
+  /* if(!open){
     setSearchQuery('')
     searchAccount()
-}
+} */
   
      if(data){
         const unic = data.getUserAccounts.filter((v,i,a)=>a.findIndex(t=>(t.title === v.title))===i)
@@ -156,6 +157,7 @@ const {data} = useQuery(GET_USER_ACCOUNTS)
      update:(proxy, result) => {
       const data = proxy.readQuery({
         query: GET_USER_ACCOUNTS,
+        variables:{searchQuery}
         });
       
         data.getUserAccounts = result.data.searchAccount

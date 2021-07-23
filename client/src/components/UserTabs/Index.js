@@ -16,9 +16,8 @@ import history from '../../util/history'
 import MyAccounts from '../../pages/MyAccountsPage'
 import MatualAccounts from '../../pages/MatualAccountsPage'
 import Profile from '../../pages/ProfilePage'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import CloseIcon from '@material-ui/icons/Close';
-import MenuButton from '../../myAccounts/components/MenuButton'
 import { IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 const styles = theme => ({

@@ -1,14 +1,11 @@
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
 import {makeStyles, withStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import {Fab, Paper, Slide } from '@material-ui/core';
-import {useParams } from 'react-router-dom';
+import {Paper, Slide } from '@material-ui/core';
 import {useMutation, useQuery } from '@apollo/client';
 import gql from 'graphql-tag'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useSelector } from 'react-redux';
+
 
 
 const CssTextField = withStyles({
@@ -153,10 +150,10 @@ export default function SearchAppBar() {
 const {data} = useQuery(GET_USER_MATUAL_ACCOUNTS)
 
  React.useEffect(() => {
-  if(!open){
+ /*  if(!open){
     setSearchQuery('')
     searchAccount()
-}
+} */
   
 if(data){
    

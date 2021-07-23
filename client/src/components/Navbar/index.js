@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { FaBars, FaTimes } from 'react-icons/fa';
 import LoginModalBtn from  '../LoginModal'
 import RegisterModalBtn from  '../RegisterModal'
@@ -7,7 +7,6 @@ import {
     Nav,
     NavbarContainer,
     NavTitle,
-    LinkList,
     MobileIcon,
     NavMenu,
     HelloToUser,
@@ -22,11 +21,8 @@ import { useParams } from 'react-router-dom';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 import Badge from '@material-ui/core/Badge';
-import gql from 'graphql-tag'
-import {useQuery, useSubscription } from '@apollo/react-hooks';
 import { SET_NotificationsCount } from '../../Redux/actionTypes';
-import {AuthContext} from '../../context/auth'
-import { useContext } from 'react';
+
 const useStyles = makeStyles((theme) => ({
 
    HelloToUser:{

@@ -19,7 +19,7 @@ import { Typography,
         TextField
      } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
-import { SET_Profile_Modal_Open, SET_USER } from '../../Redux/actionTypes';
+import {SET_USER } from '../../Redux/actionTypes';
 import { useState } from 'react';
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks';

@@ -2,9 +2,8 @@ import React, {createContext} from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {useDispatch, useSelector} from 'react-redux'
-import { SET_USER } from '../Redux/actionTypes';
 import SplashScreen from '../components/SplashScreen'
-import history from '../util/history';
+
 
 
 const AuthContext = createContext({

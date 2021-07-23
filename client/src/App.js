@@ -1,6 +1,5 @@
 import React,{useEffect} from 'react'
 import './App.css';
-
 import {Switch, Route} from 'react-router-dom';
 import SimpleReactLightbox from "simple-react-lightbox";
 import AuthRoute from './util/AuthRoute'
@@ -20,6 +19,7 @@ import SplashScreen from './components/SplashScreen'
 function App() {
   document.body.style.overflow = "hidden"
   /*  console.log = () => {} */
+ 
   const {data, loading} = useQuery(GET_USER_STATE);
   const dispatch = useDispatch()
   const user = useSelector(state => state.userReducer)
@@ -28,20 +28,16 @@ function App() {
 
 useEffect(() => {
   
- if(data !== undefined ){
+ if(data){
    if(data.getUserState){
     dispatch({type:SET_USER, payload:data.getUserState})
-  
-    
-   }else{
+  }else{
     dispatch({type:SET_USER_LOGOUT})
     localStorage.clear()
     history.push('/')
    }
     dispatch({type:SET_USER, payload:data.getUserState})
  
-  console.log("cookie", document.cookie.split('id2=')[1]);
-  
   }else if(!document.cookie.split('id2=')[1] || !localStorage.getItem("id")){
     dispatch({type:SET_USER_LOGOUT})
     localStorage.clear()
@@ -51,10 +47,14 @@ useEffect(() => {
   
   },[data])   
  
+  
+  
+  
   if(loading){
     return (<SplashScreen/>)
-  }else{
-    console.log("first render!", data);
+  }else if(!data){
+   localStorage.clear()
+    history.push('/')
   }
 
 console.log("APP", user);

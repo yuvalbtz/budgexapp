@@ -20,7 +20,7 @@ import { AuthContext } from '../../context/auth';
 import { useForm } from '../../hooks/useForm';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import {Link, useHistory} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import { SET_USER } from '../../Redux/actionTypes';
 import {useDispatch} from 'react-redux'
 import history from '../../util/history';
