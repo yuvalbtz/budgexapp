@@ -21,6 +21,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import SingleItem from '../../matualAccounts/components/SingleItemMatualAccount'
 import history from '../../util/history';
 import { Link, Redirect, useParams } from 'react-router-dom';
+import ImageModal from '../../matualAccounts/components/ImageModal'
+import SearchButton from '../../matualAccounts/components/SearchMatualItemsButton' 
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -138,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
 
       ItemsWrapper:{
           width:'100%',
-          height:'73vh',
+          height: 'calc(100vh - calc(100vh - 80%))',
           overflowY:'scroll',
           
        },
@@ -242,21 +245,53 @@ function Index({match}) {
     const classes = useStyles()
    const params = useParams()
    const ModalIsOpen = window.location.pathname === `/matualAccounts/${match.params.accountId}/addItem`
-   const accountIdReducer = useSelector(state => state.uiReducer.getCurrentAccountUi)
    const accountId = match.params.accountId
-  
-    let SumEarningstas; 
-    let SumSpendingstas;
+   const user = useSelector(state => state.userReducer.userDetails)
+   
+   let SumEarningstas; 
+   let SumSpendingstas;
 
    
  
-   const {data, loading} = useQuery(GET_USER_MATUAL_ACCOUNT,{variables:{accountId}, 
+   const {data, loading, subscribeToMore} = useQuery(GET_USER_MATUAL_ACCOUNT,{variables:{accountId}, 
    onCompleted:() => scrollToBottom(), 
-   onError:(err) => history.goBack()
-     
-    })
-   
- 
+   onError:(err) => history.goBack(),
+  })
+
+  React.useEffect(() => {
+    let unsubscribe;
+
+   if(!ModalIsOpen){
+      unsubscribe = subscribeToMore({
+        document:ITEM_CHANGED_SUBS,
+        updateQuery:(prev, {subscriptionData}) => {
+          if(!subscriptionData.data) return prev
+          const newList = subscriptionData.data.itemChangedSubs
+          console.log("compare length", newList.list.length,prev.getUserMatualAccount.list.length);
+          return Object.assign({}, prev, {
+            getUserMatualAccount: {newList, ...prev.getUserMatualAccount}
+            });
+         },
+      })
+           
+      unsubscribe = subscribeToMore({
+        document:ACCOUNT_CHANGED_SUBS,
+        updateQuery:(prev, {subscriptionData}) => {
+          const updatedAccounts = subscriptionData.data.accountChangedSubs
+          const filteredUpdatedAccounts = user && updatedAccounts.filter(item => item.members.find(i =>  i.userId === user.id && i.isConfirmed === true) || item.owner === user.id);
+          if (!filteredUpdatedAccounts) return prev
+          const accountExist = filteredUpdatedAccounts.find(ac => ac.id === accountId)
+          return accountExist ? Object.assign({}, prev, {
+            getUserMatualAccounts: updatedAccounts.reverse()
+            }) : window.location.href = '/matualAccounts'
+         }
+      }) 
+    }
+    
+    if (unsubscribe) return () => unsubscribe()
+
+
+},[ModalIsOpen, subscribeToMore])
 
  
    
@@ -418,6 +453,7 @@ const FormatOptions = {
          key={item.id}
          item={item}
          accountId={accountId}
+         ownerName={data.getUserMatualAccount.ownerName}
          />
         ))}
       
@@ -449,12 +485,16 @@ const FormatOptions = {
      
    </div>   
    
+
+    <SearchButton/>
+
      <StatisticButton 
       totalSpending={SumSpendingstas} 
       totalEarning={SumEarningstas} />
       
       <AddItemModal accountId={accountId} scrollToBottom={scrollToBottom} /> 
       <UpdateItemModal accountId={accountId} />
+       <ImageModal/>
        </Layout>
        
     )
@@ -470,6 +510,7 @@ query($accountId:ID!){
             title
             id
             owner
+            ownerName
             list{
               id
               title
@@ -477,9 +518,49 @@ query($accountId:ID!){
               media
               amount
               createdAt
+              updatedAt
             }
         }  
       }
+`;
+
+const ITEM_CHANGED_SUBS = gql`
+subscription itemChangedSubs{
+  itemChangedSubs{
+    title
+    id
+   owner
+   ownerName
+    list{
+    id
+    title
+    description
+    media
+    amount
+    createdAt
+    updatedAt
+    }
+  }
+}
+`;
 
 
+const ACCOUNT_CHANGED_SUBS = gql`
+subscription accountChangedSubs{
+  accountChangedSubs{
+    id
+    createdAt
+    updatedAt
+    owner
+    ownerName
+    title
+    members {
+      userId  
+      isConfirmed
+      isIgnored
+    
+  }
+    
+  }
+}
 `;

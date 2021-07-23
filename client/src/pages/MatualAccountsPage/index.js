@@ -13,6 +13,9 @@ import { Link } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux'
 import {SET_BG_SINGLE_ACCOUNT} from '../../Redux/actionTypes'
 import UpdateMatualAccountModal from '../../matualAccounts/components/UpdateMatualAccountModal'
+import ShowAccountFreindsButton from '../../matualAccounts/components/ShowAccountFreindsButton'
+import { IconButton, Typography } from '@material-ui/core';
+import ListAltRoundedIcon from '@material-ui/icons/ListAltRounded'
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -104,9 +107,42 @@ function ButtonBases(props) {
    const user = useSelector(state => state.userReducer.userDetails)
 
 
-   const {data} = useQuery(GET_USER_MATUAL_ACCOUNTS);
+   const {data, subscribeToMore} = useQuery(GET_USER_MATUAL_ACCOUNTS);
   
-  
+   React.useEffect(() => {
+     let unsubscribe;
+
+     unsubscribe = subscribeToMore({
+      document:ITEM_CHANGED_SUBS,
+      updateQuery:(prev, {subscriptionData}) => {
+        const newList = subscriptionData.data.itemChangedSubs
+        if(!subscriptionData.data) return prev
+        
+        return Object.assign({}, prev, {
+          getUserMatualAccount: {newList, ...prev.getUserMatualAccount}
+          });
+       },
+    })
+     
+    unsubscribe = subscribeToMore({
+      document:ACCOUNT_CHANGED_SUBS,
+      updateQuery:(prev, {subscriptionData}) => {
+        const updatedAccounts = subscriptionData.data.accountChangedSubs
+        const filteredUpdatedAccounts = user && updatedAccounts.filter(item => item.members.find(i =>  i.userId === user.id && i.isConfirmed === true) || item.owner === user.id);
+        if (!filteredUpdatedAccounts){
+          return Object.assign({}, prev, {
+            getUserMatualAccounts:[...prev.getUserMatualAccounts]
+            });
+        } 
+        return Object.assign({}, prev, {
+          getUserMatualAccounts: filteredUpdatedAccounts.reverse()
+          });
+       }
+    })
+    
+    if(unsubscribe) return () => unsubscribe() 
+
+   },[subscribeToMore])
   
   
   console.log('data',data);
@@ -124,7 +160,17 @@ function ButtonBases(props) {
        {user && ( <MenuBarButton accountId={account.id} accountDetails={account} IsUserOwner={account.owner === user.id}/>)}
        </div>
       
-
+       <div style={{display:'flex', position:'relative',zIndex:13}}>
+        <IconButton style={{position:'absolute', right:4,top:1, color:'white'}}>
+        <ListAltRoundedIcon />
+        <Typography variant='h6' component='h6' style={{marginLeft:5,fontFamily:'Varela Round',}}>
+          {account.list.length}
+        </Typography>
+        </IconButton>
+        </div>
+       
+        {user && (<ShowAccountFreindsButton members={account.members} accountId={account.id} /> )}
+       
        <ButtonBase
           focusRipple
           key={account.id}
@@ -145,11 +191,35 @@ function ButtonBases(props) {
           
         <GridListTileBar
               title={account.title}
-              subtitle={<span>created by: {user && account.ownerName === user.username ? 'You' : account.ownerName}</span>}
+              subtitle={<span 
+                style={{
+                  position:'absolute', 
+                  bottom:4, 
+                  left:15,
+                  whiteSpace:'noWrap',
+                  maxWidth:'40%',
+                  textOverflow:'ellipsis',
+                  display:'inline',
+                  overflow: 'hidden'}}>
+                    created by: {user && account.ownerName === user.username ? 'You' : account.ownerName}
+                    </span>}
             />
         
         </ButtonBase>
-        
+        <div style={{display:'flex', position:'relative',zIndex:13}}>
+         <Typography 
+        variant='subtitle2' 
+        component='h6' 
+        style={{
+          position:'absolute', 
+          right:4,bottom:2, 
+          color:'white',
+          marginLeft:5,
+          fontFamily:'Varela Round',
+          }}>
+          {new Date(Number(account.createdAt)).toDateString()}
+        </Typography>
+        </div>
         </Grid>
        
     ))}
@@ -183,6 +253,9 @@ const GET_USER_MATUAL_ACCOUNTS = gql`
     owner
     ownerName
     title
+    list{
+      id
+    }
     members {
       userId  
       isConfirmed
@@ -190,5 +263,46 @@ const GET_USER_MATUAL_ACCOUNTS = gql`
     
   }
 }
+}
+`;
+
+const ACCOUNT_CHANGED_SUBS = gql`
+subscription accountChangedSubs{
+  accountChangedSubs{
+    id
+    createdAt
+    updatedAt
+    owner
+    ownerName
+    title
+    members {
+      userId  
+      isConfirmed
+      isIgnored
+    
+  }
+    
+  }
+}
+`;
+
+
+const ITEM_CHANGED_SUBS = gql`
+subscription itemChangedSubs{
+  itemChangedSubs{
+    title
+    id
+   owner
+   ownerName
+    list{
+    id
+    title
+    description
+    media
+    amount
+    createdAt
+    updatedAt
+    }
+  }
 }
 `;

@@ -1,11 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,7 +10,6 @@ import Slide from '@material-ui/core/Slide';
 import Fab from '@material-ui/core/Fab';
 import PieChartRoundedIcon from '@material-ui/icons/PieChartRounded';
 import {useSelector} from 'react-redux'
-
 import {
 	Chart,
 	Interval,
@@ -26,7 +20,7 @@ import {
 import { DialogTitle } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
 import history from '../../../util/history';
-
+import { DataGrid } from '@material-ui/data-grid';
 
 
 
@@ -57,7 +51,34 @@ const useStyles = makeStyles((theme) => ({
       alignItems:'center', 
       justifyContent:'center'
     }
+  },
+
+  datagridEarning:{
+    height:400, 
+    width: '100%', 
+    direction:'rtl', 
+    margin:'0 auto',
+   
+     [theme.breakpoints.up('sm')]:{
+      width:'90%'
+     },
+     
+  },
+
+  datagridSpending:{
+    height:400, 
+    width: '100%', 
+    direction:'rtl', 
+    margin:'0 auto',
+    
+    
+     [theme.breakpoints.up('sm')]:{
+      width:'90%'
+     },
+    
+
   }
+
 }));
 
 
@@ -81,10 +102,12 @@ const PieChart = ({data, cols}) => {
 					"item",
 					(item) => {
 						return {
-							offset: 15,
+              offset: 15,
 							content: (data) => {
-								return `${data.item}\n ${parseInt(data.percent * 100)}%`;
+								return `${data.item}\n${Number(data.percent * 100).toFixed(1)}%`;
 							},
+
+              
 							
 						};
 					},
@@ -129,8 +152,50 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
     }
 
    
-
+    function getEarningSumDuplicateDataGrid(){
+      
+      if(accountData){
+        let result = []
+        const filteredList = accountData.list.filter(i => i.amount > 0)
+   
+    filteredList.forEach(function (a,i) {
+       if (!this[a.title]) {
+         this[a.title] = { id:i,title: a.title, amount: 0, date:a.updatedAt};
+         result.push(this[a.title]);
+      }
+          this[a.title].amount += a.amount;
+     }, Object.create(null));
+        
+      return result    
+   }
+    
+     
+    }
  
+
+    function getSpendingSumDuplicateDataGrid(){
+      
+      if(accountData){
+        let result = []
+        const filteredList = accountData.list.filter(i => i.amount < 0)
+   
+    filteredList.forEach(function (a,i) {
+       if (!this[a.title]) {
+         this[a.title] = { id:i,title: a.title, amount: 0, date:a.updatedAt};
+         result.push(this[a.title]);
+      }
+          this[a.title].amount += a.amount;
+     }, Object.create(null));
+        
+      return result    
+   }
+    
+     
+    }
+
+
+
+
 
     function getEarningSumDuplicateTitleData(){
       
@@ -159,7 +224,7 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
       let Sarray = getSpendingSumDuplicateTitleData();
      
       if(Sarray){
-        Sarray.map(i => array2.push({ item:i.title, percent:parseFloat((Math.abs(Math.abs(i.amount) / Math.abs(totalSpending))).toFixed(2))}))
+        Sarray.map(i => array2.push({ item:i.title, percent:Math.abs((i.amount / totalSpending).toFixed(4))}))
         
       }
     }
@@ -170,7 +235,7 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
       let Earray = getEarningSumDuplicateTitleData();
      
       if(Earray){
-        Earray.map(i => array3.push({ item:i.title, percent:parseFloat((Math.abs(Math.abs(i.amount) / Math.abs(totalEarning))).toFixed(2))}))
+        Earray.map(i => array3.push({ item:i.title, percent:Math.abs((i.amount / totalEarning).toFixed(4))}))
         
       }
       
@@ -191,37 +256,20 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
       
     getDataEarning()
     getDataSpending()
-    
-    
-    
+   
   } 
   }, [open])
  
-  console.log("spending", array2);
-  console.log("earning", array3); 
-
-//pie chart
-const data = [
-  { item: "ביגוד והלבשה", percent: 0.4 },
-  { item: "class 2", percent: 0.21 },
-  { item: "class 3", percent: 0.17 },
-  { item: "class 4", percent: 0.13 },
-  { item: "משכורת", percent: 0.09 },
-  { item: "אוכל ופירות", percent: 0.04 },
-];
+ 
 
 const cols = {
   percent: {
     formatter: (val) => {
-      val = val * 100 + "%";
-      return val;
+      val = Number(val * 100).toFixed(2) + "%";
+     return val;
     },
   },
 };
-
-
-
-
 
 
   return (
@@ -257,16 +305,80 @@ const cols = {
           {totalEarning > 0 && (<div style={{display:'flex', flexDirection:'column', height:'100%',  width:'100%'}}>
             <DialogTitle style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{Math.abs(totalEarning).toFixed(2)} :הכנסות</DialogTitle>
             <PieChart data={array3} cols={cols} />
+            
+            <div className={classes.datagridEarning}>
+            <div style={{height:'100%'}}>
+              <DataGrid
+              columns={[
+                { field: 'id', hide:true },
+                { field: 'title', width: 130, headerName: 'קטגוריה',align:'right',type:'string' },
+                { field: 'amount',
+                width: 125, 
+                headerName: 'סכום',
+                align:'right',type: 'number',
+                headerAlign:'center',
+                valueFormatter: (params) => {
+                  const valueFormatted = Number(params.value).toLocaleString();
+                  return `${valueFormatted} ₪`;
+                },  },
+                { field: 'date',
+                width: 125, 
+                headerName: 'תאריך',
+                align:'right',
+                valueFormatter: (params) => {
+                  const date = new Date(parseInt(params.value))
+                  const valueFormatted = date.toLocaleDateString();
+                  return `${valueFormatted}`;
+                }, },
+                
+                ]}
+                rows={!getEarningSumDuplicateDataGrid() ? [] : getEarningSumDuplicateDataGrid()}
+              />
+              </div> 
+            </div>
+            
             </div>
           )}
-          
-       
-
-       
-          
+            
           {totalSpending < 0 && (<div style={{display:'flex', flexDirection:'column', height:'100%', width:'100%'}}>
             <DialogTitle  style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{ -Math.abs(totalSpending).toFixed(2)} :הוצאות</DialogTitle>
-          <PieChart data={array2} cols={cols} /></div>) }
+          <PieChart data={array2} cols={cols} />
+          
+          <div className={classes.datagridSpending}>
+          <div style={{height:'100%'}}>
+              <DataGrid
+              columns={[
+                { field: 'id', hide:true },
+                { field: 'title', width: 130, headerName: 'קטגוריה',align:'right',type:'string' },
+                { field: 'amount',width: 125,
+                 headerName: 'סכום',
+                 align:'right',
+                 type: 'number',
+                 headerAlign:'center',
+                 valueFormatter: (params) => {
+                  const valueFormatted = Number(params.value).toLocaleString();
+                  return `${valueFormatted} ₪`;
+                }, 
+              },
+                { field: 'date',
+                width: 125, 
+                headerName: 'תאריך',
+                align:'right',
+                valueFormatter: (params) => {
+                  const date = new Date(parseInt(params.value))
+                  const valueFormatted = date.toLocaleDateString();
+                  return `${valueFormatted}`;
+                }, },
+                
+                ]}
+                rows={!getSpendingSumDuplicateDataGrid() ? [] : getSpendingSumDuplicateDataGrid()}
+              />
+             </div>
+            </div>
+          
+          
+          </div>) }
+          
           </div>
        
        

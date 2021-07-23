@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import Slide from '@material-ui/core/Slide';
 import { makeStyles } from '@material-ui/core/styles';
-import {useSelector,useDispatch} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import { Typography, 
   DialogTitle, 
   DialogContent, 
@@ -23,7 +23,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import history from '../../../util/history';
-import { Redirect } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
     
@@ -52,6 +52,7 @@ function NumberFormatCustom(props) {
     return (
       <NumberFormat
         {...other}
+        id='numberformatmatual'
         getInputRef={inputRef}
         onValueChange={(values) => {
           onChange({
@@ -127,7 +128,7 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
   
   
 
-    const [addItem, { loading }] = useMutation(ADD_ITEM, {
+    const [addItem, { loading}] = useMutation(ADD_ITEM, {
      onCompleted:() => {
        history.goBack()
        scrollToBottom()
@@ -191,9 +192,9 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
         
            <div>
            <FormControl component="fieldset"  >
-           <RadioGroup row aria-label="option" name="option" value={radioValue} onChange={handleRadioChange}>
-           <FormControlLabel labelPlacement="start"  value="spending" control={<Radio />} label="הוצאה" />
-          <FormControlLabel labelPlacement="start"  value="earning" control={<Radio />} label="הכנסה" />
+           <RadioGroup row aria-label="option"  name="option" value={radioValue} onChange={handleRadioChange}>
+           <FormControlLabel labelPlacement="start"  value="spending" control={<Radio color='primary' />} label="הוצאה" />
+          <FormControlLabel labelPlacement="start"   value="earning" control={<Radio color='primary' />} label="הכנסה" />
         </RadioGroup>
          </FormControl>
            </div>
@@ -204,7 +205,7 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
           <div>
         <FormControl className={classes.margin}>
          <Autocomplete
-         id="grouped-demo"
+         id="grouped-demo462"
          options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
          groupBy={(option) => option.firstLetter}
          getOptionLabel={(option) =>option.title}
@@ -224,7 +225,7 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
       <div>
       <FormControl  className={classes.margin}>
       <TextField
-          id="standard-textarea"
+          id="standard-textarea762"
           value={values.description}
           onChange={onChange}
           name="description" 

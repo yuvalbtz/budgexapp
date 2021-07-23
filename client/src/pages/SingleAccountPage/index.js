@@ -2,7 +2,7 @@ import React from 'react'
 import Layout from '../../components/Layout'
 import {useSelector, useDispatch} from 'react-redux'
 import { makeStyles} from '@material-ui/core/styles';
-import { Container, IconButton} from '@material-ui/core';
+import { Container, IconButton, InputBase} from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AddItemModal from '../../myAccounts/components/AddItemModal';
@@ -22,6 +22,9 @@ import SingleItem from '../../myAccounts/components/SingleItemAccount'
 import history from '../../util/history';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import ImageModal from '../../myAccounts/components/ImageModal'
+import SearchButton from '../../myAccounts/components/SearchItemsButton';
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
       height:'100vh',
@@ -90,10 +93,10 @@ const useStyles = makeStyles((theme) => ({
       },
 
     MainCard:{
-         marginTop:'60px',
+        marginTop:'60px',
         justifyContent:'center',
         display:'flex',
-        alignItems:'center,'
+        alignItems:'center'
         
          },
     
@@ -138,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
 
       ItemsWrapper:{
           width:'100%',
-          height:'73vh',
+          height: 'calc(100vh - calc(100vh - 80%))',
           overflowY:'scroll',
           
        },
@@ -225,10 +228,8 @@ const useStyles = makeStyles((theme) => ({
         flex:'wrap',
         justifyContent:'center', 
         alignItems:'center'
-       }
-      
-     
-
+       },
+       
   }));
 
 
@@ -265,6 +266,7 @@ function Index({match}) {
    React.useEffect(() => {
   if(data){
     dispatch({type:SET_Current_Account_Ui, payload:data.getUserAccount})
+    
   }
 
  },[data])
@@ -429,6 +431,8 @@ const FormatOptions = {
     
    
     <div className={classes.FabWrapper}>  
+    
+
     <Fab 
      disableFocusRipple={true}  
     size="medium" 
@@ -442,6 +446,10 @@ const FormatOptions = {
      } 
       </Fab> 
       
+     
+      
+     
+     
       </div>
                   
     </div>
@@ -450,10 +458,16 @@ const FormatOptions = {
      
    </div>   
    
-     <StatisticButton 
+   <SearchButton/>
+   
+    <StatisticButton 
       totalSpending={SumSpendingstas} 
-      totalEarning={SumEarningstas} />
+      totalEarning={SumEarningstas} 
+      />
       
+
+
+
       <AddItemModal accountId={accountId} scrollToBottom={scrollToBottom} /> 
       <UpdateItemModal accountId={accountId} />
       <ImageModal/>
@@ -479,6 +493,7 @@ query($accountId:ID!){
               media
               amount
               createdAt
+              updatedAt
             }
         }  
       }

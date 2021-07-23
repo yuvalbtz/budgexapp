@@ -39,7 +39,7 @@ function Index({accountId, itemId}) {
           Axios.post("https://api.cloudinary.com/v1_1/dw4v5axnj/image/upload/",formData)
           .then(res => {
             setLoading(true)
-            setImageMutation(res.data.url) 
+            setImageMutation(res.data.secure_url) 
             console.log(res.data);
             updateItemImage()
             
@@ -70,7 +70,7 @@ function Index({accountId, itemId}) {
         <input name="file" accept="image/*" hidden id={`icon-button-file-image-${itemId}`} type="file" onChange={handleFileChanged} />
         <label htmlFor={`icon-button-file-image-${itemId}`} style={{position:'absolute', bottom:-2, left:0, transform:'translate(6%, -14%)' }}>
         
-      <IconButton color='inherit' size='small' style={{backgroundColor:'white'}} aria-label="upload picture" component="span">
+      <IconButton color='inherit' size='small' disabled={loading} style={{backgroundColor:'white'}} aria-label="upload picture" component="span">
       { loading  ?  <CircularProgress color='secondary' size={20}/> : <AddAPhotoRoundedIcon style={{fontSize:'18px'}} /> } 
         </IconButton>
        </label>

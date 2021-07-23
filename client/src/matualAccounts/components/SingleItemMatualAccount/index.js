@@ -10,9 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import NumericLabel from 'react-pretty-numbers';
 import Badge from '@material-ui/core/Badge';
 import { makeStyles} from '@material-ui/core/styles';
-import { Link, Redirect } from 'react-router-dom';
-
+import { Link, Redirect, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { IconButton } from '@material-ui/core';
+import { SET_LightBoxImage } from '../../../Redux/actionTypes';
+import { useDispatch } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
    
    details: {
@@ -142,9 +145,6 @@ const useStyles = makeStyles((theme) => ({
           paddingLeft:0,
           
         }
-
-       
-        
       },
      
       descriptionDetail:{
@@ -154,16 +154,25 @@ const useStyles = makeStyles((theme) => ({
         justifyContent:'flex-end',
         margin:'2px 4% 15px 2px',
         wordBreak:'break-word',
-        whiteSpace:'break-spaces'
+        whiteSpace:'break-spaces',
+        lineHeight:1,
+        
       },
       
-       createdAtDetail:{
+      createdAtDetail:{
         position:'sticky',
         display:'flex',
         justifyContent:'flex-end',
-        top:'95%',
         zIndex:0,
-        margin:'2px 3% 2px 2px'
+        margin:'0 3% 0 0' 
+       },
+
+       updatedAtDetail:{
+        position:'sticky',
+        display:'flex',
+        justifyContent:'flex-end',
+        zIndex:0,
+        margin:'0 3% 0 0'
        },
 
        titleDetail:{
@@ -199,10 +208,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function Index({item, accountId}) {
-   
+function Index({item, accountId, ownerName}) {
+  dayjs.extend(relativeTime)
    const classes = useStyles() 
-   
+   const dispatch = useDispatch()
+   const params = useParams()
    
 
 //Number Format Options
@@ -269,11 +279,14 @@ const FormatOptions = {
                  padding:0,
                  margin:0,
                  backgroundSize:'cover'}}
-                 image={NoImage}
+                 image={item.media ? item.media : NoImage}
+                 component={item.media ? Link : 'span'}
+                 to={item.media && `/matualAccounts/${params && params.accountId}/showImage`}
+                 onClick={() => item.media && dispatch({type:SET_LightBoxImage, payload:item.media}) }
                 
                 >
                 
-                <SRLWrapper  options={options} >
+               {/*  <SRLWrapper  options={options} >
                  {item.media && ( <img 
                  style={{
                  display:'flex', 
@@ -281,11 +294,11 @@ const FormatOptions = {
                  
                  cursor:'pointer',  
                  }} height='100%' width='100%'  src={item.media} alt={item.description} />)}
-                </SRLWrapper>
+                </SRLWrapper> */}
               
                 </CardMedia>
                   
-              {!item.media && ( <AddItemImageButton accountId={accountId} itemId={item.id}/>)}
+              {!item.media && ( <AddItemImageButton accountId={accountId} itemId={item.id} ownerName={ownerName}/>)}
                
              
              </div>
@@ -320,7 +333,14 @@ const FormatOptions = {
                 variant="subtitle2" 
                 color="textSecondary" 
                 className={classes.createdAtDetail}>
-                 {item.createdAt} :נוצר לאחרונה
+                 {dayjs(parseInt(item.createdAt)).format('DD/MM/YYYY hh:mm:ss')} :נוצר לאחרונה
+               </Typography>
+              
+               <Typography 
+                variant="subtitle2" 
+                color="textSecondary" 
+                className={classes.updatedAtDetail}>
+                 {dayjs(parseInt(item.updatedAt)).fromNow()} :עודכן לפני
                </Typography>
               </div>
               

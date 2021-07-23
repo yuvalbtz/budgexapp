@@ -155,7 +155,6 @@ export const LinkStyle = styled(Link)`
       
       &:hover {
       border:2px solid white;
-      transform: translate(0px,-6px);
       color:white;
       background-color:#242333;
     }

@@ -106,17 +106,8 @@ const DialogActions = withStyles((theme) => ({
 function CustomizedDialogs(props) {
   
 
-
- 
-
-
- // const context = useContext(AuthContext)
+    const dispatch = useDispatch()
   
-  const dispatch = useDispatch()
-  
-
-
-  //const [open, setOpen] = React.useState(false);
   
   const open = window.location.pathname === '/login'
   
@@ -174,17 +165,6 @@ function CustomizedDialogs(props) {
         setPhone(false) 
       }
     },() => window.removeEventListener('resize'));
-
-
-
-    
-  /* React.useEffect(() => {
-    if(window.innerWidth <= 760){
-      setPhone(true)
-    } else{
-      setPhone(false) 
-    }
-  },[window.innerWidth]) */
 
 
 

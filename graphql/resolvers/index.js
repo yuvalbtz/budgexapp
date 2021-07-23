@@ -20,7 +20,8 @@ module.exports = {
 
     Subscription:{
         ...accountResolvers.Subscription,
-        ...notificationsResolvers.Subscription
+        ...notificationsResolvers.Subscription,
+        ...matualAccountResolvers.Subscription,
     }
         
 }

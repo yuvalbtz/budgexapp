@@ -8,7 +8,7 @@ const { uuid } = require("uuidv4");
 
 module.exports = {
           Query:{
-
+        
            async getUserMatualAccounts(_,__,context){
             const userId = context.req.user.id;
                 
@@ -60,6 +60,35 @@ module.exports = {
           },
           Mutation:{
 
+            async searchMatualAccount(_,{searchQuery},context){
+                const userId = context.req.user.id;
+                
+                try{
+                   
+                   const accounts = await MatualAccount.find()
+                    if(accounts){
+                        
+                const filteredAccounts = accounts.filter(item => item.members.find(i =>  i.userId === userId && i.isConfirmed === true) || item.owner == userId); 
+                 
+                 if(searchQuery !== ""){
+                    const FilteredSearch = filteredAccounts.filter(account => account.title === searchQuery )      
+                  
+                    return FilteredSearch.reverse();
+                }else{
+                     return filteredAccounts.reverse()
+                }
+               
+                        
+ }
+                }catch(err){
+                     console.log(err);
+                }
+            },
+
+
+
+
+
           async createMatualAccount(_,{title, freinds},context){
           
             const userId = context.req.user.id
@@ -107,10 +136,10 @@ module.exports = {
            
                
               
-               /*  account.members.map(m => m.userId === userId && m.isConfirmed === true && m.userId) */
+               
                if(userNotifications){
                 context.pubsub.publish('requestAdded', {addRequestToList:userNotifications})
-                console.log("working notification!!!");  
+                
             }
              
              
@@ -158,13 +187,22 @@ module.exports = {
                             })
                             account.members.filter(item => !freinds.includes(item.userId))
                             accountNotification.to = freinds
+                            accountNotification.accountTitle = account.title
                             
                            
                            
                             await accountNotification.save()
+                            
                             await account.save()
+                               
+                            const updateMatualAccounts = await MatualAccount.find()
+                                if(updateMatualAccounts){
+                                   context.pubsub.publish('accountChanged', {accountChangedSubs:updateMatualAccounts}) 
+                                }
                            
                             const notifications = await Notifications.find()
+                            
+                            
                             if(notifications){
                               context.pubsub.publish('requestAdded', {addRequestToList:notifications})  
                             
@@ -182,10 +220,22 @@ module.exports = {
         
         async deleteMatualAccount(_,{accountId},context){
                try {
+                const userId = context.req.user.id
                 const account = await MatualAccount.findById(accountId);
                 const notification = await Notifications.findOne({accountId}) 
                 if(account && notification){
-                  await account.delete()
+                   
+                    await account.delete()
+                 
+                
+                    const deletedMatualAccounts = await MatualAccount.find()
+                    if(deletedMatualAccounts){
+                       context.pubsub.publish('accountChanged', {accountChangedSubs:deletedMatualAccounts}) 
+                    }
+                  
+                 
+                 
+                 
                   await notification.delete()
                  const notifications = await Notifications.find()
                   if(notifications){
@@ -208,11 +258,17 @@ module.exports = {
                 const matualAccount =  await MatualAccount.findById(accountId)
                
                 if(matualAccount){
-                    console.log(context.req.id);
+                    
                     matualAccount.list.push({title, description,media, amount})
                    
-                    await matualAccount.save()
+                    const newItemMatualAccount =  await matualAccount.save()
+                              
+                    if(newItemMatualAccount){
+                        context.pubsub.publish('itemChanged', {itemChangedSubs:newItemMatualAccount}) 
+                    }
+                    
                    
+                    
                     return  matualAccount; 
                 
                 }else throw new UserInputError('Account not found!');  
@@ -228,13 +284,16 @@ module.exports = {
             const account = await MatualAccount.findById(accountId)
 
             if(account){
-                const item = account.list.filter(item => item._id == itemId)
+                const item = account.list.filter(item => item._id == itemId)[0]
                 if(item){
-                    item[0].title = title
-                    item[0].description = description
-                    item[0].amount = amount
-                   await account.save();
-
+                    item.title = title
+                    item.description = description
+                    item.amount = amount
+                  const updatedItemMatualAccount = await account.save();
+                  
+                   if(updatedItemMatualAccount){
+                    context.pubsub.publish('itemChanged', {itemChangedSubs:updatedItemMatualAccount}) 
+                   }
                    return account;
                 }  
                
@@ -246,6 +305,7 @@ module.exports = {
          console.log(error);   
         }
        },
+
 
        async deleteMatualItem(_,{accountId, itemId},context){
         try {
@@ -268,8 +328,14 @@ module.exports = {
                 
                 
              
-               await account.save()
-                return account;
+             const deletedItemMatualAccount = await account.save()
+               
+               if(deletedItemMatualAccount){
+                context.pubsub.publish('itemChanged', {itemChangedSubs:deletedItemMatualAccount}) 
+               }
+               
+               
+               return account;
               
                 
                 
@@ -294,8 +360,15 @@ module.exports = {
                                 console.log(item);
                                 item[0].media = imageURL
                                
-                               await account.save();
+                                const addImageItemMatualAccount = await account.save()
+               
+                                if(addImageItemMatualAccount){
+                                 context.pubsub.publish('itemChanged', {itemChangedSubs:addImageItemMatualAccount}) 
+                                }
+                                
     
+                               
+
                                return true;
                             }  
                            
@@ -318,10 +391,10 @@ module.exports = {
             if(account){
                 
                 const item = account.list.filter(item => item._id == itemId)
-                const username = context.req.user.username
+                const username = account.ownerName
                 
                
-                if(item){
+                if(item && username){
                     const path = `Users/${username}/matualAccounts/${accountId}/${itemId}` 
     
                     const publicId = item[0].media.split('/Users').reverse()[0].split('.')[0]
@@ -331,7 +404,11 @@ module.exports = {
                    await cloudinary.uploader.destroy("Users"+publicId,{invalidate:true});
                    await cloudinary.api.delete_folder(path)
                   
-                  await account.save();
+                   const deletedImageItemMatualAccount = await account.save()
+               
+                   if(deletedImageItemMatualAccount){
+                    context.pubsub.publish('itemChanged', {itemChangedSubs:deletedImageItemMatualAccount}) 
+                   }
 
                    return true;
                 }  
@@ -347,15 +424,49 @@ module.exports = {
      }
      },
 
-     
+
+     async searchMatualItem(_,{searchQuery,accountId},context){
+        try {
+            const account = await MatualAccount.findById(accountId)
+            
+            if(account){
+               
+                if(searchQuery !== ""){
+            
+                const NewList = account.list.filter(item => item.title === searchQuery)
+                  
+                account.list = NewList 
+
+                return account;
+                
+                }else{
+                     return account
+                 }
+             }
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
 
-        
+
+ },
+
+
+
+            Subscription:{
+                itemChangedSubs:{
+                    subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator('itemChanged')  
+                },
+
+                accountChangedSubs:{
+                    subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator('accountChanged')  
+                }
+            
+            
+            }
 
 
 
 
-
-
-          }
 }

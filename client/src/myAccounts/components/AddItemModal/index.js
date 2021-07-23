@@ -52,6 +52,7 @@ function NumberFormatCustom(props) {
     return (
       <NumberFormat
         {...other}
+        id='numberformat'
         getInputRef={inputRef}
         onValueChange={(values) => {
           onChange({
@@ -106,8 +107,7 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
  
     const classes = useStyles();
     const FormClasses = useFormStyles()
-    const dispatch = useDispatch()
-    //const ModalIsOpen = useSelector(state => state.uiReducer.AddItemModalIsOpen)
+    
     const ModalIsOpen = window.location.pathname === `/myAccounts/${accountId}/addItem`
     
     const [radioValue, setRadioValue] =useState('')
@@ -204,7 +204,7 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
           <div>
         <FormControl className={classes.margin}>
          <Autocomplete
-         id="grouped-demo"
+         id="grouped-demo1"
          options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
          groupBy={(option) => option.firstLetter}
          getOptionLabel={(option) =>option.title}
@@ -224,7 +224,7 @@ export default function SimpleSlide({accountId, scrollToBottom}) {
       <div>
       <FormControl  className={classes.margin}>
       <TextField
-          id="standard-textarea"
+          id="standard-textarea1"
           value={values.description}
           onChange={onChange}
           name="description" 

@@ -22,10 +22,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Container, Divider, Modal} from '@material-ui/core';
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import ConfirmRequestButton from '../../notifications/components/ConfirmRequestButton'
+import ConfirmOrRemoveRequestButton from '../../notifications/components/ConfirmRequestButton'
 import { SET_NotificationsCount } from '../../Redux/actionTypes';
-
-
+import LeaveMatualAccountButton from '../../notifications/components/LeaveMatualAccountButton'
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
@@ -272,11 +271,9 @@ return (
         
       <CssBaseline />
       <Paper square className={classes.paper} >
-        {/* <Typography className={classes.text} variant="h5" gutterBottom>
-          Inbox
-        </Typography> */}
+       
         <List dir='ltr' className={classes.list}>
-          {filteredNtf.sort((a, b) => parseInt(b.createdAt) - parseInt(a.createdAt)).map(({ id, senderName, body, senderImageUrl, accountTitle, createdAt, updatedAt,accountId, isConfirmed, from, to }) => (
+          {filteredNtf.sort((a, b) => parseInt(b.updatedAt) - parseInt(a.updatedAt)).map(({ id, senderName, body, senderImageUrl, accountTitle, createdAt, updatedAt,accountId, isConfirmed, from, to }) => (
             <React.Fragment key={id}>
             <React.Fragment >
              {user && from === user.id &&  isConfirmed.length > 0 && isConfirmed.map(id => ( // user accept msg
@@ -324,7 +321,7 @@ return (
                 className={classes.inline}
                 color="textPrimary"
               >
-                {" " +accountTitle}
+              &apos;&apos; {accountTitle} &apos;&apos;  
               </Typography>
               </React.Fragment>
             
@@ -343,11 +340,13 @@ return (
               
               
               <div style={{display:'flex', width:'94%', margin:'0 auto'}}>
-             <ListItem style={{justifyContent:'center', backgroundColor:'red',color:'white'}}  button type="submit" component="button">
-              התעלם
-             </ListItem>
-            
-             <ConfirmRequestButton accountId={accountId} userId={user && user.id} setFilterdNtf={setFilterdNtf}/>
+             
+             
+             <ConfirmOrRemoveRequestButton 
+             accountId={accountId} 
+             userId={user && user.id} 
+             setFilterdNtf={setFilterdNtf}/>
+           
             </div>
             <Divider style={{marginTop:'12px'}} variant="inset" component="li" />   
             </React.Fragment>
@@ -384,7 +383,7 @@ return (
                 className={classes.inline}
                 color="textPrimary"
               >
-                {" " +accountTitle}
+                &apos;&apos; {accountTitle} &apos;&apos;
               </Typography>
               </React.Fragment>
             
@@ -400,10 +399,10 @@ return (
                 {dayjs(parseInt(createdAt)).fromNow()}
                 
               </Typography> 
-              
-         <ListItem style={{justifyContent:'center', backgroundColor:'red',color:'white'}}  button type="submit" component="button">
-               בטל הצטרפות מחשבון זה
-             </ListItem>   
+              <div style={{margin:'0 auto',display:'flex'}}>
+              <LeaveMatualAccountButton accountId={accountId} userId={user && user.id}/>
+              </div>
+             
              <Divider style={{marginTop:'12px'}} variant="inset" component="li" />   
             </React.Fragment>
             

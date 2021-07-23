@@ -136,7 +136,7 @@ export default function SimpleSlide() {
       
       
       
-      const [createAccount,{loading}] = useMutation(CREATE_MATUAL_ACCOUNT, {
+      const [createMatualAccount,{loading}] = useMutation(CREATE_MATUAL_ACCOUNT, {
         variables: {
           title:values.title,
           freinds:selectedFreindsId
@@ -150,7 +150,7 @@ export default function SimpleSlide() {
            values.title = ''
          },
         onCompleted:() =>{
-          setSelectedFreinds([])
+        setSelectedFreinds([])
           history.goBack()
         }
   
@@ -158,7 +158,7 @@ export default function SimpleSlide() {
       });
     
       function createAccountCallback() {
-        createAccount();
+        createMatualAccount();
       }
 
    
@@ -333,6 +333,9 @@ mutation createMatualAccount($title:String!, $freinds:[String]!) {
     title
     owner
     ownerName
+    list{
+      id
+    }
     members {
         userId
         isConfirmed

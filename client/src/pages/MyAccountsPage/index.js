@@ -14,8 +14,8 @@ import { Link } from 'react-router-dom';
 import {useDispatch} from 'react-redux'
 import { SET_BG_SINGLE_ACCOUNT, SET_Current_Account_Ui } from '../../Redux/actionTypes';
 import { useRef } from 'react';
-import { Container } from '@material-ui/core';
-
+import { Container, IconButton } from '@material-ui/core';
+import ListAltRoundedIcon from '@material-ui/icons/ListAltRounded'
 
 const styles = theme => ({
   root: {
@@ -115,12 +115,17 @@ function ButtonBases(props) {
   const dispatch = useDispatch()
   dispatch({type:SET_Current_Account_Ui,payload:null})
   
+  
+
   const {
     data,
   } = useQuery(GET_USER_ACCOUNTS);
   
   console.log("myAccounts page");
   
+ 
+
+
   function scrollToTop() {
    
     input.current.scrollIntoView({behavior: 'smooth'});
@@ -144,7 +149,16 @@ function ButtonBases(props) {
         <div className={classes.button}>
        <MenuOptionsBar accountId={account.id} accountDetails={account}/>
         </div>
-       
+        
+       <div style={{display:'flex', position:'relative',zIndex:13}}>
+        <IconButton style={{position:'absolute', right:4,top:1, color:'white'}}>
+        <ListAltRoundedIcon />
+        <Typography variant='h6' component='h6' style={{marginLeft:5,fontFamily:'Varela Round',}}>
+          {account.list.length}
+        </Typography>
+        </IconButton>
+        </div>
+        
         <ButtonBase
           focusRipple
           key={account.id}
@@ -179,7 +193,21 @@ function ButtonBases(props) {
          
          
         </ButtonBase>
-       
+        
+        <div style={{display:'flex', position:'relative',zIndex:13}}>
+        <Typography 
+        variant='subtitle2' 
+        component='h6' 
+        style={{
+          position:'absolute', 
+          right:4,bottom:2, 
+          color:'white',
+          marginLeft:5,
+          fontFamily:'Varela Round',}}>
+          {new Date(Number(account.createdAt)).toDateString()}
+        </Typography>
+      
+        </div>
         </Grid>
         
     ))}

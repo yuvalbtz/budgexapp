@@ -15,16 +15,18 @@ const matualAccountSchema = new Schema({
         
          list:[
               {
-                 title:String,
-                 description:String,
-                 media:String,
-                 amount:Number,
-                 createdAt: { type: Date, default: Date.now },
-                 updatedAt: { type: Date, default: Date.now }
+                  type: new Schema(
+                    {
+                        title:String,
+                        description:String,
+                        media:String,
+                        amount:Number,
+                        },{timestamps:true})
               }
          ],
-        
+            
 })
+
 
 matualAccountSchema.set('timestamps', true)
 

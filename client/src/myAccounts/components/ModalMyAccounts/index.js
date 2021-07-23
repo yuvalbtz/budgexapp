@@ -97,7 +97,7 @@ const useFormStyles = makeStyles(() => ({
     }
 }));
 
-export default function SimpleSlide() {
+export default function SimpleSlide({scrollToTop}) {
     const classes = useStyles();
     const FormClasses = useFormStyles()
     const dispatch = useDispatch()
@@ -117,14 +117,21 @@ export default function SimpleSlide() {
       variables: values,
       update(proxy, result) {
         const data = proxy.readQuery({
-          query: GET_USER_ACCOUNTS
-        });
-        data.getUserAccounts = [result.data.createAccount, ...data.getUserAccounts];
-        proxy.writeQuery({ query: GET_USER_ACCOUNTS, data });
+          query: GET_USER_ACCOUNTS,
+          });
+        
+         
+         data.getUserAccounts = [result.data.createAccount, ...data.getUserAccounts];
+     
+        proxy.writeQuery({ query: GET_USER_ACCOUNTS, data});
          values.title = ''
         },
-      onCompleted:() =>{
-        history.goBack()
+        onError:(err) => console.log(err),
+     
+      onCompleted:() => {
+       history.goBack()
+      
+      
       }
 
       
@@ -220,8 +227,11 @@ mutation createAccount($title:String!) {
     id
     createdAt
     updatedAt
-    title
     owner
+    title
+    list{
+      id
+    }
     }
  }
 `;
@@ -234,6 +244,9 @@ const GET_USER_ACCOUNTS = gql`
     updatedAt
     owner
     title
+    list{
+      id
+    }
     }
 }
 `;

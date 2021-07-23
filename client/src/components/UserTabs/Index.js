@@ -20,7 +20,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import CloseIcon from '@material-ui/icons/Close';
 import MenuButton from '../../myAccounts/components/MenuButton'
 import { IconButton } from '@material-ui/core';
-
+import SearchIcon from '@material-ui/icons/Search';
 const styles = theme => ({
     
     TabContainerProfile:{
@@ -64,7 +64,12 @@ const styles = theme => ({
       
      },
     
-    
+    searchFabs:{
+      position: 'fixed',
+      bottom: theme.spacing(10),
+      right: theme.spacing(2),
+      zIndex:12
+    },
     
      fab: {
       position: 'fixed',
@@ -134,6 +139,8 @@ function FloatingActionButtonZoom(props)  {
     let [value,setValue] = useState(1)
     const dispatch = useDispatch()
     const { classes, theme } = props;
+    const [searchUrl, setUrlSearch] = React.useState(false)
+    
     console.log("split",window.location.pathname.split('/')[1]);
     if(window.location.pathname.split('/')[1] === 'matualAccounts'){
         value = 0
@@ -141,6 +148,8 @@ function FloatingActionButtonZoom(props)  {
          value = 2 
       }else if(window.location.pathname.split('/')[1] === 'myAccounts'){
          value = 1
+      }else{
+        return value
       }
 
 
@@ -182,7 +191,37 @@ function getUrltab(value){
       exit: theme.transitions.duration.leavingScreen,
     };
 
+  
+
+    const searchFabs = [
+      {
+        icon: window.location.pathname === '/matualAccounts/search' ? <CloseIcon
+        onClick={() => history.goBack()}
+        /> : <IconButton 
+        style={{color:'white'}} 
+        component={Link} 
+        to={`/matualAccounts/search`}>
+          <SearchIcon/>
+          </IconButton>,
+        color:'primary',
+        style:classes.searchFabs
+      },
+      {
+        icon: window.location.pathname === '/myAccounts/search' ? <CloseIcon
+        onClick={() => history.goBack()}
+        
+        /> : <IconButton 
+        style={{color:'white'}} 
+        component={Link} 
+        to={`/myAccounts/search`}>
+          <SearchIcon/>
+          </IconButton>,
+        color:'secondary',
+        style:classes.searchFabs
+      }
+    ]
    
+    
     const fabs = [
       {
         color: 'primary',
@@ -193,7 +232,8 @@ function getUrltab(value){
           <AddIcon 
           className={classes.iconFullPadding}/>
         </IconButton>,
-        cssColor:'#3c57f2'
+        cssColor:'#3c57f2',
+       
       },  
       {
         color: 'secondary',
@@ -208,6 +248,7 @@ function getUrltab(value){
         />
         </IconButton> ,
         cssColor:'#ff0054',
+        
         
       },
       {
@@ -250,8 +291,40 @@ function getUrltab(value){
           <TabContainer  classes={classes.TabContainerProfile}  dir={theme.direction} ><Profile/></TabContainer>
         </SwipeableViews>
         
-        <MenuButton FabColor={fabs[value].color} />
+      
+      
+        
        
+          {searchFabs.map((fab, index) => (
+            <div key={index}>
+                <Zoom
+            key={index}
+            in={value === index}
+            timeout={transitionDuration}
+            style={{
+              transitionDelay: `${value === index ? transitionDuration.exit : 0}ms`,
+            }}
+            unmountOnExit
+          >
+             <Fab disableFocusRipple color={fab.color} className={fab.style} >
+              {fab.icon} 
+            </Fab>
+          </Zoom>
+            </div>
+          ))}
+      
+
+
+
+
+
+       {/*  <MenuButton FabColor={fabs[value].color} /> */}
+       
+         {/* <SearchButton/> */}
+        
+
+        
+        
         
         {fabs.map((fab, index) => (
           <Zoom
@@ -265,7 +338,7 @@ function getUrltab(value){
           >
              
             <Fab disableFocusRipple className={fab.className} color={fab.color}>
-              {fab.icon}
+              {fab.icon} 
             </Fab>
           </Zoom>
         ))}

@@ -25,7 +25,8 @@ import Badge from '@material-ui/core/Badge';
 import gql from 'graphql-tag'
 import {useQuery, useSubscription } from '@apollo/react-hooks';
 import { SET_NotificationsCount } from '../../Redux/actionTypes';
-
+import {AuthContext} from '../../context/auth'
+import { useContext } from 'react';
 const useStyles = makeStyles((theme) => ({
 
    HelloToUser:{
@@ -54,21 +55,20 @@ function Index(){
    
 
     const classes = useStyles()
+   // const {user} = useContext(AuthContext)  
     const user = useSelector(state => state.userReducer.userDetails)
-    const user2 = useSelector(state => state.userReducer.isAuthenticated)
     const currentAccount = useSelector(state => state.uiReducer.getCurrentAccountUi)
     const badgeCount = useSelector(state => state.uiReducer.NotificationsCount.Badge)
     const params = useParams()
     
     const currentPage = window.location.pathname.split('/')[1]
-    console.log("authenticated!",user2);
+ 
     console.log("from", user);
 
     const [click, setClick] = useState(false)
     const [scroll, setScroll] = useState(false)
     
-    const [ntfCount, setNtfCount] = React.useState(0)
-    const [subsCount, setSubsCount] = React.useState(0)
+   
     
     const dispatch = useDispatch()
  
@@ -150,46 +150,4 @@ function Index(){
 export default Index
 
 
-const NOTIFICATIONS = gql`
-subscription AddRequestToList{
-  addRequestToList{
-    id
-    seen
-    senderName
-    senderImageUrl
-    accountId
-    isConfirmed
-    isIgnored
-    to
-    from
-    accountTitle
-    body
-    createdAt
-    updatedAt
-  }
-}
 
-
-`;
-
-
-
-
-const GET_NOTIFICATIONS = gql`
-{
-  getNotifications{
-    id
-    seen
-    senderName
-    senderImageUrl
-    accountId
-    isConfirmed
-    isIgnored
-    to
-    from
-    accountTitle
-    body
-    createdAt
-    updatedAt
-  }
-}`;

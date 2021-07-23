@@ -135,15 +135,19 @@ type Query{
      """
      getUserAccounts:[Account!]!
      getUserAccount(accountId:ID!):Account!
-
-     
+    
+    
+    
      """
      //matualAccounts
      """
      getUserMatualAccounts:[MatualAccount!]!
      getUserMatualAccount(accountId:ID!):MatualAccount!
      getAllUsers:[User!]!
-   
+    
+    
+    
+    
      """
      //notifications
      """
@@ -169,27 +173,30 @@ type Query{
     createAccount(title:String!):Account!
     updateAccount(accountId:ID!,title:String!):Account!
     deleteAccount(accountId:ID!):String!
+    searchAccount(searchQuery:String):[Account]!
 
     addItem(accountId:ID!, title:String!, description:String!,media:String,amount:Float):Account!
     updateItem(accountId:ID!, itemId:ID!, title:String!, description:String!, amount:Float):Account!
     deleteItem(accountId:ID!, itemId:ID!):Account!
     addItemImage(accountId:ID!, itemId:ID!, imageURL:String!):Boolean!
     deleteItemImage(accountId:ID!, itemId:ID!):Boolean!
-   
+    searchItem(searchQuery:String!,accountId:ID!):Account!
+    
     """
    //matualAccount
     """
     createMatualAccount(title:String!, freinds:[String]!):MatualAccount!
     updateMatualAccount(accountId:ID!,title:String!,freinds:[String]!):MatualAccount!
     deleteMatualAccount(accountId:ID!):String!
-   
+    searchMatualAccount(searchQuery:String):[MatualAccount]!
+
     addMatualItem(accountId:ID!, title:String!, description:String!,media:String,amount:Float):MatualAccount!
     updateMatualItem(accountId:ID!, itemId:ID!, title:String!, description:String!, amount:Float):MatualAccount!
     deleteMatualItem(accountId:ID!, itemId:ID!):MatualAccount!
     addItemMatualImage(accountId:ID!, itemId:ID!, imageURL:String!):Boolean!
     deleteIteMatualmImage(accountId:ID!, itemId:ID!):Boolean!
-
-    
+    searchMatualItem(searchQuery:String, accountId:ID!):MatualAccount!
+   
     """
     //profile
     """
@@ -202,7 +209,7 @@ type Query{
     """
     
     confirmRequest(accountId:ID!, userId:ID!):[Notification]!
-    
+    removeRequest(accountId:ID!, userId:ID!):[Notification]!
     
     
     
@@ -223,6 +230,9 @@ type Subscription{
      getallitems:message! 
 
      addRequestToList:[Notification]!
+     
+     itemChangedSubs:MatualAccount!
+     accountChangedSubs:[MatualAccount]!
 }`
 
 

@@ -15,6 +15,8 @@ import {WebSocketLink} from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities';
 import {split} from '@apollo/client'
 import { HttpLink } from '@apollo/client'
+
+
 /* const authLink = setContext(() => {
   const token = localStorage.getItem('jwtToken');
   return {
@@ -25,13 +27,13 @@ import { HttpLink } from '@apollo/client'
 }); */
 
 const httpLink = new HttpLink({
-  uri: 'https://salty-ridge-45014.herokuapp.com/graphql',
+  uri: 'http://localhost:4000/graphql',
   credentials:'include',
 });
 
 
 const wsLink = new WebSocketLink({
-  uri: 'wss://salty-ridge-45014.herokuapp.com/graphql',
+  uri: 'ws://localhost:4000/graphql', //wss in production
   options: {
     reconnect: true
   }
@@ -53,10 +55,7 @@ const client = new ApolloClient({
    
     link: splitLink,
     cache: new InMemoryCache(),
-   
-    
-
-});
+  });
 
 
 
@@ -64,11 +63,9 @@ const client = new ApolloClient({
 export default (
   <ApolloProvider client={client}>
     <Provider store={store}>
-    <AuthProvider>
     <Router history={history}>
      <App />
     </Router>
-   </AuthProvider>
    </Provider>
   </ApolloProvider>
 );

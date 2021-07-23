@@ -13,8 +13,7 @@ function Index({children}) {
    
     return (
         <div>
-         
-        <Navbar />
+         <Navbar />
           
         <main>
         {children}
@@ -23,7 +22,7 @@ function Index({children}) {
        {!window.location.pathname.split('/')[1] && ( <Footer>
         All Rights Reserved © {new Date().getFullYear()} - TeamBudget
         </Footer>)}
-       
+      
        </div>
     )
 }

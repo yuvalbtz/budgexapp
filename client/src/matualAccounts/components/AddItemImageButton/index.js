@@ -7,24 +7,26 @@ import gql from 'graphql-tag'
 import {useMutation} from '@apollo/react-hooks';
 import {useSelector} from 'react-redux'
 
-function Index({accountId, itemId}) {
+function Index({accountId, itemId, ownerName}) {
    
   const [fileSelected, setFileSelected] = useState(null)
   const [imageMutation ,setImageMutation] = useState('')
   const [loading ,setLoading] = useState(false)
   
-  const getUsername = useSelector(state => state.userReducer.userDetails)
-
   const formData = new FormData()
   
    const [updateItemImage,{data}] = useMutation(ADD_ITEM_IMAGE_MUTATION, {
-       variables:{ 
+      variables:{ 
            accountId,
            itemId,
            imageURL:imageMutation},
     onCompleted:() => {
         setLoading(false) }, 
-        refetchQueries:[{query:GET_USER_ACCOUNT, variables:{accountId}}]})
+        refetchQueries:[{query:GET_USER_ACCOUNT, variables:{accountId}}]
+        
+      
+      
+      })
         
 
 
@@ -34,12 +36,12 @@ function Index({accountId, itemId}) {
         if(fileSelected){
           formData.append('file', fileSelected)
           formData.append('upload_preset','temed3va')
-          formData.append('folder',`Users/${getUsername.username}/matualAccounts/${accountId}/${itemId}`)
+          formData.append('folder',`Users/${ownerName}/matualAccounts/${accountId}/${itemId}`)
           
           Axios.post("https://api.cloudinary.com/v1_1/dw4v5axnj/image/upload/",formData)
           .then(res => {
             setLoading(true)
-            setImageMutation(res.data.url) 
+            setImageMutation(res.data.secure_url) 
             console.log(res.data);
             updateItemImage()
             
@@ -70,7 +72,7 @@ function Index({accountId, itemId}) {
         <input name="file" accept="image/*" hidden id={`icon-button-file-image-${itemId}`} type="file" onChange={handleFileChanged} />
         <label htmlFor={`icon-button-file-image-${itemId}`} style={{position:'absolute', bottom:-2, left:0, transform:'translate(6%, -14%)' }}>
         
-      <IconButton color='inherit' size='small' style={{backgroundColor:'white'}} aria-label="upload picture" component="span">
+      <IconButton color='inherit' size='small' disabled={loading} style={{backgroundColor:'white'}} aria-label="upload picture" component="span">
       { loading  ?  <CircularProgress color='secondary' size={20}/> : <AddAPhotoRoundedIcon style={{fontSize:'18px'}} /> } 
         </IconButton>
        </label>

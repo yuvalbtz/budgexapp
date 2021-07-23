@@ -14,20 +14,21 @@ import gql from 'graphql-tag';
 import {useSelector, useDispatch} from 'react-redux'
 import { SET_USER, SET_USER_LOGOUT } from './Redux/actionTypes';
 import history from './util/history';
-
+import SplashScreen from './components/SplashScreen'
 
 
 function App() {
   document.body.style.overflow = "hidden"
-
+  /*  console.log = () => {} */
   const {data, loading} = useQuery(GET_USER_STATE);
   const dispatch = useDispatch()
   const user = useSelector(state => state.userReducer)
   
- 
+  
 
 useEffect(() => {
-  if(data !== undefined ){
+  
+ if(data !== undefined ){
    if(data.getUserState){
     dispatch({type:SET_USER, payload:data.getUserState})
   
@@ -50,6 +51,11 @@ useEffect(() => {
   
   },[data])   
  
+  if(loading){
+    return (<SplashScreen/>)
+  }else{
+    console.log("first render!", data);
+  }
 
 console.log("APP", user);
 
@@ -81,7 +87,7 @@ console.log("APP", user);
      <AuthRoute exact path='/myAccounts/addAccount' userf={user} component={UserPage}/>
      <AuthRoute exact path='/myAccounts/deleteAccount/:accountId' userf={user} component={UserPage}/>
      <AuthRoute exact path='/myAccounts/updateAccount/:accountId' userf={user} component={UserPage}/>
-   
+     <AuthRoute exact path='/myAccounts/search' userf={user} component={UserPage}/>
 
      <AuthRoute exact path='/myAccounts/:accountId' userf={user} component={SingleAccount} />
      <AuthRoute exact path='/myAccounts/:accountId/addItem' userf={user} component={SingleAccount} />
@@ -89,7 +95,7 @@ console.log("APP", user);
      <AuthRoute exact path='/myAccounts/:accountId/deleteItem/:itemId' userf={user} component={SingleAccount} />
      <AuthRoute exact path='/myAccounts/:accountId/statis' userf={user} component={SingleAccount} />
      <AuthRoute exact path='/myAccounts/:accountId/showImage' userf={user} component={SingleAccount} />
-
+     <AuthRoute exact path='/myAccounts/:accountId/search' userf={user} component={SingleAccount}/>
 
 
      {/* my matualAccounts Routs */}
@@ -98,15 +104,16 @@ console.log("APP", user);
      <AuthRoute exact path='/matualAccounts/deleteAccount/:accountId' userf={user} component={UserPage}/>
      <AuthRoute exact path='/matualAccounts/updateAccount/:accountId' userf={user} component={UserPage}/>
      <AuthRoute exact path='/matualAccounts/LeaveAccount/:accountId' userf={user} component={UserPage}/>
-
+     <AuthRoute exact path='/matualAccounts/search' userf={user} component={UserPage}/>
+     <AuthRoute exact path='/matualAccounts/:accountId/ShowAccountFreinds' userf={user} component={UserPage}/>
 
      <AuthRoute exact path='/matualAccounts/:accountId' userf={user} component={SingleMatualAccount} />
      <AuthRoute exact path='/matualAccounts/:accountId/addItem' userf={user} component={SingleMatualAccount} />
      <AuthRoute exact path='/matualAccounts/:accountId/updateItem/:itemId' userf={user} component={SingleMatualAccount} />
      <AuthRoute exact path='/matualAccounts/:accountId/deleteItem/:itemId' userf={user} component={SingleMatualAccount} />
      <AuthRoute exact path='/matualAccounts/:accountId/statis' userf={user} component={SingleMatualAccount} />
-   
-    
+     <AuthRoute exact path='/matualAccounts/:accountId/showImage' userf={user} component={SingleMatualAccount} />
+     <AuthRoute exact path='/matualAccounts/:accountId/search' userf={user} component={SingleMatualAccount}/>
     
     
      <Route component={PageNotFound}/>

@@ -145,9 +145,6 @@ const useStyles = makeStyles((theme) => ({
           paddingLeft:0,
           
         }
-
-       
-        
       },
      
       descriptionDetail:{
@@ -157,16 +154,24 @@ const useStyles = makeStyles((theme) => ({
         justifyContent:'flex-end',
         margin:'2px 4% 15px 2px',
         wordBreak:'break-word',
-        whiteSpace:'break-spaces'
+        whiteSpace:'break-spaces',
+        lineHeight:1,
       },
       
-       createdAtDetail:{
+      createdAtDetail:{
         position:'sticky',
         display:'flex',
         justifyContent:'flex-end',
-        top:'95%',
         zIndex:0,
-        margin:'2px 3% 2px 2px'
+        margin:'0 3% 0 0' 
+       },
+
+       updatedAtDetail:{
+        position:'sticky',
+        display:'flex',
+        justifyContent:'flex-end',
+        zIndex:0,
+        margin:'0 3% 0 0'
        },
 
        titleDetail:{
@@ -323,12 +328,20 @@ const FormatOptions = {
                   whiteSpace:'nowrap'}}>:תיאור</span>
               </Typography>
                
-               <Typography 
+              <Typography 
                 variant="subtitle2" 
                 color="textSecondary" 
                 className={classes.createdAtDetail}>
-              {dayjs(parseInt(item.createdAt)).fromNow()} :נוצר לאחרונה
+                 {dayjs(parseInt(item.createdAt)).format('DD/MM/YYYY hh:mm:ss')} :נוצר לאחרונה
                </Typography>
+              
+               <Typography 
+                variant="subtitle2" 
+                color="textSecondary" 
+                className={classes.updatedAtDetail}>
+                 {dayjs(parseInt(item.updatedAt)).fromNow()} :עודכן לפני
+               </Typography>
+              
               </div>
               
               

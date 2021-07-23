@@ -24,7 +24,32 @@ module.exports = {
 
     Mutation:{
           
-            async createAccount(_,{title},context,info){
+        async searchAccount(_,{searchQuery},context){
+            const userId = context.req.user.id;
+            try {
+                const accounts = await Account.find({owner:userId})
+                
+                if(accounts){
+                   
+                    if(searchQuery !== ""){
+                        
+                        
+                    const filteredAccount = accounts.filter(account => account.title === searchQuery)
+                      
+                     return filteredAccount.reverse();
+                    
+                    }else{
+                         return accounts.reverse()
+                     }
+                 }
+            } catch (error) {
+                console.log(error);
+            }  
+        },    
+        
+        
+        
+         async createAccount(_,{title},context,info){
                 const userId = context.req.user.id;
                    
                   const newAccount = new Account({
@@ -260,7 +285,32 @@ module.exports = {
                     console.log(err);
                     return false;
                 }
-        }
+        },
+        
+        async searchItem(_,{searchQuery, accountId},context){
+           
+            try {
+                const account = await Account.findById(accountId)
+                
+                if(account){
+                   
+                    if(searchQuery !== ""){
+                        
+                        
+                    const NewList = account.list.filter(item => item.title === searchQuery)
+                      
+                    account.list = NewList 
+
+                    return account;
+                    
+                    }else{
+                         return account
+                     }
+                 }
+            } catch (error) {
+                console.log(error);
+            }
+        },
 
 
 
@@ -270,9 +320,9 @@ module.exports = {
 
 
     Query:{
- 
-
-            getUserAccounts: async (_,__,context) => {
+        
+       
+        getUserAccounts: async (_,__,context) => {
                  
                 
                  const userId = context.req.user.id;

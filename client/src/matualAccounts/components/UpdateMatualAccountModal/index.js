@@ -18,7 +18,7 @@ import AccountBalanceWalletRoundedIcon from '@material-ui/icons/AccountBalanceWa
 import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 import gql from 'graphql-tag'
-import {useLazyQuery, useMutation, useQuery} from '@apollo/react-hooks'
+import {useLazyQuery, useMutation} from '@apollo/react-hooks'
 import {useForm} from '../../../hooks/useForm'
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
@@ -129,7 +129,7 @@ export default function SimpleSlide() {
     
     const [errors, setErrors] = useState({});
   
-  const {onSubmit, values} = useForm(updateAccountCallback, {
+  const {onSubmit} = useForm(updateAccountCallback, {
     title: title,
   
    
@@ -173,7 +173,7 @@ export default function SimpleSlide() {
             
             if(accountDetails.members && accountDetails.members.length > 0 ){
               const AccountMembers = accountDetails.members.map(m => m.userId)
-              const MembersAlreadyInAccount = options.filter(({id}) => AccountMembers.includes(id))
+              const MembersAlreadyInAccount = options.filter((user) =>  AccountMembers.includes(user.id))
               setMembersInAccount(MembersAlreadyInAccount)
               setSelectedFreinds(MembersAlreadyInAccount)
               console.log("answer", MembersAlreadyInAccount);
@@ -191,23 +191,24 @@ export default function SimpleSlide() {
 
 
     
-   console.log("options!!",options);
+  
    React.useEffect(() => {
-    setSelectedFreinds([])
-    getAllUsers();
+    
+    if(ModalIsOpen){
+      setSelectedFreinds([])
       UpdateAccountFeild()
+    }
+  
      
    },[ModalIsOpen])
 
    React.useEffect(() => {
+    getAllUsers();
     if(data){
         const users = data.getAllUsers;
         setOptions(users);
-       
-        console.log("users",options);
-       
       }
-     }, [data]);
+     }, [data, ModalIsOpen]);
 
 
     
@@ -284,14 +285,7 @@ export default function SimpleSlide() {
               onClose={() => setOpen(false)}
               groupBy={(option) => data && `${data.getAllUsers.length + ' users'}`}
               getOptionSelected={(option, value) => option.id === value.id}
-              onChange={(e,val, res) => {
-                if(MembersInAccount.length > 0 && res === "clear"){
-                  setMembersInAccount([])
-                 
-                } else {
-                  setSelectedFreinds(val)
-                }
-              }}
+              onChange={(e,val, res) => setSelectedFreinds(val)}
               getOptionLabel={(option) => option.username}
              
               renderOption={(option, { selected }) => (
@@ -309,7 +303,7 @@ export default function SimpleSlide() {
               )}
               
               options={options}
-              value={selectedFreinds.length === 0 ? MembersInAccount : selectedFreinds}
+              value={!selectedFreinds  ? MembersInAccount : selectedFreinds}
              
               /* loading */
               
@@ -331,7 +325,7 @@ export default function SimpleSlide() {
                  label=":הוסף חברים"
                   InputProps={{
                     ...params.InputProps,
-                    startAdornment: (<>{(selectedFreinds.length === 0 && MembersInAccount.length === 0) && (<GroupRoundedIcon/>)} {params.InputProps.startAdornment}</>),
+                    startAdornment: (<>{(selectedFreinds.length === 0) && (<GroupRoundedIcon/>)} {params.InputProps.startAdornment}</>),
                 }}
                 />
               )}
