@@ -148,7 +148,6 @@ export default function SimpleSlide({accountId}) {
     const FormClasses = useFormStyles()
     const dispatch = useDispatch()
     const params = useParams()
-    //const ModalIsOpen = useSelector(state => state.uiReducer.UpdateItemModalIsOpen.isOpen)
     
     const itemDetails = useSelector(state => state.uiReducer.UpdateItemModalIsOpen.itemDetails)
     
@@ -278,10 +277,7 @@ export default function SimpleSlide({accountId}) {
 
 React.useEffect(() =>{ 
   UpdateFeildsOnOpen()
-  
-
-
-} 
+  } 
   
   ,[ModalIsOpen])
     

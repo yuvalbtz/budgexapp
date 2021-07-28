@@ -103,7 +103,6 @@ const DialogActions = withStyles((theme) => ({
   const open = window.location.pathname === `/register`
   const [phone , setPhone] = useState(false);
   const dispatch = useDispatch()
-  const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
   const { onChange, onSubmit, values } = useForm(registerUser, {
@@ -203,7 +202,7 @@ const DialogActions = withStyles((theme) => ({
         <FormControl className={classes.margin}>
         
         <TextField
-          id="input-with-icon-textfield"
+          id="input-with-icon-textfield123"
           label=":שם משתמש"
           type="text"
           name="username"
@@ -224,7 +223,7 @@ const DialogActions = withStyles((theme) => ({
         <div>
       <FormControl className={classes.margin}>
         <TextField
-          id="input-with-icon-email"
+          id="input-with-icon-email567"
          label=":אימייל"
           type="email"
           name="email"
@@ -247,7 +246,7 @@ const DialogActions = withStyles((theme) => ({
        <div>
       <FormControl className={clsx(classes.margin, classes.textField)}>
           <TextField
-            id="standard-adornment-password"
+            id="standard-adornment-password984"
             label=":סיסמה"
             type={FormValues.showPassword ? 'text' : 'password'}
             name="password"
@@ -276,7 +275,7 @@ const DialogActions = withStyles((theme) => ({
         <div>
         <FormControl className={clsx(classes.margin, classes.textField)}>
          <TextField
-            id="standard-adornment-password2"
+            id="standard-adornment-password229"
             label=":אימות סיסמה"
             type={FormValues.showConfirmPassword ? 'text' : 'password'}
             name="confirmPassword"

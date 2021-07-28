@@ -97,10 +97,10 @@ const useFormStyles = makeStyles(() => ({
     }
 }));
 
-export default function SimpleSlide({scrollToTop}) {
+export default function SimpleSlide() {
     const classes = useStyles();
     const FormClasses = useFormStyles()
-    const dispatch = useDispatch()
+    
     const ModalIsOpen = window.location.pathname === '/myAccounts/addAccount'
     const input = React.useRef()
     

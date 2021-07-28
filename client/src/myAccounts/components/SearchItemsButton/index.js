@@ -104,6 +104,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:theme.palette.secondary.main
 
   },
+  closeIndicator:{
+    color: 'white',
+  },
   SearchField:{
    color: 'white',
    fontFamily:'Varela Round',
@@ -135,21 +138,20 @@ export default function SearchAppBar() {
   const accountId = params.accountId
 
   const open  = window.location.pathname === `/myAccounts/${accountId}/search`
-
-  
-
-
-  
  
+ let input = React.useRef() 
  const [searchQuery, setSearchQuery] = React.useState("")
  const accountIdReducer = useSelector(state => state.uiReducer.getCurrentAccountUi)
  const [options, setOptions] = React.useState([])
 
  React.useEffect(() => {
- /*  if(!open){
-    setSearchQuery('')
-    searchItem()
-} */
+  if(open){
+    input.focus()
+     
+  }else{
+   input.blur();
+  }
+
   if(accountIdReducer){
    
  const unic =  accountIdReducer.list.filter((v,i,a)=>a.findIndex(t=>(t.title === v.title))===i)
@@ -190,36 +192,30 @@ export default function SearchAppBar() {
   return (
     <div >
     <Fab  
-    className={classes.FabSearch} 
-    size="medium" 
+    disableFocusRipple 
+    disableRipple
+    component={Link}  
+   className={classes.FabSearch} 
+   to={`/myAccounts/${params.accountId}/search`}
+   size="medium" 
     color="secondary" 
     aria-label="search" >
-     <IconButton 
-      disableFocusRipple 
-      disableRipple
-      component={Link}  
-     style={{color:'white'}} 
-     to={`/myAccounts/${params.accountId}/search`}>
-       <>
-       {open ? <IconButton disableFocusRipple disableRipple style={{color:'white'}} onClick={() => history.goBack()}><CloseIcon /></IconButton>: <SearchIcon/>}
-       </>
-      </IconButton> 
-      </Fab>
+     {open ? <IconButton disableFocusRipple disableRipple style={{color:'white'}} onClick={() => history.goBack()}><CloseIcon /></IconButton>: <SearchIcon/>}
+     </Fab>
       
       <Slide in={open}>
      <Paper className={classes.paper}> 
          <div  className={classes.search}>
             <Autocomplete
                 id="grouped-demoAItem123"
-                classes={{inputRoot:classes.SearchField}}
-                closeIcon={false}
+                classes={{inputRoot:classes.SearchField,clearIndicator:classes.closeIndicator,popupIndicatorOpen:classes.closeIndicator}}
                 options={options}
                 getOptionLabel={(option) => option ? option : '' }
                 style={{ width: 300 }}
                 renderInput={(params) => <CssTextField 
                   {...params} 
                 placeholder="Search..." 
-                inputRef={input => input && open && input.focus()}
+                inputRef={(el) => input = el}
                 variant="standard" />}
                 onSelect={() => searchItem() }
                  onChange={(val,value,res) =>{

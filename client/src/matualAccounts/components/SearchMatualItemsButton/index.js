@@ -104,6 +104,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:theme.palette.primary.main
 
   },
+  closeIndicator:{
+    color: 'white',
+  },
   SearchField:{
    color: 'white',
    fontFamily:'Varela Round',
@@ -136,15 +139,17 @@ export default function SearchAppBar() {
   const [searchQuery, setSearchQuery] = React.useState("")
  const accountIdReducer = useSelector(state => state.uiReducer.getCurrentAccountUi)
  const [options, setOptions] = React.useState([])
-const input = React.useRef()
+let input = React.useRef()
  
 
 
  React.useEffect(() => {
-   /*  if(!open){
-        setSearchQuery('')
-        searchItem()
-    } */
+   if(open){
+     input.focus()
+      
+   }else{
+    input.blur();
+   }
  
  
    if(accountIdReducer){
@@ -183,38 +188,27 @@ const input = React.useRef()
    })
 
   
-
-
-
-
   return (
     <div >
     
     <Fab  
-    className={classes.FabSearch} 
-    size="medium" 
-    color="primary" 
-    aria-label="search" >
-     
-     <IconButton 
-      disableFocusRipple 
-      disableRipple
-      component={Link}  
-     style={{color:'white'}} 
-     to={`/matualAccounts/${params.accountId}/search`}>
-       <>
-       {open ?<IconButton disableFocusRipple disableRipple style={{color:'white'}} onClick={() => history.goBack()}><CloseIcon /></IconButton> : <SearchIcon/>}
-       </>
-      </IconButton> 
-      </Fab>
+     disableFocusRipple 
+     disableRipple
+     component={Link}  
+     to={`/matualAccounts/${params.accountId}/search`}
+     className={classes.FabSearch} 
+     size="medium" 
+     color="primary" 
+     aria-label="search" >
+     {open ?<IconButton disableFocusRipple disableRipple style={{color:'white'}} onClick={() => history.goBack()}><CloseIcon /></IconButton> : <SearchIcon/>}
+    </Fab>
       
       <Slide in={open}>
      <Paper className={classes.paper}> 
          <div  className={classes.search}>
             <Autocomplete
-                id="grouped-demoAItem1"
-                classes={{inputRoot:classes.SearchField}}
-                closeIcon={false}
+                id="grouped-demoAItem928398"
+                classes={{inputRoot:classes.SearchField,clearIndicator:classes.closeIndicator,popupIndicatorOpen:classes.closeIndicator}}
                 options={options}
                 getOptionLabel={(option) =>  option  ? option : '' }
                 style={{ width: 300 }}
@@ -222,9 +216,9 @@ const input = React.useRef()
                   {...params} 
                 value={searchQuery}
                 placeholder="Search..." 
-                inputRef={input => input && open && input.focus()}
+                inputRef={ (el) => input = el}
                 variant="standard" />}
-                onSelect={() => searchItem() }
+                onSelect={() => searchItem()}
                  onChange={(val,value,res) =>{
                   if(value){
                   setSearchQuery(value)  

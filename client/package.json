@@ -20,6 +20,7 @@
     "axios": "^0.21.1",
     "bizcharts": "^4.1.10",
     "dayjs": "^1.10.5",
+    "dotenv": "^10.0.0",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
     "history": "^4.10.1",
@@ -36,7 +37,6 @@
     "react-scroll": "^1.8.2",
     "react-swipeable-views": "^0.13.9",
     "redux": "^4.0.5",
-    "simple-react-lightbox": "^3.6.6",
     "styled-components": "^5.2.1",
     "web-vitals": "^1.0.1"
   },
@@ -65,5 +65,5 @@
     ]
   },
   "devDependencies": {},
-  "homepage": "https://salty-ridge-45014.herokuapp.com/"
+  "homepage": "http://localhost:3000/"
 }

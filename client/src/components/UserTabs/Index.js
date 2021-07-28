@@ -12,14 +12,15 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import green from '@material-ui/core/colors/green';
 import { Link } from 'react-router-dom';
-import history from '../../util/history'
-import MyAccounts from '../../pages/MyAccountsPage'
-import MatualAccounts from '../../pages/MatualAccountsPage'
-import Profile from '../../pages/ProfilePage'
-import {useDispatch} from 'react-redux'
+import history from '../../util/history';
+import MyAccounts from '../../pages/MyAccountsPage';
+import MatualAccounts from '../../pages/MatualAccountsPage';
+import Profile from '../../pages/ProfilePage';
 import CloseIcon from '@material-ui/icons/Close';
 import { IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import { SET_Current_Account_Ui } from '../../Redux/actionTypes';
+import { useDispatch, useSelector } from 'react-redux';
 const styles = theme => ({
     
     TabContainerProfile:{
@@ -136,17 +137,29 @@ TabContainer.propTypes = {
 
 function FloatingActionButtonZoom(props)  {
     let [value,setValue] = useState(1)
+    
+    const accountUI = useSelector(state => state.uiReducer.getCurrentAccountUi)
     const dispatch = useDispatch()
+    
+    React.useEffect(() => {
+      if(accountUI){
+        dispatch({type:SET_Current_Account_Ui,payload:null}) // clean redux current account ui
+      }
+    },[accountUI, dispatch])
+    
+
+
     const { classes, theme } = props;
-    const [searchUrl, setUrlSearch] = React.useState(false)
+    
     
     console.log("split",window.location.pathname.split('/')[1]);
+    
     if(window.location.pathname.split('/')[1] === 'matualAccounts'){
-        value = 0
+         value = 0
       }else if(window.location.pathname.split('/')[1] === 'profile'){
          value = 2 
       }else if(window.location.pathname.split('/')[1] === 'myAccounts'){
-         value = 1
+          value = 1
       }else{
         return value
       }
@@ -180,7 +193,7 @@ function getUrltab(value){
 
   const handleChangeIndex = (index) => {
     getUrltab(index)
-   /// setValue(index)
+   
   
   };
 
@@ -264,7 +277,10 @@ function getUrltab(value){
 
     return (
       <div className={classes.root}>
-        <AppBar className={classes.appBar} position="static" color="default">
+        <AppBar 
+        className={classes.appBar} 
+        position="static" 
+        color="default">
           <Tabs
             value={value}
             onChange={handleChange}
@@ -311,20 +327,7 @@ function getUrltab(value){
           </Zoom>
             </div>
           ))}
-      
-
-
-
-
-
-       {/*  <MenuButton FabColor={fabs[value].color} /> */}
        
-         {/* <SearchButton/> */}
-        
-
-        
-        
-        
         {fabs.map((fab, index) => (
           <Zoom
             key={fab.color}

@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react';
-import { Route, Redirect, useParams} from 'react-router-dom';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Route, Redirect} from 'react-router-dom';
 
 
-function AuthRoute({ component: Component, userf,...rest}) {
+function AuthRoute({ component: Component,...rest}) {
    console.log("cookie",document.cookie.split('id2=')[1]);
-   //const user = useSelector(state => state.userReducer)
+   const userf = useSelector(state => state.userReducer)
   console.log("user login",userf && userf.isAuthenticated);
   
   

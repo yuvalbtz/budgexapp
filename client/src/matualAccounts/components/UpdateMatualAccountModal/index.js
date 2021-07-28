@@ -249,7 +249,7 @@ export default function SimpleSlide() {
           <div>
           <FormControl className={classes.margin}>
         <TextField
-          id="input-with-icon-textfield"
+          id="input-with-icon-textfield80356489"
           label=":שם החשבון"
           type="text"
           name="title"
@@ -275,7 +275,7 @@ export default function SimpleSlide() {
         <Autocomplete
               multiple
               disableCloseOnSelect
-              id="asynchronous-demo6"
+              id="asynchronous-demo90466"
               name="addFreinds"
               style={{maxWidth:250,minWidth:220}}
              

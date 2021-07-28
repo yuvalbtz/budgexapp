@@ -6,17 +6,20 @@ import gql from 'graphql-tag'
 import history from '../../util/history'
 import {useDispatch} from 'react-redux'
 import { SET_Current_Account_Ui, SET_USER_LOGOUT } from '../../Redux/actionTypes';
+import {makeStyles} from '@material-ui/core'
+
+const useStyles = makeStyles((theme) => ({
+  
+}))
+
 
 
 function Index() {
     const dispatch = useDispatch()
     
-   
+    const classes = useStyles()
     const [logOut, { loading }] = useMutation(USER_LOG_OUT, {
-        update(
-          _,
-           ) {
-         
+        update(_,) {
             dispatch({type:SET_Current_Account_Ui, payload:null})
             dispatch({type:SET_USER_LOGOUT})
             localStorage.clear()          
@@ -27,22 +30,17 @@ function Index() {
     
      function handlelogout(){
         logOut()
- }
+      }
     
     
     
     return (
         
-          <Fab
-         size="small"
-         aria-label="add"
-         style={{backgroundColor:'whitesmoke', margin:'6px 0px 6px 6px'}}
-         onClick={handlelogout}
-       >
-         <ExitToAppRoundedIcon style={{color:'#d50000'}}/>
-         
-       </Fab>  
-        
+      <li  
+      onClick={handlelogout} 
+      className={classes.logOutButton}>
+        התנתק
+      </li>        
     )
 }
 

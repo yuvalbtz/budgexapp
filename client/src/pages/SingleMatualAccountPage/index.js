@@ -291,7 +291,7 @@ function Index({match}) {
     if (unsubscribe) return () => unsubscribe()
 
 
-},[ModalIsOpen, subscribeToMore])
+},[ModalIsOpen, subscribeToMore,accountId, user])
 
  
    

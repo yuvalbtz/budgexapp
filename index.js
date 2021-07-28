@@ -17,9 +17,12 @@ const path = require('path');
 const app = express()
 const http = require('http');
 
+require('dotenv').config()
+
+
 //enable cors
  var corsOptions = {
-  origin: 'https://salty-ridge-45014.herokuapp.com/',
+  origin: process.env.NODE_CLIENT_URL,
   credentials: true, // <-- REQUIRED backend setting
  
 }; 

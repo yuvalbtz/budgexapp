@@ -210,9 +210,10 @@ export default function SimpleSlide() {
           </DialogContentText>
           
           <div>
-          <FormControl className={classes.margin}>
+          <FormControl  className={classes.margin}>
         <TextField
-          id="input-with-icon-textfield1"
+          id="input-with-icon-textfield8392178397"
+          aria-label='createAccount'
           label=":שם החשבון"
           type="text"
           name="title"
@@ -223,8 +224,8 @@ export default function SimpleSlide() {
           helperText={errors.title}
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
-                <AccountBalanceWalletRoundedIcon />
+            <InputAdornment position="start">
+                <AccountBalanceWalletRoundedIcon  />
               </InputAdornment>
             ),
           }}
@@ -237,7 +238,7 @@ export default function SimpleSlide() {
       <Autocomplete
       multiple
       disableCloseOnSelect
-      id="asynchronous-demo"
+      id="asynchronous-demo6534fd3"
       name="addFreinds"
       style={{maxWidth:250,minWidth:220}}
       open={open}
@@ -253,7 +254,7 @@ export default function SimpleSlide() {
       getOptionLabel={(option) => option.username}
      
       renderOption={(option, { selected }) => (
-        <React.Fragment>
+        <React.Fragment >
        <Checkbox
             icon={icon}
             checkedIcon={checkedIcon}
@@ -281,11 +282,10 @@ export default function SimpleSlide() {
       }
       renderInput={(params) => (
         <TextField
-        {...params}
-           multiline
+        {...params} 
+          multiline
           rowsMax={4}  
           label=":הוסף חברים"
-        
          InputProps={{
             ...params.InputProps,
             startAdornment: (<>{selectedFreinds.length === 0 && (<GroupRoundedIcon/>)} {params.InputProps.startAdornment}</>),
@@ -300,7 +300,7 @@ export default function SimpleSlide() {
         <DialogActions>
        {loading ? (<CircularProgress size={35} style={{margin:'0 auto', color:'green'}} />) : (
           <Fab
-          aria-label="save"
+         aria-label="save"
           color="primary"
           style={{margin:'0 auto',backgroundColor:'green'}}
           size={'small'}

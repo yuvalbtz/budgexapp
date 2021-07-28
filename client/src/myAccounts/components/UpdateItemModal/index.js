@@ -148,7 +148,6 @@ export default function SimpleSlide({accountId}) {
     const FormClasses = useFormStyles()
     const dispatch = useDispatch()
     const params = useParams()
-    //const ModalIsOpen = useSelector(state => state.uiReducer.UpdateItemModalIsOpen.isOpen)
     
     const itemDetails = useSelector(state => state.uiReducer.UpdateItemModalIsOpen.itemDetails)
     
@@ -302,10 +301,8 @@ React.useEffect(() =>{
         <form  onSubmit={onSubmit} noValidate>
         <DialogTitle id="alert-dialog-slide-title" onClose={() => {
             history.goBack()
-            ///dispatch({type:SET_UpdateItem_Modal_Open, payload:null})
             setRadioValue('')
-            
-            }} style={{textAlign:'center'}}> 
+             }} style={{textAlign:'center'}}> 
         <Typography component="div" variant="h5" className={FormClasses.HeadLine}>:עריכת פריט</Typography>
         </DialogTitle>
         <DialogContent>

@@ -2,38 +2,25 @@ import React from 'react';
 import App from './App';
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { createHttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { setContext } from 'apollo-link-context';
-import { AuthProvider} from './context/auth';
 import {Provider} from 'react-redux'
 import {store} from './Redux/Store'
 import {Router} from 'react-router-dom';
 import history from './util/history'
-import {createUploadLink} from 'apollo-upload-client'
 import {WebSocketLink} from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities';
 import {split} from '@apollo/client'
 import { HttpLink } from '@apollo/client'
 
 
-/* const authLink = setContext(() => {
-  const token = localStorage.getItem('jwtToken');
-  return {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : ''
-    }
-  };
-}); */
-
 const httpLink = new HttpLink({
-  uri: 'https://salty-ridge-45014.herokuapp.com/graphql',
+  uri: process.env.REACT_APP_SERVER_URL,
   credentials:'include',
 });
 
 
 const wsLink = new WebSocketLink({
-  uri: 'wss://salty-ridge-45014.herokuapp.com/graphql', //wss in production
+  uri: process.env.REACT_APP_WSS_SERVER_URL, //wss in production
   options: {
     reconnect: true
   }

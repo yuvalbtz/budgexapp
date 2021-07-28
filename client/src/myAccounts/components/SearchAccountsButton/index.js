@@ -97,6 +97,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:theme.palette.secondary.main
 
   },
+  closeIndicator:{
+    color: 'white',
+  },
   SearchField:{
    color: 'white',
    fontFamily:'Varela Round',
@@ -128,23 +131,23 @@ const [searchQuery, setSearchQuery] = React.useState("")
  
  const [options, setOptions] = React.useState([])
 
+ let input = React.useRef()
  
 const {data} = useQuery(GET_USER_ACCOUNTS)
 
  React.useEffect(() => {
-  /* if(!open){
-    setSearchQuery('')
-    searchAccount()
-} */
+  if(open){
+    input.focus()
+     
+  }else{
+   input.blur();
+  }
   
      if(data){
         const unic = data.getUserAccounts.filter((v,i,a)=>a.findIndex(t=>(t.title === v.title))===i)
         const filterdTitle = unic.map(account => account.title) 
         setOptions(filterdTitle)
      } 
- 
- 
-  
 
  },[open, data])
 
@@ -177,16 +180,15 @@ const {data} = useQuery(GET_USER_ACCOUNTS)
      <Paper className={classes.paper}> 
          <div  className={classes.search}>
             <Autocomplete
-                id="grouped-demoAItem"
-                classes={{inputRoot:classes.SearchField}}
-                closeIcon={false}
+                id="grouped-demoAItem8678679"
+                classes={{inputRoot:classes.SearchField,clearIndicator:classes.closeIndicator,popupIndicatorOpen:classes.closeIndicator}}
                 options={options}
                 getOptionLabel={(option) => option ? option : '' }
                 style={{ width: 300 }}
                 renderInput={(params) => <CssTextField 
                   {...params} 
                 placeholder="Search..." 
-                inputRef={input => input && open && input.focus()}
+                inputRef={(el) => input = el}
                 variant="standard" />}
                 onSelect={() => searchAccount() }
                  onChange={(val,value,res) =>{

@@ -94,6 +94,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:theme.palette.primary.main
 
   },
+  closeIndicator:{
+    color: 'white',
+  },
   SearchField:{
    color: 'white',
    fontFamily:'Varela Round',
@@ -124,7 +127,7 @@ export default function SearchAppBar() {
  
  const [searchQuery, setSearchQuery] = React.useState("")
  const [options, setOptions] = React.useState([])
-
+ let input = React.useRef()
 
  const [searchAccount,{loading}] = useMutation(SEARCH_ACCOUNTS,{
     variables:{
@@ -150,10 +153,12 @@ export default function SearchAppBar() {
 const {data} = useQuery(GET_USER_MATUAL_ACCOUNTS)
 
  React.useEffect(() => {
- /*  if(!open){
-    setSearchQuery('')
-    searchAccount()
-} */
+    if(open){
+        input.focus()
+         
+      }else{
+       input.blur();
+      }
   
 if(data){
    
@@ -178,23 +183,22 @@ if(data){
      <Paper className={classes.paper}> 
          <div  className={classes.search}>
             <Autocomplete
-                id="grouped-demoAItem"
-                classes={{inputRoot:classes.SearchField}}
-                closeIcon={false}
+                id="grouped-demoAItem111"
+                classes={{inputRoot:classes.SearchField,clearIndicator:classes.closeIndicator,popupIndicatorOpen:classes.closeIndicator}}
                 options={options}
                 getOptionLabel={(option) => option ? option : '' }
                 style={{ width: 300 }}
                 renderInput={(params) => <CssTextField 
                   {...params} 
+                id='textfeild122938' 
                 placeholder="Search..." 
-                inputRef={input => input && open && input.focus()}
+                inputRef={(el) => input = el}
                 variant="standard" />}
                 onSelect={() => searchAccount() }
                  onChange={(val,value,res) =>{
                 if(value){
                   setSearchQuery(value)  
-                  
-                }else{
+                   }else{
                     setSearchQuery('') 
                     
                   }}}

@@ -1,5 +1,4 @@
 import React from 'react'
-import { SRLWrapper } from "simple-react-lightbox";
 import {options} from '../../../util/lightboxConfig'
 import AddItemImageButton from '../AddItemImageButton'
 import NoImage from '../../../util/assets/no-image.svg'
@@ -10,10 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import NumericLabel from 'react-pretty-numbers';
 import Badge from '@material-ui/core/Badge';
 import { makeStyles} from '@material-ui/core/styles';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { Link,useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { IconButton } from '@material-ui/core';
 import { SET_LightBoxImage } from '../../../Redux/actionTypes';
 import { useDispatch } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
@@ -100,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
       column2:{
         display:'flex',
         width:'30%',
-        alignItems:'center',
+        justifyContent:'flex-end',
         flexDirection:'column',
         
       },
@@ -136,15 +134,13 @@ const useStyles = makeStyles((theme) => ({
 
       amountDetail:{
         display:'flex',
-        justifyContent:'center', 
-        alignItems:'center',
         whiteSpace:'nowrap', 
         wordBreak:'keep-all', 
         paddingLeft:'calc(100% - 60px)',
-        [theme.breakpoints.up('sm')]:{
-          paddingLeft:0,
-          
-        }
+        position: 'absolute',
+        width: '100%',
+        top:0,
+        right:-12,
       },
      
       descriptionDetail:{
@@ -274,7 +270,7 @@ const FormatOptions = {
                  display:'flex', 
                  borderTop:'1px solid rgba(0,0,0,1)',
                  width:'100%',
-                 height:'100%',
+                 height:'70%',
                  borderRight:'1px solid rgba(0,0,0,1)',
                  padding:0,
                  margin:0,
@@ -286,15 +282,7 @@ const FormatOptions = {
                 
                 >
                 
-               {/*  <SRLWrapper  options={options} >
-                 {item.media && ( <img 
-                 style={{
-                 display:'flex', 
-                 
-                 
-                 cursor:'pointer',  
-                 }} height='100%' width='100%'  src={item.media} alt={item.description} />)}
-                </SRLWrapper> */}
+              
               
                 </CardMedia>
                   

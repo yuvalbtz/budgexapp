@@ -1,18 +1,17 @@
 import React from 'react'
 import Layout from '../../components/Layout'
-import {useSelector, useDispatch} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import { makeStyles} from '@material-ui/core/styles';
-import { Container, IconButton, InputBase} from '@material-ui/core';
+import { Container, IconButton} from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AddItemModal from '../../myAccounts/components/AddItemModal';
 import UpdateItemModal from '../../myAccounts/components/UpdateItemModal';
-import { SET_AddItem_Modal_Open, SET_Current_Account_Ui } from '../../Redux/actionTypes';
+import {SET_Current_Account_Ui } from '../../Redux/actionTypes';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import {useQuery} from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-import {animateScroll} from 'react-scroll'
-import bgImages from '../../util/bg-images.json' 
+import {animateScroll} from 'react-scroll' 
 import Badge from '@material-ui/core/Badge';
 import StatisticButton from '../../myAccounts/components/SingleAccountStatisButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -241,10 +240,9 @@ function Index({match}) {
   
    const dispatch = useDispatch()
     const classes = useStyles()
-   //const ModalIsOpen = useSelector(state => state.uiReducer.AddItemModalIsOpen)
    const params = useParams()
    const ModalIsOpen = window.location.pathname === `/myAccounts/${match.params.accountId}/addItem`
-   const accountIdReducer = useSelector(state => state.uiReducer.getCurrentAccountUi)
+  
    const accountId = match.params.accountId
   
     let SumEarningstas; 
@@ -266,10 +264,9 @@ function Index({match}) {
    React.useEffect(() => {
   if(data){
     dispatch({type:SET_Current_Account_Ui, payload:data.getUserAccount})
-    
   }
 
- },[data])
+ },[data,dispatch])
 
 
 

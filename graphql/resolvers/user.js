@@ -229,11 +229,7 @@ module.exports = {
 
                             });
 
-                       
-                       
-                       
-                       
-                        return user;
+                     return user;
 
                     }
 
@@ -253,9 +249,9 @@ module.exports = {
         async getUserState(_,__,context){
            
            try{        
-        const ifUserConnected = await ifUserLoggedin()
-              console.log("firebase login",ifUserConnected);    
-            if(ifUserConnected){
+            const ifUserConnected = await ifUserLoggedin()
+             console.log("userFirebase",ifUserConnected );  
+             if(ifUserConnected){
                 context.res.cookie("id2", context.req.user.id, {
                     httpOnly:false,
                     secure:false,
@@ -264,7 +260,8 @@ module.exports = {
                 });  
                 return {...context.req.user}
             }else{
-                
+               
+                await auth.signOut();
                 context.res.clearCookie("id");
                 context.res.clearCookie("id2");
                 console.log("user is log out!");

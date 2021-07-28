@@ -11,11 +11,11 @@ import { useQuery } from '@apollo/react-hooks';
 import MenuBarButton from '../../matualAccounts/components/MoreOptionsButton'
 import { Link } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux'
-import {SET_BG_SINGLE_ACCOUNT} from '../../Redux/actionTypes'
 import UpdateMatualAccountModal from '../../matualAccounts/components/UpdateMatualAccountModal'
 import ShowAccountFreindsButton from '../../matualAccounts/components/ShowAccountFreindsButton'
 import { IconButton, Typography } from '@material-ui/core';
 import ListAltRoundedIcon from '@material-ui/icons/ListAltRounded'
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -93,6 +93,10 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     },
+    
+    createdBySubtitle:{
+      lineHeight:'inherit'
+    }
 });
 
 
@@ -104,6 +108,7 @@ function ButtonBases(props) {
   console.log("myMatual page");
   
    const dispatch = useDispatch()
+   
    const user = useSelector(state => state.userReducer.userDetails)
 
 
@@ -142,7 +147,7 @@ function ButtonBases(props) {
     
     if(unsubscribe) return () => unsubscribe() 
 
-   },[subscribeToMore])
+   },[subscribeToMore,user])
   
   
   console.log('data',data);
@@ -178,8 +183,7 @@ function ButtonBases(props) {
           focusVisibleClassName={classes.focusVisible}
           component={Link}
           to={`/matualAccounts/${account.id}`}
-          onClick={() => dispatch({type:SET_BG_SINGLE_ACCOUNT,payload:images[data.getUserMatualAccounts.length-index-1].img})}
-         >
+          >
          
          <span
             className={classes.imageSrc}
@@ -190,12 +194,13 @@ function ButtonBases(props) {
           <span className={classes.imageBackdrop} />
           
         <GridListTileBar
+              classes={{subtitle:classes.createdBySubtitle}}
               title={account.title}
               subtitle={<span 
                 style={{
                   position:'absolute', 
                   bottom:4, 
-                  left:15,
+                  left:5,
                   whiteSpace:'noWrap',
                   maxWidth:'40%',
                   textOverflow:'ellipsis',

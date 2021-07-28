@@ -86,7 +86,14 @@ const PieChart = ({data, cols}) => {
  
  return (
    
-    <Chart height={'50%'} width={'100%'}  data={data} scale={cols} interactions={['element-single-selected']} autoFit>
+    <Chart 
+    height={'60%'} 
+    width={'100%'}  
+    
+    data={data} 
+    scale={cols} 
+    interactions={['element-single-selected']} 
+    autoFit>
 		<Coordinate type="theta" radius={0.70} />
 			<Tooltip showTitle={false} />
 			<Axis visible={false} />
@@ -106,10 +113,7 @@ const PieChart = ({data, cols}) => {
 							content: (data) => {
 								return `${data.item}\n${Number(data.percent * 100).toFixed(1)}%`;
 							},
-
-              
-							
-						};
+          	};
 					},
 				]}
 			/>
@@ -297,7 +301,7 @@ const cols = {
            variant='h5'
            style={{textDecoration:'underline'}}
            >
-           ₪ {totalEarning + totalSpending } :מאזן נוכחי
+           ₪ {Number(totalEarning + totalSpending).toFixed(2)} :מאזן נוכחי
            </Typography>
         
           <div className={classes.stasWrapper}>

@@ -126,21 +126,14 @@ function CustomizedDialogs(props) {
 }
   
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update(
-      _,
-      {
-        data: { login: userData }  
-      } 
-      ) {
+    update(proxy,{data: { login: userData }}) {
         setErrors({});
         console.log(userData);
         dispatch({type:SET_USER, payload:userData});
         cleanFeilds()
         localStorage.setItem("id",userData.id)
         window.location.href = '/myAccounts'
-       
-        
-    },
+      },
    
     onError(err) {
     setErrors(err.graphQLErrors[0].extensions.exception.errors)
@@ -209,7 +202,7 @@ function CustomizedDialogs(props) {
         <div>
        <FormControl className={classes.margin}>
         <TextField
-          id="input-with-icon-textfield"
+          id="input-with-icon-textfield123"
           label=":שם משתמש"
           type="text"
           name="username"

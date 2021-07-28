@@ -100,7 +100,7 @@ justify-content:space-evenly;
 text-align:center;
 white-space:nowrap;
 padding:0;
-margin-right:10%;
+margin-right:12%;
 
 width:300px;
 @media screen and (max-width:960px ){
@@ -111,7 +111,6 @@ width:300px;
   width:150px;
   height:100vh;
   position:absolute;
-  //left:${({click}) => click ? "60%" : "1000px" };
   right:0;
   top:${({click}) => click ? "100%" : "-1000px"};
   opacity:1;
@@ -161,6 +160,44 @@ export const LinkStyle = styled(Link)`
     }
 
 `;
+
+
+
+export const LogoutLinkStyle = styled.div`
+
+    font-weight: bold;
+    list-style:none; 
+    color: whitesmoke;
+    display: flex;
+    align-items: center;
+    
+    text-decoration: none;
+    padding: 1em 1em 1em 1em;
+    
+    cursor: pointer;
+    font-size:1rem;
+    transition:all 0.3s ease;
+    &:hover {
+     background-color:white;
+     color:red;
+     
+    }
+
+    @media screen and (max-width:960px ){
+      padding: 3px;
+      font-size: 1.5rem;
+      align-items:none;
+      height:3rem;
+      
+      &:hover {
+      border:2px solid white;
+      color:white;
+      background-color:#242333;
+    }
+    }
+
+`;
+
 
 export const HelloToUser = styled.h3`
 color:whitesmoke;

@@ -3,12 +3,10 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import MoreVertRoundedIcon from '@material-ui/icons/MoreVertRounded';
 import IconButton from '@material-ui/core/IconButton';
-
 import DeleteMenuItem from '../MoreOptionsButtonItem/DeleteOptionItem';
 import UpdateMenuItem from '../MoreOptionsButtonItem/UpdateOptionItem'
 import RemoveImageItem from '../MoreOptionsButtonItem/RemoveImageOptionItem'

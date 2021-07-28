@@ -6,9 +6,6 @@ import {Footer} from './LayoutElements'
 
 function Index({children}) {
    
-   
-  
-   
     return (
         <div>
          <Navbar />
@@ -18,7 +15,7 @@ function Index({children}) {
         </main>
        
        {!window.location.pathname.split('/')[1] && ( <Footer>
-        All Rights Reserved © {new Date().getFullYear()} - TeamBudget
+        All Rights Reserved © {new Date().getFullYear()} - BudgeX Team
         </Footer>)}
       
        </div>

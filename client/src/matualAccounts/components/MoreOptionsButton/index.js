@@ -9,12 +9,10 @@ import MoreVertRoundedIcon from '@material-ui/icons/MoreVertRounded';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteMenuItem from './DeleteOptionAccount';
 import UpdateMenuItem from './UpdateOptionAccount'
-import {useDispatch, useSelector} from 'react-redux';
 import history from '../../../util/history';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 import RemoveParticaipantItem from './RemoveParticipant'
-import { SET_UpdateAccount_Modal_Open } from '../../../Redux/actionTypes';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -42,19 +40,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 function Index({accountId, accountDetails, IsUserOwner}) {
-   const dispatch = useDispatch()
-
+   
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const params = useParams()
   
     
-
-  
-   
-
-
   const handleToggle = () => {
     if(params.accountId){
        history.goBack()
@@ -114,9 +106,7 @@ function Index({accountId, accountDetails, IsUserOwner}) {
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     {IsUserOwner ? (<div><UpdateMenuItem accountId={accountId} accountDetails={accountDetails} />
                     <DeleteMenuItem accountId={accountId} setOpen={setOpen}/></div>) : (<RemoveParticaipantItem accountId={accountId} setOpen={setOpen}/>) }
-                    
-                    
-                  </MenuList>
+                    </MenuList>
                   </ClickAwayListener>
               </Paper>
             </Grow>

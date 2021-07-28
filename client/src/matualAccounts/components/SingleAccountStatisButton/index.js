@@ -314,9 +314,9 @@ const cols = {
            variant='h5'
            style={{textDecoration:'underline'}}
            >
-           ₪ {totalEarning + totalSpending } :מאזן נוכחי
+           ₪ {Number(totalEarning + totalSpending).toFixed(2)} :מאזן נוכחי
            </Typography>
-        
+          
           <div className={classes.stasWrapper}>
           
           {totalEarning > 0 && (<div style={{display:'flex', flexDirection:'column', height:'100%',  width:'100%'}}>

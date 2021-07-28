@@ -10,7 +10,8 @@ import {
     MobileIcon,
     NavMenu,
     HelloToUser,
-    LinkStyle
+    LinkStyle,
+    LogoutLinkStyle
   } from './NavbarElements';
 import { useDispatch, useSelector } from 'react-redux';
  
@@ -48,19 +49,12 @@ dismiss:{
 
 function Index(){
     
-   
-
-    const classes = useStyles()
-   // const {user} = useContext(AuthContext)  
+    const classes = useStyles() 
     const user = useSelector(state => state.userReducer.userDetails)
     const currentAccount = useSelector(state => state.uiReducer.getCurrentAccountUi)
     const badgeCount = useSelector(state => state.uiReducer.NotificationsCount.Badge)
     const params = useParams()
     
-    const currentPage = window.location.pathname.split('/')[1]
- 
-    console.log("from", user);
-
     const [click, setClick] = useState(false)
     const [scroll, setScroll] = useState(false)
     
@@ -77,11 +71,11 @@ function Index(){
             <Nav active={scroll} click={click}>
       <NavbarContainer>
         
-        {user && !currentAccount &&  (<LogOutButton/>)}
         
-        {user && currentPage === 'myAccounts' && currentAccount  && (<PersonRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
         
-        {user && currentPage === 'matualAccounts' && currentAccount  && (<GroupRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
+        {user && currentAccount && currentAccount.__typename === 'Account' &&  (<PersonRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
+        
+        {user && currentAccount && currentAccount.__typename === 'MatualAccount' && (<GroupRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
 
         <NavTitle>
        { params && currentAccount && params.accountId ? currentAccount.title : 'BudgeX'}   
@@ -97,6 +91,11 @@ function Index(){
      
 
      <NavMenu  click={click}>
+     
+     
+     {user &&  (<LogoutLinkStyle><LogOutButton/></LogoutLinkStyle>)}
+     
+     
      
      {user && <Badge  badgeContent={badgeCount} max={99} 
       invisible={false}
@@ -124,9 +123,9 @@ function Index(){
        <li>עלי</li>
       </LinkStyle>
       
-        <LinkStyle to='/setting'>
+      {/*   <LinkStyle to='/setting'>
        <li>הגדרות</li>
-        </LinkStyle>
+        </LinkStyle> */}
 
        
      

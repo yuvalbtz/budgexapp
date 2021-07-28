@@ -89,13 +89,8 @@ const useFormStyles = makeStyles(() => ({
 export default function SimpleSlide() {
     const classes = useStyles();
     const FormClasses = useFormStyles()
-    const dispatch = useDispatch()
     const params = useParams()
     
-    // const ModalIsOpen = useSelector(state => state.uiReducer.UpdateAccountModalIsOpen.isOpen)
-   
-  
-   
     const accountDetails = useSelector(state => state.uiReducer.UpdateAccountModalIsOpen.accountDetails)
     
     const ModalIsOpen = window.location.pathname === `/myAccounts/updateAccount/${params.accountId}` && accountDetails !== null  
@@ -138,24 +133,17 @@ export default function SimpleSlide() {
     
     
     
-    
-   
-   
-    function UpdateAccountFeild(){
-        
-        if(accountDetails){
-            console.log(accountDetails.title);
-             setTitle(accountDetails.title)
-        }
-        
+  React.useEffect(() => {
+    if(ModalIsOpen){
+      if(accountDetails){
+        console.log(accountDetails.title);
+         setTitle(accountDetails.title)
     }
+    }
+    
+   },[ModalIsOpen,accountDetails])
 
-
-
-
-   React.useEffect(() => UpdateAccountFeild(),[ModalIsOpen])
-
-
+   
 
   return (
     

@@ -3,18 +3,15 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import images from '../../util/bg-images.json'
 import Grid from '@material-ui/core/Grid';
-import { useQuery, useSubscription } from '@apollo/react-hooks';
+import { useQuery} from '@apollo/react-hooks';
 import MyAccountModal from '../../myAccounts/components/ModalMyAccounts';
 import UpdateAccountModal from '../../myAccounts/components/UpdateMyAccountModal'
 import gql from 'graphql-tag'
 import MenuOptionsBar from '../../myAccounts/components/MoreOptionsButton'
 import { Link } from 'react-router-dom';
-import {useDispatch} from 'react-redux'
-import { SET_BG_SINGLE_ACCOUNT, SET_Current_Account_Ui } from '../../Redux/actionTypes';
 import { useRef } from 'react';
-import { Container, IconButton } from '@material-ui/core';
+import { Container, IconButton} from '@material-ui/core';
 import ListAltRoundedIcon from '@material-ui/icons/ListAltRounded'
 
 const styles = theme => ({
@@ -112,25 +109,13 @@ const styles = theme => ({
 function ButtonBases(props) {
   const { classes } = props;
    const input = useRef()
-  const dispatch = useDispatch()
-  dispatch({type:SET_Current_Account_Ui,payload:null})
   
-  
-
-  const {
-    data,
-  } = useQuery(GET_USER_ACCOUNTS);
+ 
+  const {data} = useQuery(GET_USER_ACCOUNTS);
   
   console.log("myAccounts page");
   
- 
 
-
-  function scrollToTop() {
-   
-    input.current.scrollIntoView({behavior: 'smooth'});
-  
-  }
   
   
   return (
@@ -166,7 +151,6 @@ function ButtonBases(props) {
           focusVisibleClassName={classes.focusVisible}
           component={Link}
           to={`/myAccounts/${account.id}`}
-          onClick={() => dispatch({type:SET_BG_SINGLE_ACCOUNT,payload:images[data.getUserAccounts.length-index-1].img})}
           >
         
           <span
@@ -216,7 +200,7 @@ function ButtonBases(props) {
   
   
 
-<MyAccountModal scrollToTop={scrollToTop}/>
+<MyAccountModal/>
 
 <UpdateAccountModal/>
   
