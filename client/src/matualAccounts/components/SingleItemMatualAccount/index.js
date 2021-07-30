@@ -332,10 +332,8 @@ const FormatOptions = {
                </Typography>
               </div>
               
-              
-              </div>
+               </div>
             </div>
-           
            
          </Card>
        

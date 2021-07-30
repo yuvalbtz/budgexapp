@@ -1,11 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -26,12 +21,6 @@ import {
 import { DialogTitle } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
 import history from '../../../util/history';
-
-
-
-
-
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -253,27 +242,23 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
  
   React.useEffect(() => {
     if(open){
-      
     getDataEarning()
     getDataSpending()
-    
-    
-    
-  } 
+   } 
   }, [open])
  
   console.log("spending", array2);
   console.log("earning", array3); 
 
 //pie chart
-const data = [
+/* const data = [
   { item: "ביגוד והלבשה", percent: 0.4 },
   { item: "class 2", percent: 0.21 },
   { item: "class 3", percent: 0.17 },
   { item: "class 4", percent: 0.13 },
   { item: "משכורת", percent: 0.09 },
   { item: "אוכל ופירות", percent: 0.04 },
-];
+]; */
 
 const cols = {
   percent: {
@@ -283,11 +268,6 @@ const cols = {
     },
   },
 };
-
-
-
-
-
 
   return (
     
@@ -316,7 +296,7 @@ const cols = {
            >
            ₪ {Number(totalEarning + totalSpending).toFixed(2)} :מאזן נוכחי
            </Typography>
-          
+
           <div className={classes.stasWrapper}>
           
           {totalEarning > 0 && (<div style={{display:'flex', flexDirection:'column', height:'100%',  width:'100%'}}>

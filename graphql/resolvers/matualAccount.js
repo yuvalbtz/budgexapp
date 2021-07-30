@@ -168,9 +168,10 @@ module.exports = {
                             if(accountNotification){
                                 let ntfnIndex = accountNotification.to.findIndex(ntf => ntf == userId) // remove user from  notification
                                 let isConfirmIndex =  accountNotification.isConfirmed.findIndex(ntf => ntf == userId)
+                                let seenIndex = accountNotification.seen.findIndex(ntf => ntf == userId)
                                 accountNotification.to.splice(ntfnIndex,1)
                                 accountNotification.isConfirmed.splice(isConfirmIndex,1)
-                                
+                                accountNotification.seen.splice(seenIndex,1)
                             
                                 
                             }

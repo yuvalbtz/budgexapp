@@ -38,9 +38,10 @@ module.exports = {
                             if(notification){
                                 let ntfnIndex = notification.to.findIndex(ntf => ntf == userId) // remove user from  notification
                                 let isConfirmIndex =  notification.isConfirmed.findIndex(ntf => ntf == userId)
+                                let seenIndex = notification.seen.findIndex(ntf => ntf == userId)
                                 notification.to.splice(ntfnIndex,1)
                                 notification.isConfirmed.splice(isConfirmIndex,1)
-                                
+                                notification.seen.splice(seenIndex,1)
                             }
                             
                           })
@@ -93,8 +94,10 @@ module.exports = {
                         
                         if(notification){
                             let ntfnIndex = notification.to.findIndex(ntf => ntf == userId) // remove user from  notification
-                            let isConfirmIndex =  notification.isConfirmed.findIndex(ntf => ntf == userId)
+                            let isConfirmIndex = notification.isConfirmed.findIndex(ntf => ntf == userId)
+                            let seenIndex = notification.seen.findIndex(ntf => ntf == userId)
                             notification.to.splice(ntfnIndex,1)
+                            notification.seen.splice(seenIndex,1)
                             notification.isConfirmed.splice(isConfirmIndex,1)
                             
                         }
@@ -119,14 +122,29 @@ module.exports = {
        } catch (error) {
             console.log(error);
         }
-   },  
-    
-    
-    
-    
-    
-    
-    
+   }, 
+   
+            async userSawNTF(_,__,context){
+                const userId = context.req.user.id;
+                
+               
+                try {
+                const notifications = await Notifications.find()
+                    
+                    notifications.map(ntf => {
+                            if(!ntf.seen.includes(userId) && ntf.to.includes(userId)){
+                                ntf.seen.push(userId)
+                                ntf.save()
+                            }
+                        })   
+                    
+                 
+                        return notifications;
+
+                } catch (error) {
+                    console.log(error); 
+                }
+            }
     
     },
 

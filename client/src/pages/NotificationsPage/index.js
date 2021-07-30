@@ -60,7 +60,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     },
     paper: {
       [theme.breakpoints.up('sm')]:{
-        width:'70%',
+        width:'50%',
         margin:'0 auto',
         height:'100%'
         
@@ -107,7 +107,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   const classes = useStyles()
   const [user, setUser] = React.useState({})
   const {data} = useQuery(GET_ALL_USERS, {
-   onCompleted:() => {
+  
+    onCompleted:() => {
      setUser(data.getAllUsers.filter(user => user.id === id)[0])   
     },
   
@@ -192,6 +193,7 @@ function Index() {
     onCompleted:() => {
         
             setFilterdNtf(data.getNotifications);
+            
             console.log('filter mutation',data.getNotifications);
           
         
@@ -203,8 +205,8 @@ function Index() {
     onSubscriptionData:({subscriptionData}) => {
      if(subscriptionData){
         setFilterdNtf(subscriptionData.data.addRequestToList)
-        console.log('filterSubs',countingNotifications(subscriptionData.data.addRequestToList) - countingNotifications(data.getNotifications));
-        dispatch({type:SET_NotificationsCount, payload:countingNotifications(subscriptionData.data.addRequestToList) - countingNotifications(data.getNotifications)}) 
+        console.log('filterSubs',countingNotifications(subscriptionData.data.addRequestToList));
+        dispatch({type:SET_NotificationsCount, payload:countingNotifications(subscriptionData.data.addRequestToList)}) 
         
         console.log("filter subs", subscriptionData.data.addRequestToList);
      }
@@ -222,19 +224,21 @@ function Index() {
       
       data.forEach(item => {
        
-          item.from === user.id &&  item.isConfirmed.length > 0 && item.isConfirmed.forEach(id => { //user accept ntf
+        item.seen.includes(user.id) &&  item.from === user.id &&  item.isConfirmed.length > 0 && item.isConfirmed.forEach(id => { //user accept ntf
+            
             notificationsCount.push(id)
         }) 
         
        
       
-      if(!item.isConfirmed.includes(user.id) && item.to.includes(user.id)){ //  request sent to user
+      if(!item.seen.includes(user.id) && !item.isConfirmed.includes(user.id) && item.to.includes(user.id)){ //  request sent to user
          notificationsCount.push(item.id)
       }
   })
    
   }
     
+  console.log("user get ", notificationsCount.length );
   return  notificationsCount.length 
    
   }
@@ -345,7 +349,7 @@ return (
              <ConfirmOrRemoveRequestButton 
              accountId={accountId} 
              userId={user && user.id} 
-             setFilterdNtf={setFilterdNtf}/>
+             />
            
             </div>
             <Divider style={{marginTop:'12px'}} variant="inset" component="li" />   

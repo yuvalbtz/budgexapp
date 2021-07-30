@@ -90,21 +90,10 @@ function RemoveRequest({setLoading,accountId, userId}){
 
 
 
-
-
-
-
-
-
 function Index({accountId, userId}) {
    
- 
   const [loading, setLoading] = React.useState(false)
    
- 
-    
-        
-    
     return (
       <>
      { loading ? (<CircularProgress size={35} color='primary' style={{margin:'0 auto'}} />)
@@ -115,11 +104,7 @@ function Index({accountId, userId}) {
     </>)
     }
     </> 
-    
-    
-      
-       
-    )
+     )
 }
 
 export default Index

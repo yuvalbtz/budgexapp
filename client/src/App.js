@@ -13,11 +13,28 @@ import {useSelector, useDispatch} from 'react-redux'
 import { SET_USER, SET_USER_LOGOUT } from './Redux/actionTypes';
 import history from './util/history';
 import SplashScreen from './components/SplashScreen'
-
+import { withStyles } from '@material-ui/core/styles';
+import {createMuiTheme} from '@material-ui/core'
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#757ce8',
+      main: '#3f50b5',
+      dark: '#002884',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#000',
+    },
+  },
+});
 
 function App() {
   document.body.style.overflow = "hidden"
-   console.log = () => {}
+  // console.log = () => {}
  
   const {data, loading} = useQuery(GET_USER_STATE);
   const dispatch = useDispatch()
@@ -34,6 +51,10 @@ useEffect(() => {
     dispatch({type:SET_USER_LOGOUT})
     localStorage.clear()
     history.push('/')
+   }else{
+    dispatch({type:SET_USER_LOGOUT})
+    localStorage.clear()
+    history.push('/') 
    }
  }
  
@@ -46,9 +67,6 @@ useEffect(() => {
   
   if(loading){
     return (<SplashScreen/>)
-  }else if(!data){
-   localStorage.clear()
-    history.push('/')
   }
 
 console.log("APP", user);

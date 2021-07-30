@@ -10,18 +10,16 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import PersonIcon from '@material-ui/icons/Person';
-import AddIcon from '@material-ui/icons/Add';
-import Typography from '@material-ui/core/Typography';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { useQuery} from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-import { Divider } from '@material-ui/core';
+import { Divider, IconButton } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import history from '../../../util/history';
-
-
+import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
+import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 const useStyles = makeStyles((theme) => ({
     FreindIcons:{
         position:'absolute',
@@ -97,18 +95,33 @@ if(!loading && members){
 
   return (
     <>
-    <div style={{position:'relative'}} >
-    <AvatarGroup  spacing='medium' className={classes.FreindIcons} classes={{avatar:classes.customAvatars}} 
+    <div style={{position:'relative'}}>
+     <AvatarGroup  
+    spacing='medium' 
+    className={classes.FreindIcons} 
+    classes={{avatar:classes.customAvatars}} 
      max={4}>
       {usersInAccount &&  usersInAccount.length > 0 && usersInAccount.map(freind => (
          <Avatar component={Link} 
          to={`/matualAccounts/${accountId}/ShowAccountFreinds`} 
          key={freind.id} 
          alt={freind.username} 
-         src={freind.profileImageUrl} />
-      ))}
-      </AvatarGroup>
+         src={freind.profileImageUrl} />  
+         ))} 
+       
+        {usersInAccount.length === 0 && usersNotInAccount &&  usersNotInAccount.length > 0 && usersNotInAccount.map(freind => (
+        <IconButton style={{width:30,height:5, borderRadius:'unset'}}  component={Link} 
+        to={`/matualAccounts/${accountId}/ShowAccountFreinds`} 
+        key={freind.id}>
+         
+         <GroupRoundedIcon style={{color:'whitesmoke'}}  fontSize="large"/>
+         <TimerRoundedIcon style={{color:'white'}}   fontSize='small' />
+         </IconButton> 
+         ))}
+      
+       </AvatarGroup> 
     </div>
+  
     <Dialog onClose={() => history.goBack()} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">חברים לחשבון</DialogTitle>
       <List>

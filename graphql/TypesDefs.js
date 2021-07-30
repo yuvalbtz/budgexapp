@@ -210,7 +210,7 @@ type Query{
     
     confirmRequest(accountId:ID!, userId:ID!):[Notification]!
     removeRequest(accountId:ID!, userId:ID!):[Notification]!
-    
+    userSawNTF:[Notification]!
     
     
     
