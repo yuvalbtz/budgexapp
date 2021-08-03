@@ -27,7 +27,7 @@ import { useEffect } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Axios from 'axios'
 import history from '../../util/history';
-
+import { useForm } from '../../hooks/useForm';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -74,7 +74,7 @@ const useFormStyles = makeStyles(() => ({
 }));
 
 
-const FAbEdit = ({setProfileImageUrl, user}) => {
+const FAbEdit = ({setProfileImage}) => {
   const FormClasses = useFormStyles();
   const classes = useStyles()
   const [fileSelected, setFileSelected] = useState(null)
@@ -89,15 +89,16 @@ const FAbEdit = ({setProfileImageUrl, user}) => {
   if(fileSelected){
     formData.append('file', fileSelected)
     formData.append('upload_preset','temed3va')
-    formData.append('folder',`Users/${currentImageProfile.username}/Profile`)
+    formData.append('folder',`Users/${currentImageProfile.id}/Profile`)
     
     Axios.post("https://api.cloudinary.com/v1_1/dw4v5axnj/image/upload/",formData)
     .then(res => {
-      setImageProfile(res.data.url) // for Profile Preveiw
-      setProfileImageUrl(res.data.url) // for Updating Mutation
+      setImageProfile(res.data.secure_url) // for Profile Preveiw
+      setProfileImage(res.data.secure_url) // for Updating Mutation
+      console.log(res.data.secure_url);
       setLoading(false)}).catch(err => console.log(err)) 
   
-    console.log(user);
+    
   }
 } 
     ,[fileSelected]) 
@@ -108,6 +109,9 @@ const FAbEdit = ({setProfileImageUrl, user}) => {
    setLoading(true)
    
 }
+
+
+
 
 //{file:fileSelected, upload_preset:'temed3va'}
 
@@ -145,26 +149,52 @@ return (
 export default function SimpleSlide() {
     const classes = useStyles();
     const FormClasses = useFormStyles()
-    const [profileImageUrl, setProfileImageUrl] = useState('')
     
-    const ModalIsOpen = window.location.pathname === `/profile/edit`
+   
+    const ModalIsOpen = window.location.pathname === "/profile/edit"
     
     
     const user = useSelector(state => state.userReducer.userDetails)
     const dispatch = useDispatch()
-    const input = React.useRef()
+    const [profileImage, setProfileImage] = useState('');
+    const [errors, setErrors] = useState({});
+    const { onChange, onSubmit, values } = useForm(UpdateUserCallback, {
+       profileImage:profileImage,
+       email:"",
+      });
     
-    const [UpdateProfileCallback,{data,loading}] = useMutation(UPDATE_USER_PROFILE,{variables:{profileImage:profileImageUrl},
-      onCompleted:() => history.goBack(), 
-      onError:(err) => console.log(err)})
-     
-    useEffect(() =>{
-        if(data){
-          dispatch({type:SET_USER, payload:data.updateUserProfile})
-          console.log(user);
-        }
-    },[data])
+
   
+    const [UpdateProfileCallback,{data,loading}] = useMutation(UPDATE_USER_PROFILE,
+       {
+          variables:{
+        profileImage:profileImage,
+        email:values.email
+      },
+      onCompleted:() => {
+        setErrors({})
+        setProfileImage('')
+        history.goBack()
+      }, 
+      refetchQueries:[{query:GET_USER_STATE,variables:values}],
+      onError(err) {
+       setErrors(err.graphQLErrors[0].extensions.exception.errors)
+        console.log(err);
+        },
+      })
+     
+  useEffect(() =>{
+       if(user){
+          values.email = user.email
+         }
+     
+  },[user])
+  
+  
+
+function UpdateUserCallback(){
+  UpdateProfileCallback()
+}
   
   return (
     
@@ -181,7 +211,7 @@ export default function SimpleSlide() {
         style={{zIndex:1, textAlign:'center'}}
         
       >
-        <form >
+        <form onSubmit={onSubmit} noValidate>
         <DialogTitle id="alert-dialog-slide-title"> <Typography component="div" variant="h5" className={FormClasses.HeadLine}>:עריכת פרופיל</Typography></DialogTitle>
         <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
@@ -192,7 +222,7 @@ export default function SimpleSlide() {
           
           <div>
           <FormControl className={classes.margin}>
-          <FAbEdit user={user} setProfileImageUrl={setProfileImageUrl}/>
+          <FAbEdit setProfileImage={setProfileImage}/>
          </FormControl>    
           </div>
           
@@ -200,15 +230,12 @@ export default function SimpleSlide() {
          <div>
        <FormControl className={classes.margin}>
         <TextField
-          id="input-with-icon-textfield3"
+          id="input-with-icon-textfield783"
           label=":שם משתמש"
           type="text"
           name="username"
-          inputRef={input}
-          /* value={values.username}
-          onChange={onChange}
-          error={errors.username ? true : false}
-          helperText={errors.username} */
+          value={"!שם משתמש קבוע"}
+          disabled
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -223,14 +250,14 @@ export default function SimpleSlide() {
       <div>
        <FormControl className={classes.margin}>
         <TextField
-          id="input-with-icon-textfield5"
+          id="input-with-icon-textfield9845"
           label=":אימייל"
           type="email"
           name="email"
-          /* value={values.username}
+          value={values.email}
+          error={errors.email ? true : false}
+          helperText={errors.email}
           onChange={onChange}
-          error={errors.username ? true : false}
-          helperText={errors.username} */
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -253,7 +280,8 @@ export default function SimpleSlide() {
           color="primary"
           style={{margin:'0 auto',backgroundColor:'green'}}
           size={'small'}
-          onClick={() => UpdateProfileCallback()}
+          onClick={() => UpdateUserCallback()}
+          disabled={user && (user.email === values.email && profileImage === "")}
         >
          <CheckIcon />
         </Fab>
@@ -276,12 +304,27 @@ export default function SimpleSlide() {
 
 const UPDATE_USER_PROFILE = gql`
 
-mutation updateUserProfile($profileImage:String!) {
-  updateUserProfile(profileImage:$profileImage){
+mutation updateUserProfile($profileImage:String! $email:String!) {
+  updateUserProfile(profileImage:$profileImage email:$email){
+    email
+    id
     username
     profileImageUrl
-    email
   }
 }
+
+`;
+
+
+const GET_USER_STATE = gql`
+{
+    getUserState{
+      email
+      id
+      username
+      profileImageUrl
+    }
+  }
+
 
 `;

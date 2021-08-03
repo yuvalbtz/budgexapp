@@ -10,30 +10,14 @@ import SingleMatualAccount from './pages/SingleMatualAccountPage'
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {useSelector, useDispatch} from 'react-redux'
-import { SET_USER, SET_USER_LOGOUT } from './Redux/actionTypes';
+import { SET_NotificationsCount, SET_USER, SET_USER_LOGOUT } from './Redux/actionTypes';
 import history from './util/history';
 import SplashScreen from './components/SplashScreen'
-import { withStyles } from '@material-ui/core/styles';
-import {createMuiTheme} from '@material-ui/core'
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#757ce8',
-      main: '#3f50b5',
-      dark: '#002884',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
-      contrastText: '#000',
-    },
-  },
-});
+
+
 
 function App() {
-  document.body.style.overflow = "hidden"
+  /* document.body.style.overflow = "hidden" */
   // console.log = () => {}
  
   const {data, loading} = useQuery(GET_USER_STATE);
@@ -76,7 +60,7 @@ console.log("APP", user);
   return (
     
     <div className="App">
-   
+    
      <Switch>
      <Route exact path="/" component={HomePage}/>
 
@@ -149,3 +133,11 @@ const GET_USER_STATE = gql`
 
 
 `;
+
+
+
+
+
+
+
+

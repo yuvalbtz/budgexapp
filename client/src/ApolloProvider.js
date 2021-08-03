@@ -11,8 +11,36 @@ import {WebSocketLink} from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities';
 import {split} from '@apollo/client'
 import { HttpLink } from '@apollo/client'
+import { ThemeProvider } from '@material-ui/core/styles';
+import {createMuiTheme} from '@material-ui/core'
 
 
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#757ce8',
+      main: '#17395C',
+      dark: '#002884',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#DC143C',
+      dark: '#ba000d',
+      contrastText: '#fff',
+    },
+
+    appColor:{
+      main:'#242333'
+    }
+    
+  },
+});
+
+
+
+console.log( process.env.REACT_APP_WSS_SERVER_URL);
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_SERVER_URL,
   credentials:'include',
@@ -51,7 +79,9 @@ export default (
   <ApolloProvider client={client}>
     <Provider store={store}>
     <Router history={history}>
+    <ThemeProvider theme={theme}>
      <App />
+    </ThemeProvider>
     </Router>
    </Provider>
   </ApolloProvider>

@@ -16,7 +16,6 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { AuthContext } from '../../context/auth';
 import { useForm } from '../../hooks/useForm';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -99,7 +98,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
- function CustomizedDialogs(props) {
+ function CustomizedDialogs() {
   const open = window.location.pathname === `/register`
   const [phone , setPhone] = useState(false);
   const dispatch = useDispatch()
@@ -130,9 +129,10 @@ const DialogActions = withStyles((theme) => ({
       
        ) {
        dispatch({type:SET_USER, payload:userData});
-        cleanFeilds()
+       setErrors({}); 
+       cleanFeilds()
         localStorage.setItem("id",userData.id)
-        window.location.href = '/myAccounts'
+         window.location.href = '/myAccounts'
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
@@ -250,6 +250,7 @@ const DialogActions = withStyles((theme) => ({
             label=":סיסמה"
             type={FormValues.showPassword ? 'text' : 'password'}
             name="password"
+            autoComplete="on"
             value={values.password}
             onChange={onChange}
             error={errors.password ? true : false}
@@ -278,6 +279,7 @@ const DialogActions = withStyles((theme) => ({
             id="standard-adornment-password229"
             label=":אימות סיסמה"
             type={FormValues.showConfirmPassword ? 'text' : 'password'}
+            autoComplete="on"
             name="confirmPassword"
             value={values.confirmPassword}
             onChange={onChange}

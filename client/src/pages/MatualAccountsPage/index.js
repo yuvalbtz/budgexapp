@@ -99,6 +99,17 @@ const styles = theme => ({
     }
 });
 
+const NoAccountsDisplay = () => (
+  <Typography dir='rtl' style={{margin:'20% auto'}} color='primary' variant='h5' component='h5'>
+  אין לך חשבונות משותפים עדיין...
+  </Typography> 
+ )
+
+
+  
+
+
+
 
 
 function ButtonBases(props) {
@@ -114,7 +125,7 @@ function ButtonBases(props) {
 
    const {data, subscribeToMore} = useQuery(GET_USER_MATUAL_ACCOUNTS);
   
-   React.useEffect(() => {
+   React.useLayoutEffect(() => {
      let unsubscribe;
 
      unsubscribe = subscribeToMore({
@@ -158,9 +169,11 @@ function ButtonBases(props) {
         direction="row"
       >
       
-      {data && data.getUserMatualAccounts.map((account, index) => (
+      {data && data.getUserMatualAccounts.length === 0 && (<NoAccountsDisplay/>)}
+     
+      {data && data.getUserMatualAccounts.sort((a, b) => parseInt(b.updatedAt) - parseInt(a.updatedAt)).map((account, index) => (
         <Grid key={account.id} item xs={12} sm={4}>
-      
+         
        <div className={classes.button}>
        {user && ( <MenuBarButton accountId={account.id} accountDetails={account} IsUserOwner={account.owner === user.id}/>)}
        </div>
@@ -206,14 +219,14 @@ function ButtonBases(props) {
                   textOverflow:'ellipsis',
                   display:'inline',
                   overflow: 'hidden'}}>
-                    created by: {user && account.ownerName === user.username ? 'You' : account.ownerName}
+                    created by: {user && account.owner === user.id ? 'You' : account.ownerName}
                     </span>}
             />
         
         </ButtonBase>
         <div style={{display:'flex', position:'relative',zIndex:13}}>
          <Typography 
-        variant='subtitle2' 
+        variant='caption' 
         component='h6' 
         style={{
           position:'absolute', 

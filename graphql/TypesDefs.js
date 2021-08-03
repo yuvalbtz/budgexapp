@@ -2,33 +2,7 @@ const gql = require("graphql-tag");
 
 
 module.exports = gql`
- type Post{
-     id:ID!
-     body:String!
-     title:String!
-     createdAt:String!
-     username:String!
-     comments:[Comment]!
-     likes:[Like]!
-     likeCount:Int!
-     commentCount:Int!
-     imagePost:String
-    }
-
-type Comment{
-    id:ID!
-    createdAt:String!
-    username:String!
-    body:String!
-}   
-
-type Like{
-    id:ID!
-    createdAt:String!
-    username:String!
-}
-
-
+ 
  input RegisterInput{
      username:String!
      email:String!
@@ -70,8 +44,6 @@ type MatualAccount{
 }
 
 
-
- 
 type ItemList {
     id:ID!
     title:String!
@@ -124,8 +96,6 @@ type FreindsRequest{
 }
 
 
-
-
 type Query{
      getUserState:userState
      
@@ -164,8 +134,7 @@ type Query{
     resetPassword(email:String!):message
     logout:String!
 
-    
-    likePost(postId:ID!):Post!
+
     
     """
     //myAccounts
@@ -200,7 +169,7 @@ type Query{
     """
     //profile
     """
-    updateUserProfile(profileImage:String!):User!
+    updateUserProfile(profileImage:String!, email:String!):User!
     
     
     
@@ -227,7 +196,7 @@ type Query{
 
 
 type Subscription{
-     getallitems:message! 
+
 
      addRequestToList:[Notification]!
      

@@ -286,7 +286,7 @@ const FormatOptions = {
               
                 </CardMedia>
                   
-              {!item.media && ( <AddItemImageButton accountId={accountId} itemId={item.id} ownerName={ownerName}/>)}
+              {!item.media && ( <AddItemImageButton accountId={accountId} itemId={item.id} />)}
                
              
              </div>

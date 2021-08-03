@@ -1,6 +1,4 @@
-*{
-  font-family: 'Varela Round';  
-}
+
 .background{
   background-color:#242333;;
   width: 100%;
@@ -15,6 +13,7 @@
   color: aliceblue;
   font-size: 3rem;
   font-weight: 600;
+  font-family: 'Varela Round';
 }
 
 .loader,.wrapper {

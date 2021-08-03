@@ -100,8 +100,7 @@ justify-content:space-evenly;
 text-align:center;
 white-space:nowrap;
 padding:0;
-margin-right:12%;
-
+margin-right:10%;
 width:300px;
 @media screen and (max-width:960px ){
   display:flex;
@@ -116,7 +115,6 @@ width:300px;
   opacity:1;
   background:#242333;
   overflow-y:auto;
-  padding:0;
   transition: all 0.3s ease;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
   
@@ -133,7 +131,8 @@ export const LinkStyle = styled(Link)`
     color: whitesmoke;
     display: flex;
     align-items: center;
-    
+    width: fit-content;
+   
     text-decoration: none;
     padding: 1em 1em 1em 1em;
     
@@ -201,11 +200,11 @@ export const LogoutLinkStyle = styled.div`
 
 export const HelloToUser = styled.h3`
 color:whitesmoke;
-margin-left:10%;
+margin-left:12px;
 @media screen and (max-width:960px ){
-  
-    white-space:nowrap;
-   
+  white-space: normal;
+
+  margin-left:0; 
        
 }
 

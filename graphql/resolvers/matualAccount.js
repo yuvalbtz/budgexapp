@@ -188,8 +188,12 @@ module.exports = {
                             })
                             account.members.filter(item => !freinds.includes(item.userId))
                             accountNotification.to = freinds
-                            accountNotification.accountTitle = account.title
                             
+                            accountNotification.accountTitle = account.title
+                           
+                           
+                            /*  accountNotification.senderName = userName
+                            account.ownerName = userName  */
                            
                            
                             await accountNotification.save()
@@ -392,11 +396,11 @@ module.exports = {
             if(account){
                 
                 const item = account.list.filter(item => item._id == itemId)
-                const username = account.ownerName
+                const userId = account.owner
                 
                
-                if(item && username){
-                    const path = `Users/${username}/matualAccounts/${accountId}/${itemId}` 
+                if(item && userId){
+                    const path = `Users/${userId}/matualAccounts/${accountId}/${itemId}` 
     
                     const publicId = item[0].media.split('/Users').reverse()[0].split('.')[0]
                     

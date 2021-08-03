@@ -1,11 +1,10 @@
 *{
-  font-family: 'Varela Round';
-  
+  font-family: 'Varela Round' !important;
   
 }
  .App {
   text-align: center;
-  overflow-y: hidden;
+  
   min-height: -webkit-fill-available;
   height: 100% !important; 
   

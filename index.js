@@ -39,8 +39,8 @@ app.use("/graphql",
           
             try{
               
-              const user =  jwt.verify(req.cookies.id, SECRET_KEY)
-            
+              const user =  jwt.verify(req.cookies.id, SECRET_KEY) 
+             
               req.user = user
               console.log("user middleware",user);
               console.log("id cookie!!!!!" );

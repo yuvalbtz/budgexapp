@@ -21,6 +21,10 @@ import { IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { SET_Current_Account_Ui } from '../../Redux/actionTypes';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from '@material-ui/core'
+
+
+
 const styles = theme => ({
     
     TabContainerProfile:{
@@ -86,13 +90,9 @@ const styles = theme => ({
       },
    },
   
-   iconFullPadding:{
-      
-     
-      
-
-      
-  },
+   Addicon:{
+    color:'white',
+    },
   
   appBar:{
      paddingTop:'50px',
@@ -137,7 +137,7 @@ TabContainer.propTypes = {
 
 function FloatingActionButtonZoom(props)  {
     let [value,setValue] = useState(1)
-    
+    const themeColors = useTheme()
     const accountUI = useSelector(state => state.uiReducer.getCurrentAccountUi)
     const dispatch = useDispatch()
     
@@ -240,11 +240,10 @@ function getUrltab(value){
         className: classes.fab,
         icon: window.location.pathname === '/matualAccounts/addAccount' ? <CloseIcon
         onClick={() => history.goBack()} 
-        className={classes.iconFullPadding}/> : <IconButton style={{color:'white'}} component={Link} to={`/matualAccounts/addAccount`}>
-          <AddIcon 
-          className={classes.iconFullPadding}/>
+        className={classes.AddIcon}/> : <IconButton style={{color:'white'}} component={Link} to={`/matualAccounts/addAccount`}>
+          <AddIcon color='inherit'/>
         </IconButton>,
-        cssColor:'#3c57f2',
+        cssColor:`${themeColors.palette.primary.main}`,
        
       },  
       {
@@ -253,13 +252,12 @@ function getUrltab(value){
         icon: window.location.pathname === '/myAccounts/addAccount' ? <CloseIcon
         
         onClick={() => history.goBack()}
-        className={classes.iconFullPadding}/> :<IconButton  style={{color:'white'}} component={Link} to={'/myAccounts/addAccount'} >
-          <AddIcon 
-          className={classes.iconFullPadding}
+        className={classes.AddIcon}/> :<IconButton  style={{color:'white'}} component={Link} to={'/myAccounts/addAccount'} >
+          <AddIcon  className={classes.Addicon}
           
         />
         </IconButton> ,
-        cssColor:'#ff0054',
+        cssColor:`${themeColors.palette.secondary.main}`,
         
         
       },
@@ -271,7 +269,7 @@ function getUrltab(value){
         className={classes.iconFullPadding}/> : <IconButton  component={Link} to={`/profile/edit`}>
           <EditIcon className={classes.iconFullPadding} />
         </IconButton>,
-        cssColor:'white',
+        cssColor:themeColors.palette.common.white,
       },
     ];
 

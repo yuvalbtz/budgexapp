@@ -229,6 +229,7 @@ function CustomizedDialogs(props) {
           <TextField
             id="standard-adornment-password"
             label=":סיסמה"
+            autoComplete="on"
             type={FormValues.showPassword ? 'text' : 'password'}
             name="password"
             value={values.password}

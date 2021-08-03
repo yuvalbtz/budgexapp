@@ -193,7 +193,7 @@ function Index() {
     onCompleted:() => {
         
             setFilterdNtf(data.getNotifications);
-            
+            dispatch({type:SET_NotificationsCount, payload:countingNotifications(data.getNotifications)})
             console.log('filter mutation',data.getNotifications);
           
         
@@ -206,16 +206,14 @@ function Index() {
      if(subscriptionData){
         setFilterdNtf(subscriptionData.data.addRequestToList)
         console.log('filterSubs',countingNotifications(subscriptionData.data.addRequestToList));
-        dispatch({type:SET_NotificationsCount, payload:countingNotifications(subscriptionData.data.addRequestToList)}) 
-        
-        console.log("filter subs", subscriptionData.data.addRequestToList);
-     }
+        console.log("notification page");
+         console.log("filter subs", subscriptionData.data.addRequestToList);
+         dispatch({type:SET_NotificationsCount, payload:countingNotifications(subscriptionData.data.addRequestToList)})
+        }
         
       
     },
-   onSubscriptionComplete:(Data) => {
-     
-   }})
+  })
   
 
    function countingNotifications(data){
@@ -224,14 +222,7 @@ function Index() {
       
       data.forEach(item => {
        
-        item.seen.includes(user.id) &&  item.from === user.id &&  item.isConfirmed.length > 0 && item.isConfirmed.forEach(id => { //user accept ntf
-            
-            notificationsCount.push(id)
-        }) 
-        
-       
-      
-      if(!item.seen.includes(user.id) && !item.isConfirmed.includes(user.id) && item.to.includes(user.id)){ //  request sent to user
+       if(!item.seen.includes(user.id) && !item.isConfirmed.includes(user.id) && item.to.includes(user.id)){ //  request sent to user
          notificationsCount.push(item.id)
       }
   })
@@ -248,10 +239,7 @@ function Index() {
 console.log(error);
  
 
-
-
-
-
+ 
 return (
         
           <Dialog
@@ -275,11 +263,15 @@ return (
         
       <CssBaseline />
       <Paper square className={classes.paper} >
-       
         <List dir='ltr' className={classes.list}>
+        
           {filteredNtf.sort((a, b) => parseInt(b.updatedAt) - parseInt(a.updatedAt)).map(({ id, senderName, body, senderImageUrl, accountTitle, createdAt, updatedAt,accountId, isConfirmed, from, to }) => (
             <React.Fragment key={id}>
             <React.Fragment >
+            
+            
+            
+            
              {user && from === user.id &&  isConfirmed.length > 0 && isConfirmed.map(id => ( // user accept msg
                     
                     <div style={{textAlign:'center'}} key={id+1}>
@@ -360,8 +352,7 @@ return (
             
      {user && isConfirmed.includes(user.id) && from !== user.id && (
                <React.Fragment>
-                
-                <ListItem >
+                 <ListItem >
              <ListItemAvatar>
                   <Avatar 
                   alt="Profile Picture" 
@@ -411,15 +402,14 @@ return (
             </React.Fragment>
             
             )}
-            
-            
-            
-            
-             
-            </React.Fragment>
            
+            </React.Fragment>
+              
         </React.Fragment>
           ))}
+        
+        
+        
         </List>
       </Paper>
      

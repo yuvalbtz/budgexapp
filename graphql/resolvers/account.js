@@ -259,11 +259,11 @@ module.exports = {
                     if(account){
                         
                         const item = account.list.filter(item => item._id == itemId)
-                        const username = context.req.user.username
+                        const userId = context.req.user.id
                         
                        
                         if(item){
-                            const path = `Users/${username}/myAccounts/${accountId}/${itemId}` 
+                            const path = `Users/${userId}/myAccounts/${accountId}/${itemId}` 
             
                             const publicId = item[0].media.split('/Users').reverse()[0].split('.')[0]
                             
@@ -363,10 +363,7 @@ module.exports = {
     },
 
     Subscription:{
-        getallitems:{
-           subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator('user1')
-             
-        }
+        
     }
   
 

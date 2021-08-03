@@ -258,7 +258,7 @@ function Index({match}) {
    onError:(err) => history.goBack(),
   })
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     let unsubscribe;
 
    if(!ModalIsOpen){

@@ -34,7 +34,7 @@ function Index({accountId, itemId}) {
         if(fileSelected){
           formData.append('file', fileSelected)
           formData.append('upload_preset','temed3va')
-          formData.append('folder',`Users/${getUsername.username}/myAccounts/${accountId}/${itemId}`)
+          formData.append('folder',`Users/${getUsername.id}/myAccounts/${accountId}/${itemId}`)
           
           Axios.post("https://api.cloudinary.com/v1_1/dw4v5axnj/image/upload/",formData)
           .then(res => {

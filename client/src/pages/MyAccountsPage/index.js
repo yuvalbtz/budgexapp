@@ -104,7 +104,11 @@ const styles = theme => ({
   
 });
 
-
+const NoAccountsDisplay = () => (
+  <Typography style={{margin:'20% auto'}} color='primary' variant='h5' component='h5'>
+  ...אין לך חשבונות עדיין
+  </Typography> 
+ )
 
 function ButtonBases(props) {
   const { classes } = props;
@@ -127,6 +131,10 @@ function ButtonBases(props) {
       spacing={0}
       ref={input} 
       >
+      
+      
+      {data && data.getUserAccounts.length === 0 && (<NoAccountsDisplay/>)}
+      
        {data &&  data.getUserAccounts.map((account, index) => (
       
       <Grid  key={account.id} item xs={12} sm={4} >
@@ -180,7 +188,7 @@ function ButtonBases(props) {
         
         <div style={{display:'flex', position:'relative',zIndex:13}}>
         <Typography 
-        variant='subtitle2' 
+        variant='caption' 
         component='h6' 
         style={{
           position:'absolute', 

@@ -17,16 +17,13 @@ import { useDispatch, useSelector } from 'react-redux';
  
 import {makeStyles} from '@material-ui/core'
 
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 import Badge from '@material-ui/core/Badge';
-import { SET_NotificationsCount } from '../../Redux/actionTypes';
-import { useMutation, useQuery, useSubscription } from '@apollo/client';
+import { useMutation} from '@apollo/client';
 import gql from 'graphql-tag'
-import { DirectionsBoatOutlined, LensTwoTone } from '@material-ui/icons';
-
 const useStyles = makeStyles((theme) => ({
 
    HelloToUser:{
@@ -86,64 +83,7 @@ function Index(){
     }
     
     
-    const {data, subscribeToMore} = useQuery(GET_NOTIFICATIONS,{
-      onCompleted:() => {
-         
-              console.log('filter mutation',data.getNotifications);
-          } 
-        })
     
-        React.useLayoutEffect(() => {
-          let unsubscribe;
-     
-         unsubscribe = subscribeToMore({
-           document:NOTIFICATIONS,
-           updateQuery:(prev, {subscriptionData}) => {
-             const updatedNTF = subscriptionData.data.addRequestToList
-           
-              dispatch({type:SET_NotificationsCount, payload: countingNotifications(updatedNTF)}) 
-             
-            
-            console.log("from dispatch", updatedNTF);
-              if (!subscriptionData){
-               return Object.assign({}, prev, {
-                getNotifications:prev
-                 });
-             } 
-             return Object.assign({}, prev, {
-              getNotifications: updatedNTF
-               });
-            }
-         })
-         
-         if(unsubscribe) return () => unsubscribe() 
-     
-        },[subscribeToMore])
-       
-        
-        function countingNotifications(data){
-          const notificationsCount = []
-          if(user){
-            
-            data.forEach(item => {
-             
-              item.seen.includes(user.id) &&  item.from === user.id &&  item.isConfirmed.length > 0 && item.isConfirmed.forEach(id => { //user accept ntf
-                  
-                  notificationsCount.push(id)
-              }) 
-              
-             if(!item.seen.includes(user.id) && !item.isConfirmed.includes(user.id) && item.to.includes(user.id)){ //  request sent to user
-               notificationsCount.push(item.id)
-            }
-        })
-         
-        }
-          
-        console.log("user get ", notificationsCount.length );
-        return  notificationsCount.length 
-         
-        }
-  
     
     return (
         <header>
@@ -156,8 +96,8 @@ function Index(){
         
         {user && currentAccount && currentAccount.__typename === 'MatualAccount' && (<GroupRoundedIcon fontSize='large' htmlColor='#fff' style={{marginLeft:'5px'}}/>)}
 
-        <NavTitle>
-       { params && currentAccount && params.accountId ? currentAccount.title : 'BudgeX'}   
+        <NavTitle >
+       { params && currentAccount && params.accountId ? currentAccount.title :<Link style={{textDecoration:'none', color:'white'}} to='/'>BudgeX</Link>}   
          </NavTitle>
         
         
@@ -180,11 +120,12 @@ function Index(){
      
 
      <NavMenu  click={click}>
-     
-     
+          
      {user &&  (<LogoutLinkStyle><LogOutButton/></LogoutLinkStyle>)}
      
-     
+     {user && window.location.pathname === '/' && (<LinkStyle to='/myAccounts'>
+       <li>חזור לחשבון</li>
+      </LinkStyle>)}
      
      {user && <Badge  badgeContent={badgeCount} max={99} 
       invisible={false}
@@ -199,18 +140,16 @@ function Index(){
           </LinkStyle></Badge>  }
      
      
-     <LinkStyle to='/security'>
+    {/*  <LinkStyle to='/security'>
        <li>אבטחה</li>
         </LinkStyle>
-     
+      */}
       
-       <LinkStyle to='/policy'>
+      {/*  <LinkStyle to='/policy'>
        <li>מדיניות</li>
-      </LinkStyle>
+      </LinkStyle> */}
         
-        <LinkStyle to='/aboutme'>
-       <li>עלי</li>
-      </LinkStyle>
+       
       
       {/*   <LinkStyle to='/setting'>
        <li>הגדרות</li>
@@ -222,7 +161,7 @@ function Index(){
      (<><RegisterModalBtn/><LoginModalBtn/></>) } 
        
         <HelloToUser>
-        { user ? `${user.username + ' שלום'}` : "שלום, אורח"}  
+        { user ? `Hello ${user.username}` : "שלום, אורח"}  
         </HelloToUser>
        
         </NavMenu>
@@ -268,27 +207,6 @@ const GET_NOTIFICATIONS = gql`
 }`;
 
 
-const NOTIFICATIONS = gql`
-subscription AddRequestToList{
-  addRequestToList{
-    id
-    seen
-    senderName
-    senderImageUrl
-    accountId
-    isConfirmed
-    isIgnored
-    to
-    from
-    accountTitle
-    body
-    createdAt
-    updatedAt
-  }
-}
-
-
-`;
 
 
 

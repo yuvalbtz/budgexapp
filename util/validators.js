@@ -11,7 +11,19 @@ module.exports.validatorsRegisterInput = (
 
     if(username.trim() === ''){
         errors.username = 'Username must not be empty!'
+    }else{
+        const regEx = /^[A-Za-z0-9_]+$/
+        if(!username.match(regEx)){
+            errors.username = 'Username must be on English!';
+        }else if(username.trim().split('').length < 6){
+            errors.username = 'Username must be at least 6 characters!';
+        } 
+   
+   
+   
     }
+    
+    
     if(email.trim() === ''){
         errors.email = 'email must not be empty!'
     }else{
@@ -20,6 +32,8 @@ module.exports.validatorsRegisterInput = (
             errors.email = 'Email address not valid!';
         }
     }
+    
+    
     if(password === ''){
     errors.password = 'password must not be empty!'
     }else if(password !== confirmPassword){

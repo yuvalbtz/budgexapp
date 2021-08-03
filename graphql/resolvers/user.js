@@ -8,28 +8,20 @@ const {SECRET_KEY} = require("../../credentials.json")
 const {auth} = require("../../firebase")
 
 
- async function ifUserLoggedin(){
-     let userIsConnected = {};
-    await auth.onAuthStateChanged(user => user ? userIsConnected.email = user.email : userIsConnected.email = null )
-    
-    return userIsConnected.email
-}
-
-
 function generateToken(user){
   return jwt.sign({
         id: user._id,
         email:user.email,
         username:user.username,
         profileImageUrl:user.profileImageUrl
-        },SECRET_KEY,{expiresIn:'1h'});
+        },SECRET_KEY,{expiresIn:'7d'});
 }
 
 
 module.exports = {
     Mutation:{
         async login(_,{username,password}, {res,id}){
-            let userDetails = null;
+            userDetails = null
             console.log(id);
             const {errors, valid} = validateLoginInput(username, password)
             if(!valid){
@@ -42,28 +34,13 @@ module.exports = {
                 throw new UserInputError("user not found!",{errors})
             }
             
-            try{
-                userDetails = await auth.signInWithEmailAndPassword(user.email, password)
-            }catch(err){
-                errors.general = err.code;
-                throw new UserInputError(`${err.code}`,{errors})
-            }
-           
-            
-            if(!userDetails){
-                errors.general = 'Bad credentials!';
-                throw new UserInputError("'Bad credentials!'",{errors}) 
-            }
+          
             const match = await bcrypt.compare(password, user.password)
             
-             if(!match && userDetails){
-                user.password =  await bcrypt.hash(password, 12);
-                await user.save()
-               
-             }else if(!match){
-                 
-                 errors.general = 'Wrong credentials!';
-                 throw new UserInputError("Wrong credentials!",{errors})
+            
+             if(!match){
+                errors.general = 'Wrong credentials!';
+                throw new UserInputError("Wrong credentials!",{errors})
                
              }
             
@@ -86,7 +63,7 @@ module.exports = {
             });  
                 
            
-             return {...user._doc, id: user._id,token, firebase_user_id:userDetails.user.uid}
+             return {...user._doc, id: user._id,token, firebase_user_id:userDetails}
         },
         
         async register(_,
@@ -99,7 +76,7 @@ module.exports = {
           
         },context,info){
        
-            let userF = null;
+        
         const {errors, valid} = validatorsRegisterInput(username,email,password,confirmPassword)
         if(!valid){
             throw new UserInputError('Errors',{errors});
@@ -119,14 +96,7 @@ module.exports = {
 
             password = await bcrypt.hash(password, 12);
             
-            try{
-                userF = await auth.createUserWithEmailAndPassword(email,confirmPassword)
-            }catch(err){
-                errors.general = err.code;
-                console.log(err);
-                throw new UserInputError(`${err.code}`,{errors})
-            }
-
+          
 
             const newUser = new User({
                 email,
@@ -134,7 +104,6 @@ module.exports = {
                 password,
                 confirmPassword,
                 profileImageUrl:'',
-                firebase_user_id:userF.user.uid,
             });
 
            const res = await newUser.save();
@@ -159,7 +128,7 @@ module.exports = {
             
             
             
-            return {...res._doc, id: res._id, token, firebase_user_id:userF.user.uid }
+            return {...res._doc, id: res._id, token}
         
         
         
@@ -190,15 +159,16 @@ module.exports = {
 
 
             async logout(_,__,{res,___}){
-                const ifUserConnected = await ifUserLoggedin()
+               
                 try{
-                    if(ifUserConnected){
-                        await auth.signOut();
+                    
+                       
                         res.clearCookie("id");
                         res.clearCookie("id2");
-                         return "logout successfully!"
-                    }   
-                   return "you are already log out!"
+                        
+                        return "logout successfully!"
+                      
+                   
                        
                 }catch(err){
                     console.log(err);
@@ -206,18 +176,46 @@ module.exports = {
 
             },
 
-            async updateUserProfile(_,{profileImage},context){
+            async updateUserProfile(_,{profileImage,email},context){
                  const userId = context.req.user.id
+                 const userName = context.req.user.username    
+                 const userEmail = context.req.user.email
+                 const imageUrl = context.req.user.profileImageUrl   
+                 
+
+                
+
+
+
+                 const {errors, valid} = validatorsRegisterInput(userName,email)
+                    if(!valid){
+                       throw new UserInputError('Errors',{errors});
+                     }   
                     
-                 try{
-                     
-
-                    const user = await User.findById(userId);
-                    if(user){
-
-
-                        user.profileImageUrl = profileImage
-
+                 
+                     if(email !== userEmail){
+                        const ifEmailTaken = await User.findOne({email})
+                        if(ifEmailTaken){
+                            throw new UserInputError("User email is already taken",{
+                                errors:{
+                                    email:'This email is already taken'
+                                }
+                            })
+                          }
+                     }
+                   
+                    
+                   
+                      const user = await User.findById(userId)
+                   
+                      if(user){
+                          
+                        if(profileImage.trim() !== ''  && profileImage !== imageUrl){
+                            user.profileImageUrl = profileImage
+                        } 
+                            user.email = email
+                        
+                        
                         await user.save()
 
                         const token = generateToken(user);
@@ -233,9 +231,7 @@ module.exports = {
 
                     }
 
-                 }catch(err){
-                      console.log(err);
-                 }
+                 
                   
           
           
@@ -249,9 +245,9 @@ module.exports = {
         async getUserState(_,__,context){
            
            try{        
-            const ifUserConnected = await ifUserLoggedin()
-             console.log("userFirebase",ifUserConnected );  
-             if(ifUserConnected){
+          
+             
+            
                 context.res.cookie("id2", context.req.user.id, {
                     httpOnly:false,
                     secure:false,
@@ -259,21 +255,17 @@ module.exports = {
    
                 });  
                 return {...context.req.user}
-            }else{
-               
-                await auth.signOut();
+            
+              
+            }catch(err){
+                console.log(err);
+           
                 context.res.clearCookie("id");
                 context.res.clearCookie("id2");
                 console.log("user is log out!");
                 return null;
-               
-              
-            }
-          
-               
-              
-           }catch(err){
-                console.log(err);
+           
+           
             }
           
            },
