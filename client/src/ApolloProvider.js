@@ -39,8 +39,6 @@ const theme = createMuiTheme({
 });
 
 
-
-console.log( process.env.REACT_APP_WSS_SERVER_URL);
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_SERVER_URL,
   credentials:'include',
