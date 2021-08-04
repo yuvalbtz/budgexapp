@@ -10,7 +10,7 @@ import SingleMatualAccount from './pages/SingleMatualAccountPage'
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {useSelector, useDispatch} from 'react-redux'
-import { SET_NotificationsCount, SET_USER, SET_USER_LOGOUT } from './Redux/actionTypes';
+import {SET_USER, SET_USER_LOGOUT } from './Redux/actionTypes';
 import history from './util/history';
 import SplashScreen from './components/SplashScreen'
 
@@ -18,7 +18,7 @@ import SplashScreen from './components/SplashScreen'
 
 function App() {
   /* document.body.style.overflow = "hidden" */
-  // console.log = () => {}
+  console.log = () => {}
  
   const {data, loading} = useQuery(GET_USER_STATE);
   const dispatch = useDispatch()
