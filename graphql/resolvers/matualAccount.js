@@ -318,8 +318,7 @@ module.exports = {
             const account = await MatualAccount.findById(accountId)
             if(account){
                 
-                const username = context.req.user.username
-                const path = `Users/${username}/matualAccounts/${accountId}/${itemId}`
+                const path = `Users/${account.owner}/matualAccounts/${accountId}/${itemId}`
                 const itemIndex = account.list.findIndex(c => c._id == itemId)
                 const item = account.list.filter(c => c._id == itemId)[0]
                 
