@@ -2,10 +2,11 @@ import React from 'react'
 import Navbar from '../Navbar'
 import {Footer} from './LayoutElements'
 import NotificationsPage from '../../pages/NotificationsPage'
+import { useSelector } from 'react-redux'
 
 
 function Index({children}) {
-   
+    const user = useSelector(state => state.userReducer.userDetails)
     return (
         <div>
          <Navbar />
@@ -17,7 +18,7 @@ function Index({children}) {
        {!window.location.pathname.split('/')[1] && ( <Footer>
         All Rights Reserved © {new Date().getFullYear()} - Yuval Ben Tzur
         </Footer>)}
-        <NotificationsPage/>
+        {user && (<NotificationsPage/>)}
        </div>
     )
 }

@@ -101,7 +101,7 @@ if(!loading && members){
     className={classes.FreindIcons} 
     classes={{avatar:classes.customAvatars}} 
      max={4}>
-      {usersInAccount &&  usersInAccount.length > 0 && usersInAccount.map(freind => (
+      {usersInAccount && usersInAccount.length > 0 && usersInAccount.map(freind => (
          <Avatar component={Link} 
          to={`/matualAccounts/${accountId}/ShowAccountFreinds`} 
          key={freind.id} 
@@ -109,15 +109,13 @@ if(!loading && members){
          src={freind.profileImageUrl} />  
          ))} 
        
-        {usersInAccount.length === 0 && usersNotInAccount &&  usersNotInAccount.length > 0 && usersNotInAccount.map(freind => (
-        <IconButton style={{width:30,height:5, borderRadius:'unset'}}  component={Link} 
-        to={`/matualAccounts/${accountId}/ShowAccountFreinds`} 
-        key={freind.id}>
-         
+        {usersInAccount.length === 0 && usersNotInAccount && usersNotInAccount.length > 0 && (
+          <IconButton style={{width:30,height:5, borderRadius:'unset'}}  component={Link} 
+          to={`/matualAccounts/${accountId}/ShowAccountFreinds`}> 
          <GroupRoundedIcon style={{color:'whitesmoke'}}  fontSize="large"/>
          <TimerRoundedIcon style={{color:'white'}}   fontSize='small' />
          </IconButton> 
-         ))}
+        )}
       
        </AvatarGroup> 
     </div>

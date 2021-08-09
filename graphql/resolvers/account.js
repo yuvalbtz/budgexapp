@@ -2,13 +2,9 @@ const { AuthenticationError, UserInputError } = require("apollo-server")
 const Account = require("../../models/Account")
 const User = require("../../models/User")
 const FormData = require('form-data')
-const {projectStorage} = require("../../firebase")
 const arr = []
-const checkAuth = require("../../util/check-auth")
-const { v4: uuidv4 } = require('uuid')
-const Axios = require("axios").default;
 const cloudinary = require('cloudinary').v2;
-const { ArrowBackIosTwoTone } = require("@material-ui/icons")
+
 
 
 //cloudinary config

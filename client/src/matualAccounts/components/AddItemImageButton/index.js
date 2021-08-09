@@ -12,7 +12,7 @@ function Index({accountId, itemId}) {
   const [fileSelected, setFileSelected] = useState(null)
   const [imageMutation ,setImageMutation] = useState('')
   const [loading ,setLoading] = useState(false)
-  const getUsername = useSelector(state => state.userReducer.userDetails)
+  const getOwnerID = useSelector(state => state.uiReducer.getCurrentAccountUi)
   const formData = new FormData()
   
    const [updateItemImage,{data}] = useMutation(ADD_ITEM_IMAGE_MUTATION, {
@@ -29,14 +29,12 @@ function Index({accountId, itemId}) {
       })
         
 
-
-
    useEffect(() =>{ 
  
         if(fileSelected){
           formData.append('file', fileSelected)
           formData.append('upload_preset','temed3va')
-          formData.append('folder',`Users/${getUsername.id}/matualAccounts/${accountId}/${itemId}`)
+          formData.append('folder',`Users/${getOwnerID && getOwnerID.owner}/matualAccounts/${accountId}/${itemId}`)
           
           Axios.post("https://api.cloudinary.com/v1_1/dw4v5axnj/image/upload/",formData)
           .then(res => {
