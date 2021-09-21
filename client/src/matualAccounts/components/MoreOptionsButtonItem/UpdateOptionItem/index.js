@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useParams} from 'react'
 import {makeStyles, MenuItem} from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { SET_UpdateItem_Modal_Open } from '../../../../Redux/actionTypes'
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function Index({item}) {
-    
+  const params = useParams()
     const classes = useStyles()
    
 
@@ -32,7 +32,7 @@ function Index({item}) {
     
     return (
        
-      <MenuItem className={classes.Update} component={Link} to={`${window.location.pathname}/updateItem/${item.id}`} onClick={handleClickOpen} >עדכן פריט</MenuItem>
+      <MenuItem className={classes.Update} component={Link} to={`/matualAccounts/${params.accountId}/updateItem/${item.id}`} onClick={handleClickOpen} >עדכן פריט</MenuItem>
       
     )
 }
