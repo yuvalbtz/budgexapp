@@ -1,12 +1,9 @@
 import {SET_USER, SET_USER_LOGOUT} from '../actionTypes'
-
-
-        
+       
 const InitialState = {
     isAuthenticated:false,
     userDetails:null
 }
-
 
 
 export function userReducer( state=InitialState, action){

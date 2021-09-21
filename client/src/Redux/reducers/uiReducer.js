@@ -1,8 +1,5 @@
-import {SET_Account_Modal_Open,
-        SET_MatualAccount_Modal_Open, 
-        SET_Profile_Modal_Open,
+import {
         SET_AddItem_Modal_Open,
-        SET_BG_SINGLE_ACCOUNT,
         SET_Current_Account_Ui,
         SET_UpdateItem_Modal_Open,
         SET_UpdateAccount_Modal_Open,
@@ -42,29 +39,8 @@ const InitialState = {
 
 export function uiReducer(state = InitialState, action){
     switch(action.type){
-        case SET_Account_Modal_Open:
-            return {
-                ...state,
-                AccountModalIsOpen:!state.AccountModalIsOpen
-            }
-            case SET_MatualAccount_Modal_Open:
-             return {
-                    ...state,
-                    MatualAccountIsOpen:!state.MatualAccountIsOpen
-                } 
-                case SET_Profile_Modal_Open:
-             return {
-                    ...state,
-                    ModalProfileIsOpen:!state.ModalProfileIsOpen
-                } 
-                
-                case SET_BG_SINGLE_ACCOUNT:
-                    return {
-                           ...state,
-                           bgSingleAccount:action.payload
-                       }
-                      
-                       case SET_AddItem_Modal_Open:
+       
+                      case SET_AddItem_Modal_Open:
                     return {
                            ...state,
                            AddItemModalIsOpen:!state.AddItemModalIsOpen

@@ -298,10 +298,10 @@ function Index({match}) {
 
    React.useEffect(() => {
   if(data){
-    dispatch({type:SET_Current_Account_Ui, payload:data.getUserMatualAccount})
+     dispatch({type:SET_Current_Account_Ui, payload:data.getUserMatualAccount})
   }
 
- },[data])
+ },[data, dispatch])
 
 
 
@@ -447,7 +447,7 @@ const FormatOptions = {
 
         {loading && (<CircularProgress style={{marginTop:'50px'}} color='primary' size={200} thickness={0.5}/>)}
 
-        {data && data.getUserMatualAccount.list.map((item, index) => (
+        {data && data.getUserMatualAccount.list.map((item) => (
          
          <SingleItem 
          key={item.id}

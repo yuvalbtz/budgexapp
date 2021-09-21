@@ -29,10 +29,15 @@ module.exports = {
 
 
            async getUserMatualAccount(_,{accountId},context){
+            const userId = context.req.user.id;
             try{
                 const account = await MatualAccount.findById(accountId)
-            
+                
+         //   const userValid  = account && account.members.some(user => user.find(member =>  member.userId === userId && member.isConfirmed === true))
+                
+                
                 if(account){
+                    
                     return account;
                 }else{
                  throw new Error('Account not found!')}

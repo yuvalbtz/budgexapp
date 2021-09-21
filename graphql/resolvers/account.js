@@ -338,11 +338,11 @@ module.exports = {
             },
 
             getUserAccount: async (_,{accountId},context) => {
-                 
+                const userId = context.req.user.id;
                 try{
                    const account = await Account.findById(accountId)
                
-                   if(account){
+                   if(account && userId === account.owner){
                        return account;
                    }else{
                     throw new Error('Account not found!')}

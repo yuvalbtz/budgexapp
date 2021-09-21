@@ -412,7 +412,7 @@ const FormatOptions = {
 
         {loading && (<CircularProgress style={{marginTop:'50px'}} color='secondary' size={200} thickness={0.5}/>)}
 
-        {data && data.getUserAccount.list.map((item, index) => (
+        {data && data.getUserAccount.list.map((item) => (
          
          <SingleItem 
          key={item.id}

@@ -171,7 +171,7 @@ function ButtonBases(props) {
       
       {data && data.getUserMatualAccounts.length === 0 && (<NoAccountsDisplay/>)}
      
-      {data && data.getUserMatualAccounts.sort((a, b) => parseInt(b.updatedAt) - parseInt(a.updatedAt)).map((account, index) => (
+      {data && data.getUserMatualAccounts.sort((a, b) => parseInt(b.updatedAt) - parseInt(a.updatedAt)).map((account) => (
         <Grid key={account.id} item xs={12} sm={4}>
          
        <div className={classes.button}>

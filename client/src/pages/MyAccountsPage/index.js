@@ -135,7 +135,7 @@ function ButtonBases(props) {
       
       {data && data.getUserAccounts.length === 0 && (<NoAccountsDisplay/>)}
       
-       {data &&  data.getUserAccounts.map((account, index) => (
+       {data &&  data.getUserAccounts.map((account) => (
       
       <Grid  key={account.id} item xs={12} sm={4} >
         
