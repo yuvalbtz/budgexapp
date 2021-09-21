@@ -42,10 +42,10 @@ function Index({accountId, itemId, item}) {
   const anchorRef = React.useRef(null);
   const params = useParams()
   const handleToggle = () => {
-    if(params.itemId){
+    /* if(params.itemId){
       history.replace(`/matualAccounts/${accountId}`)
     }
-   
+    */
     setOpen((prevOpen) => !prevOpen);
   };
 
