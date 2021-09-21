@@ -342,7 +342,7 @@ module.exports = {
                 try{
                    const account = await Account.findById(accountId)
                
-                   if(account && userId === account.owner){
+                   if(account && userId == account.owner){
                        return account;
                    }else{
                     throw new Error('Account not found!')}
