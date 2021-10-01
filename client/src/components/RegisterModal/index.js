@@ -71,7 +71,17 @@ const useStyles = makeStyles((theme) => ({
       color:'whitesmoke',
       fontFamily: 'Varela Round',
       borderRadius:'12px'
-  }
+  },
+  fullWidth:{
+    [theme.breakpoints.down('xs')]:{
+      height:'100%',
+    width:'100%',
+    margin: 0,
+    maxWidth:'100%',
+    maxHeight:'none',
+    borderRadius:0,
+    }
+    },
 }));
 
 
@@ -100,7 +110,6 @@ const DialogActions = withStyles((theme) => ({
 
  function CustomizedDialogs() {
   const open = window.location.pathname === `/register`
-  const [phone , setPhone] = useState(false);
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({});
 
@@ -145,16 +154,6 @@ const DialogActions = withStyles((theme) => ({
   }
 
 
-  window.addEventListener('resize', () => {
-    if(window.innerWidth <= 760){
-      setPhone(true)
-    } else{
-      setPhone(false) 
-    }
-  },() => window.removeEventListener('resize'));
-  
-
-
   const [FormValues, setValues] = React.useState({
     password: '',
     ConfirmPassword:'',
@@ -190,7 +189,7 @@ const DialogActions = withStyles((theme) => ({
       >
         הירשם
       </Button>
-      <Dialog fullScreen={phone} onClose={() => history.goBack()} aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog classes={{paper:classes.fullWidth}} onClose={() => history.goBack()} aria-labelledby="customized-dialog-title" open={open}>
         
         <form onSubmit={onSubmit}  noValidate >
         <DialogTitle id="customized-dialog-title" onClose={() => history.goBack()} style={{textAlign:'center'}}>

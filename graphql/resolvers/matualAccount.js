@@ -33,10 +33,13 @@ module.exports = {
             try{
                 const account = await MatualAccount.findById(accountId)
                 
-         //   const userValid  = account && account.members.some(user => user.find(member =>  member.userId === userId && member.isConfirmed === true))
+            const userIsOwner  = account && account.owner == userId
+            
+            const userIsValid = account && account.members.some(user => user.userId == userId && user.isConfirmed)
+            
+            console.log("user Valid", userIsValid);
                 
-                
-                if(account){
+                if(account && (userIsOwner || userIsValid)){
                     
                     return account;
                 }else{
@@ -170,6 +173,7 @@ module.exports = {
                             id3.map((delId) => {
                             const userIndex = account.members.findIndex(m => m.userId == delId.userId)
                             account.members.splice(userIndex, 1)
+                            
                             if(accountNotification){
                                 let ntfnIndex = accountNotification.to.findIndex(ntf => ntf == userId) // remove user from  notification
                                 let isConfirmIndex =  accountNotification.isConfirmed.findIndex(ntf => ntf == userId)
@@ -177,8 +181,7 @@ module.exports = {
                                 accountNotification.to.splice(ntfnIndex,1)
                                 accountNotification.isConfirmed.splice(isConfirmIndex,1)
                                 accountNotification.seen.splice(seenIndex,1)
-                            
-                                
+                                    
                             }
                         })
                           

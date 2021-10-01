@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 function Index({children}) {
     const user = useSelector(state => state.userReducer.userDetails)
     return (
-        <div>
+        <div >
          <Navbar />
           
         <main>

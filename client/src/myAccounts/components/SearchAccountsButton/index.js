@@ -1,7 +1,7 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import {makeStyles, withStyles } from '@material-ui/core/styles';
-import {Paper, Slide } from '@material-ui/core';
+import {CircularProgress, Paper, Slide } from '@material-ui/core';
 import {useParams } from 'react-router-dom';
 import {useMutation, useQuery } from '@apollo/client';
 import gql from 'graphql-tag'
@@ -183,14 +183,27 @@ const {data} = useQuery(GET_USER_ACCOUNTS)
                 id="grouped-demoAItem8678679"
                 classes={{inputRoot:classes.SearchField,clearIndicator:classes.closeIndicator,popupIndicatorOpen:classes.closeIndicator}}
                 options={options}
+                loading={loading}
                 getOptionLabel={(option) => option ? option : '' }
                 style={{ width: 300 }}
                 renderInput={(params) => <CssTextField 
                   {...params} 
                 placeholder="Search..." 
+             
                 inputRef={(el) => input = el}
-                variant="standard" />}
-                onSelect={() => searchAccount() }
+                variant="standard"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+                />}
+               
+                onSelect={() => searchAccount()}
                  onChange={(val,value,res) =>{
                 if(value){
                   setSearchQuery(value)  

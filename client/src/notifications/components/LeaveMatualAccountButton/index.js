@@ -30,7 +30,7 @@ function Index({accountId, userId}) {
             button type="submit" 
             component="button"
             onClick={() => ConfirmRequest()}>
-             בטל הצטרפות מחשבון זה
+             ביטול הצטרפות מחשבון זה
             </ListItem>  )}
            
               

@@ -2,7 +2,7 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import {makeStyles, withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import {Fab, Paper, Slide } from '@material-ui/core';
+import {CircularProgress, Fab, Paper, Slide } from '@material-ui/core';
 import {Link, useParams } from 'react-router-dom';
 import {useMutation } from '@apollo/client';
 import gql from 'graphql-tag'
@@ -131,7 +131,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchAppBar() {
   const classes = useStyles();
-  
+  const [OnBlur, setOnBlur] = React.useState(false)
   const params = useParams()
   const accountId = params.accountId
   const open = window.location.pathname === `/matualAccounts/${accountId}/search`
@@ -183,7 +183,9 @@ let input = React.useRef()
    
       proxy.writeQuery({ query: GET_USER_ACCOUNT,data});
      },
-     onCompleted:(data) => console.log(data),
+     onCompleted:(data) => {
+      console.log(data);
+     },
      onError:(err) => console.log(err)
    })
 
@@ -210,6 +212,8 @@ let input = React.useRef()
                 id="grouped-demoAItem928398"
                 classes={{inputRoot:classes.SearchField,clearIndicator:classes.closeIndicator,popupIndicatorOpen:classes.closeIndicator}}
                 options={options}
+                loading={loading}
+                inputMode="search"
                 getOptionLabel={(option) =>  option  ? option : '' }
                 style={{ width: 300 }}
                 renderInput={(params) => <CssTextField 
@@ -217,14 +221,27 @@ let input = React.useRef()
                 value={searchQuery}
                 placeholder="Search..." 
                 inputRef={ (el) => input = el}
-                variant="standard" />}
+                variant="standard" 
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+                />}
                 onSelect={() => searchItem()}
                  onChange={(val,value,res) =>{
                   if(value){
-                  setSearchQuery(value)  
+                  setSearchQuery(value)
+                  
                   }else{
                     setSearchQuery('') 
-                }}}
+                }
+               
+              }}
             />
           </div>
      </Paper>

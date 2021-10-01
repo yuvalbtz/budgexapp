@@ -19,15 +19,14 @@ import Avatar from '@material-ui/core/Avatar';
 import { useQuery, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Divider, Modal} from '@material-ui/core';
+import {Divider} from '@material-ui/core';
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import ConfirmOrRemoveRequestButton from '../../notifications/components/ConfirmRequestButton'
 import { SET_NotificationsCount } from '../../Redux/actionTypes';
 import LeaveMatualAccountButton from '../../notifications/components/LeaveMatualAccountButton'
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
+import { Link } from 'react-router-dom';
+
 
 
   const useStyles = makeStyles((theme) => ({
@@ -147,7 +146,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
        className={classes.inline}
        color="textPrimary"
      >
-    &apos;&apos; {`${accountTitle}`} &apos;&apos;
+    &apos;&apos;{accountTitle}&apos;&apos;
      </Typography>
      </React.Fragment>
    
@@ -157,10 +156,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
      <Typography
        component="span"
        variant="subtitle2"
-       style={{padding:'12px', justifyContent:'flex-start', display:'flex'}}
+       style={{padding:'12px', justifyContent:'flex-end', display:'flex'}}
        color="textSecondary"
      >
-       {dayjs(parseInt(updatedAt)).fromNow()}
+       {dayjs(parseInt(updatedAt)).fromNow()} :החשבון עודכן
        
      </Typography> 
            
@@ -171,7 +170,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
    );
  }
 
-
+ const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 
 function Index() {
@@ -247,7 +248,7 @@ return (
           fullScreen
           open={open}
           onClose={() => !open}
-          
+          TransitionComponent={Transition}
           >
           <AppBar color='inherit' dir='rtl'   className={classes.appBar}>
           <Toolbar>
@@ -287,7 +288,7 @@ return (
            
            
            
-            {user && !isConfirmed.includes(user && user.id) &&  to.includes(user.id) && (
+            {user && !isConfirmed.includes(user.id) && to.includes(user.id) && (
               
               <React.Fragment>
              
@@ -317,7 +318,7 @@ return (
                 className={classes.inline}
                 color="textPrimary"
               >
-              &apos;&apos; {accountTitle} &apos;&apos;  
+              &apos;&apos;{accountTitle}&apos;&apos;  
               </Typography>
               </React.Fragment>
             
@@ -327,10 +328,10 @@ return (
               <Typography
                 component="span"
                 variant="subtitle2"
-                style={{padding:'12px', justifyContent:'flex-start', display:'flex'}}
+                style={{padding:'12px', justifyContent:'flex-end', display:'flex'}}
                 color="textSecondary"
               >
-                {dayjs(parseInt(createdAt)).fromNow()}
+              {dayjs(parseInt(createdAt)).fromNow()} :החשבון נוצר
                 
               </Typography> 
               
@@ -350,7 +351,7 @@ return (
 
             
             
-     {user && isConfirmed.includes(user.id) && from !== user.id && (
+     {user && isConfirmed.includes(user.id) && from !== user.id && to.includes(user.id) && (
                <React.Fragment>
                  <ListItem >
              <ListItemAvatar>
@@ -378,7 +379,9 @@ return (
                 className={classes.inline}
                 color="textPrimary"
               >
-                &apos;&apos; {accountTitle} &apos;&apos;
+                <Link to={`/matualAccounts/${accountId}`}>
+                &apos;&apos;{accountTitle}&apos;&apos;
+                </Link>
               </Typography>
               </React.Fragment>
             
@@ -388,10 +391,10 @@ return (
               <Typography
                 component="span"
                 variant="subtitle2"
-                style={{padding:'12px', justifyContent:'flex-start', display:'flex'}}
+                style={{padding:'12px', justifyContent:'flex-end', display:'flex'}}
                 color="textSecondary"
               >
-                {dayjs(parseInt(createdAt)).fromNow()}
+               {dayjs(parseInt(createdAt)).fromNow()} :החשבון נוצר
                 
               </Typography> 
               <div style={{margin:'0 auto',display:'flex'}}>

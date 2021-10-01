@@ -323,6 +323,7 @@ function Index({match}) {
      const result = data.filter(i => i.amount > 0).reduce((acc, val) => (acc + val.amount),0)
        
      SumEarningstas = result   
+     
      return Number.isInteger(result) ? result : result.toFixed(2);
    }
 
@@ -331,7 +332,8 @@ function Index({match}) {
    const result = data.filter(i => i.amount < 0).reduce((a, b) => (a + b.amount),0)
     
   SumSpendingstas = result
-   return Number.isInteger(result) ? result : result.toFixed(2);
+  
+  return Number.isInteger(result) ? result : result.toFixed(2);
 }
  
 function scrollToBottom() {

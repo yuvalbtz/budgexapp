@@ -61,20 +61,11 @@ function Index({itemId}) {
   const ModalIsOpen = window.location.pathname === `/matualAccounts/${params.accountId}/deleteItem/${params.itemId}` 
 
 
-  const handleClickOpen = () => {
-    
-   
-  };
-
     const [deleteItem,{loading}] = useMutation(DELETE_ITEM,
         {
         onCompleted:() =>{
         history.goBack()
-         
-         
-           
-            
-        },
+     },
 
         onError:(err) => console.log(err),
        
@@ -89,8 +80,7 @@ function Index({itemId}) {
         <MenuItem 
         className={classes.Delete} 
         component={Link} 
-        to={`/matualAccounts/${params.accountId}/deleteItem/${itemId}`} 
-        onClick={handleClickOpen} >מחק פריט</MenuItem>
+        to={`/matualAccounts/${params.accountId}/deleteItem/${itemId}`}>מחק פריט</MenuItem>
         
       <Dialog
         open={ModalIsOpen}
@@ -106,7 +96,7 @@ function Index({itemId}) {
         <DialogTitle className={classes.dialogTitle} id="alert-dialog-slide-title">מחיקת פריט</DialogTitle>
         <DialogContent >
           <DialogContentText id="alert-dialog-slide-description">
-           ? האם אתה בטוח שברצונך למחוק פריט זה 
+           ? האם את/ה בטוח/ה שברצונך למחוק פריט זה 
           </DialogContentText>
         </DialogContent>
         <DialogActions  style={{margin:'0 auto'}} >

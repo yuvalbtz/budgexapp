@@ -2,7 +2,7 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import {makeStyles, withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import {Fab, Paper, Slide } from '@material-ui/core';
+import {CircularProgress, Fab, Paper, Slide } from '@material-ui/core';
 import {Link, useParams } from 'react-router-dom';
 import {useMutation } from '@apollo/client';
 import gql from 'graphql-tag'
@@ -177,7 +177,7 @@ export default function SearchAppBar() {
           accountId
         }
         });
-      
+        
         data.getUserAccount = result.data.searchItem
        
    
@@ -210,21 +210,37 @@ export default function SearchAppBar() {
                 id="grouped-demoAItem123"
                 classes={{inputRoot:classes.SearchField,clearIndicator:classes.closeIndicator,popupIndicatorOpen:classes.closeIndicator}}
                 options={options}
+                loading={loading}
                 getOptionLabel={(option) => option ? option : '' }
                 style={{ width: 300 }}
                 renderInput={(params) => <CssTextField 
                   {...params} 
                 placeholder="Search..." 
                 inputRef={(el) => input = el}
-                variant="standard" />}
-                onSelect={() => searchItem() }
-                 onChange={(val,value,res) =>{
-                if(value){
-                  setSearchQuery(value)  
+                variant="standard"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+                />
+              }
+              
+                onSelect={() => searchItem()}
+                onChange={(val,value,res) =>{
+                 
+                  if(value){
+                   setSearchQuery(value)  
                   }else{
                     setSearchQuery('') 
                     
                   }}}
+
+                 
             />
           </div>
      </Paper>

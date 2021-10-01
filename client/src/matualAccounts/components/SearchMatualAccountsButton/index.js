@@ -1,6 +1,6 @@
 import React from 'react';
 import {makeStyles, withStyles } from '@material-ui/core/styles';
-import {Paper, Slide } from '@material-ui/core';
+import {CircularProgress, Paper, Slide } from '@material-ui/core';
 import {useMutation, useQuery } from '@apollo/client';
 import gql from 'graphql-tag'
 import TextField from '@material-ui/core/TextField';
@@ -171,12 +171,6 @@ if(data){
 
  },[data,open])
 
-
-
-  
-
-  
-
   return (
     <div >
      <Slide in={open}>
@@ -186,6 +180,7 @@ if(data){
                 id="grouped-demoAItem111"
                 classes={{inputRoot:classes.SearchField,clearIndicator:classes.closeIndicator,popupIndicatorOpen:classes.closeIndicator}}
                 options={options}
+                loading={loading}
                 getOptionLabel={(option) => option ? option : '' }
                 style={{ width: 300 }}
                 renderInput={(params) => <CssTextField 
@@ -193,7 +188,17 @@ if(data){
                 id='textfeild122938' 
                 placeholder="Search..." 
                 inputRef={(el) => input = el}
-                variant="standard" />}
+                variant="standard" 
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+                />}
                 onSelect={() => searchAccount() }
                  onChange={(val,value,res) =>{
                 if(value){

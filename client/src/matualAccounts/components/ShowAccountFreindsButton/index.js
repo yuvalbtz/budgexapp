@@ -14,12 +14,11 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { useQuery} from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Divider, IconButton } from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import history from '../../../util/history';
 import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
+import Tooltip from '@material-ui/core/Tooltip'
 const useStyles = makeStyles((theme) => ({
     FreindIcons:{
         position:'absolute',
@@ -52,7 +51,7 @@ function Index({members,accountId}) {
   
    
 
- const {data, loading, error} = useQuery(GET_ALL_USERS) 
+ const {data, loading} = useQuery(GET_ALL_USERS) 
  const usersConfirmedArray =[]
  const usersNotConfirmedArray =[]
  
@@ -102,11 +101,13 @@ if(!loading && members){
     classes={{avatar:classes.customAvatars}} 
      max={4}>
       {usersInAccount && usersInAccount.length > 0 && usersInAccount.map(freind => (
-         <Avatar component={Link} 
-         to={`/matualAccounts/${accountId}/ShowAccountFreinds`} 
-         key={freind.id} 
+         <Tooltip key={freind.id} title={freind.username}>
+           <Avatar 
+         component={Link} 
+         to={`/matualAccounts/${accountId}/ShowAccountFreinds`}  
          alt={freind.username} 
-         src={freind.profileImageUrl} />  
+         src={freind.profileImageUrl} /> 
+         </Tooltip> 
          ))} 
        
         {usersInAccount.length === 0 && usersNotInAccount && usersNotInAccount.length > 0 && (
@@ -121,7 +122,7 @@ if(!loading && members){
     </div>
   
     <Dialog onClose={() => history.goBack()} aria-labelledby="simple-dialog-title" open={open}>
-      <DialogTitle id="simple-dialog-title">חברים לחשבון</DialogTitle>
+      <DialogTitle id="simple-dialog-title" style={{textAlign:'center'}}>חברים לחשבון</DialogTitle>
       <List>
        
           {usersInAccount && usersInAccount.map((freind, index) => (

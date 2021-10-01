@@ -38,7 +38,7 @@ function ConfirmRequest({setLoading,accountId, userId}){
             setLoading(true)
            }}>
            
-       אשר
+       אישור
       </ListItem>
     
       </>)
@@ -80,7 +80,7 @@ function RemoveRequest({setLoading,accountId, userId}){
             removeRequest()
             setLoading(true) 
           }}>
-          התעלם
+          התעלמות
          </ListItem>
     
       </>)

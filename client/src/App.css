@@ -5,23 +5,19 @@
  .App {
   text-align: center;
   
-  min-height: -webkit-fill-available;
+  min-height: -webkit-fill-available !important;
   height: 100% !important; 
   
   
 } 
 
 ::-webkit-scrollbar {
-  width:0;
-  
+  width: 0;
+ 
 }
 
-.FloatingActionButtonZoom-root-142{
-  height: '100%';
-  overflow: hidden;
-  display: block;
-  
-}
+
+
 
 .MuiBadge-anchorOriginBottomRightRectangle.MuiBadge-invisible {
  transform:none;

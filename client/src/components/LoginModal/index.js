@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { memo, useContext, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -22,6 +22,7 @@ import {Link, withRouter} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import {SET_USER} from '../../Redux/actionTypes'
 import history from '../../util/history'
+
 
 
 
@@ -69,7 +70,18 @@ const useStyles = makeStyles((theme) => ({
       color:'whitesmoke',
       fontFamily: 'Varela Round',
       borderRadius:'12px'
-  }
+  },
+  fullWidth:{
+    [theme.breakpoints.down('xs')]:{
+      height:'100%',
+    width:'100%',
+    margin: 0,
+    maxWidth:'100%',
+    maxHeight:'none',
+    borderRadius:0,
+    }
+    },
+
 }));
 
 
@@ -108,9 +120,9 @@ function CustomizedDialogs(props) {
     const dispatch = useDispatch()
   
   
-  const open = window.location.pathname === '/login'
-  
-  const [phone , setPhone] = useState(false);
+  const open = window.location.pathname === "/login"
+
+  console.log(open);
  
   const [errors, setErrors] = useState({});
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
@@ -147,23 +159,12 @@ function CustomizedDialogs(props) {
     loginUser();
      
   }
-
   
- 
-    window.addEventListener('resize', () => {
-      if(window.innerWidth <= 760){
-        setPhone(true)
-      } else{
-        setPhone(false) 
-      }
-    },() => window.removeEventListener('resize'));
-
 
 
   const [FormValues, setValues] = React.useState({
     password: '',
     showPassword: false,
-
   });
 
   
@@ -183,14 +184,18 @@ function CustomizedDialogs(props) {
       <Button 
       className={classes.phone} 
       component={Link} 
-      to={`/login`} 
+      to="/login"
       variant="outlined" 
       style={{color:"whitesmoke", 
       borderColor:'whitesmoke'}} 
      >
         התחבר
       </Button>
-      <Dialog fullScreen={phone} onClose={() => history.goBack()} aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog  
+      classes={{paper:classes.fullWidth}} 
+      onClose={() => history.goBack()} 
+      aria-labelledby="customized-dialog-title" 
+      open={open}>
          <form onSubmit={onSubmit} noValidate >
         
         <DialogTitle id="customized-dialog-title" onClose={() => history.goBack()} style={{textAlign:'center'}}>

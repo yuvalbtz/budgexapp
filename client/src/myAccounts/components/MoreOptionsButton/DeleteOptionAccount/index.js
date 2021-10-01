@@ -3,7 +3,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks';
-import {useDispatch} from 'react-redux'
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -56,25 +55,13 @@ const useStyles = makeStyles((theme) => ({
     return <Slide direction="up" ref={ref} {...props} />;
   });
  
-function Index({accountId, setOpen}) {
+function Index({accountId,setOpen}) {
     
     const classes = useStyles();
-    
-    const [open, setOpenModal] = React.useState(false);
-    
+     
     const params = useParams()
   
    const ModalIsOpen = window.location.pathname === `/myAccounts/deleteAccount/${params.accountId}`
-
-
-
-
-
-  const handleClickOpen = () => { 
-    setOpenModal(true);
-  };
-
-  
 
     const [deleteAccount,{loading}] = useMutation(DELETE_ACCOUNT,
         {
@@ -86,13 +73,13 @@ function Index({accountId, setOpen}) {
 
         onError:(err) => console.log(err),
         variables: {
-           accountId,
+           accountId:params.accountId,
         }
       });
     
     return (
         <>
-        <MenuItem className={classes.Delete} component={Link} to={`/myAccounts/deleteAccount/${accountId}`} onClick={handleClickOpen} >מחק חשבון</MenuItem>
+        <MenuItem className={classes.Delete} component={Link} to={`/myAccounts/deleteAccount/${accountId}`}>מחק חשבון</MenuItem>
         
       <Dialog
         open={ModalIsOpen}
@@ -102,13 +89,11 @@ function Index({accountId, setOpen}) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         style={{textAlign:'center'}}
-
-        
-      >
+        >
         <DialogTitle className={classes.dialogTitle} id="alert-dialog-slide-title">מחיקת חשבון</DialogTitle>
         <DialogContent >
           <DialogContentText id="alert-dialog-slide-description">
-           ? האם אתה בטוח שברצונך למחוק חשבון זה 
+           ? האם את/ה בטוח/ה שברצונך למחוק חשבון זה 
           </DialogContentText>
         </DialogContent>
         <DialogActions  style={{margin:'0 auto'}} >

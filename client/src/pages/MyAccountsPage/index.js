@@ -16,8 +16,8 @@ import ListAltRoundedIcon from '@material-ui/icons/ListAltRounded'
 
 const styles = theme => ({
   root: {
-    
     width: '100%',
+    height: 'fit-content',
   },
   
   image: {
@@ -29,6 +29,7 @@ const styles = theme => ({
     },
     '&:hover, &$focusVisible': {
       zIndex: 1,
+      wordBreak:'break-all',
       '& $imageBackdrop': {
         opacity: 0.15,
       },
@@ -38,7 +39,9 @@ const styles = theme => ({
       
       '& $imageTitle': {
         border: '2px solid currentColor',
-        backgroundColor:'rgba(0,0,0,0.2)'
+        backgroundColor:'rgba(0,0,0,0.2)',
+        
+        
       },
 
       '& $button': {
@@ -82,7 +85,7 @@ const styles = theme => ({
     padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(2)}px`,
     fontFamily:'Varela Round',
     fontSize:18,
-    
+    wordBreak:'break-all',
     
   },
   imageMarked: {
@@ -93,6 +96,7 @@ const styles = theme => ({
     bottom: -2,
     left: 'calc(50% - 9px)',
     transition: theme.transitions.create('opacity'),
+    
   },
 
   button:{
@@ -124,12 +128,13 @@ function ButtonBases(props) {
   
   return (
     
-      <Container disableGutters maxWidth={false} className={classes.root}>
+      <>
       <Grid  
       container
       direction="row"
       spacing={0}
       ref={input} 
+      className={classes.root}
       >
       
       
@@ -200,6 +205,8 @@ function ButtonBases(props) {
         </Typography>
       
         </div>
+   
+        
         </Grid>
         
     ))}
@@ -212,8 +219,7 @@ function ButtonBases(props) {
 
 <UpdateAccountModal/>
   
-
-</Container>
+</>
   
   );
 }

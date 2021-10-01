@@ -123,7 +123,7 @@ function Index(){
           
      {user &&  (<LogoutLinkStyle><LogOutButton/></LogoutLinkStyle>)}
      
-     {user && window.location.pathname === '/' && (<LinkStyle to='/myAccounts'>
+     {user && window.location.pathname === ('/' || '/login' || '/register') && (<LinkStyle to='/myAccounts'>
        <li>חזור לחשבון</li>
       </LinkStyle>)}
      

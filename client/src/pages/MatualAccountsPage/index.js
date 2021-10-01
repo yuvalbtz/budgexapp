@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import images from '../../util/bg-images.json'
 import Grid from '@material-ui/core/Grid';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import MatualAccountModal from '../../matualAccounts/components/ModalMatualAccount'
@@ -10,7 +9,7 @@ import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks';
 import MenuBarButton from '../../matualAccounts/components/MoreOptionsButton'
 import { Link } from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import UpdateMatualAccountModal from '../../matualAccounts/components/UpdateMatualAccountModal'
 import ShowAccountFreindsButton from '../../matualAccounts/components/ShowAccountFreindsButton'
 import { IconButton, Typography } from '@material-ui/core';
@@ -22,7 +21,8 @@ const styles = theme => ({
     flexWrap: 'wrap',
     minWidth: 300,
     width: '100%',
-   
+    height: 'fit-content',
+    
   },
   image: {
     position: 'relative',
@@ -106,11 +106,6 @@ const NoAccountsDisplay = () => (
  )
 
 
-  
-
-
-
-
 
 function ButtonBases(props) {
   const { classes } = props;
@@ -118,7 +113,6 @@ function ButtonBases(props) {
   
   console.log("myMatual page");
   
-   const dispatch = useDispatch()
    
    const user = useSelector(state => state.userReducer.userDetails)
 
@@ -164,10 +158,11 @@ function ButtonBases(props) {
   console.log('data',data);
   
    return (
-    <div className={classes.root}>
+    <div >
       <Grid  container 
         direction="row"
-      >
+        className={classes.root}
+       >
       
       {data && data.getUserMatualAccounts.length === 0 && (<NoAccountsDisplay/>)}
      

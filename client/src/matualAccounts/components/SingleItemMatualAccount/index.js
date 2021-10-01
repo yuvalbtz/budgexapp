@@ -1,5 +1,4 @@
 import React from 'react'
-import {options} from '../../../util/lightboxConfig'
 import AddItemImageButton from '../AddItemImageButton'
 import NoImage from '../../../util/assets/no-image.svg'
 import MoreOptionsItem from '../MoreOptionsButtonItem' 

@@ -21,11 +21,7 @@ import { DialogTitle } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
 import history from '../../../util/history';
 import { DataGrid } from '@material-ui/data-grid';
-
-
-
-
-
+import NumericLabel from 'react-pretty-numbers';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
   flex: 1,
+  wordBreak:'break-word'
   },
   Fab:{
     position:'fixed',
@@ -56,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
   datagridEarning:{
     height:400, 
     width: '100%', 
-    direction:'rtl', 
     margin:'0 auto',
    
      [theme.breakpoints.up('sm')]:{
@@ -68,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
   datagridSpending:{
     height:400, 
     width: '100%', 
-    direction:'rtl', 
     margin:'0 auto',
     
     
@@ -109,9 +104,9 @@ const PieChart = ({data, cols}) => {
 					"item",
 					(item) => {
 						return {
-              offset: 15,
+              offset: 10,
 							content: (data) => {
-								return `${data.item}\n${Number(data.percent * 100).toFixed(1)}%`;
+								return `${data.item} ${Number(data.percent * 100).toFixed(1)}%`;
 							},
           	};
 					},
@@ -129,15 +124,31 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function FullScreenDialog({totalSpending, totalEarning}) {
   
+  //Number Format Options
+const FormatOptions = {
+  'justification':'L',
+  'locales':'en-AU',
+  'currency':false,
+  'currencyIndicator':'AUD',
+  'percentage':false,
+  'precision':0,
+  'wholenumber':null,
+  'commafy':true,
+  'shortFormat':true,
+  'shortFormatMinValue': 1000000,
+  'shortFormatPrecision': 2,
+  'title':true,
+  
+};
   const params = useParams()
   
   const accountData = useSelector(state => state.uiReducer.getCurrentAccountUi)
   
-  let array2 = []
-  let array3 =[]
+ 
+  
   
     function getSpendingSumDuplicateTitleData(){
-     
+      let array2 = []
       if(accountData){
         let result = []
         const filteredList = accountData.list.filter(i => i.amount < 0)
@@ -149,8 +160,10 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
       }
           this[a.title].amount += a.amount;
      }, Object.create(null));
-        
-      return result    
+     
+     result.map(i => array2.push({ item:i.title, percent:Math.abs((i.amount / totalSpending).toFixed(4))})) 
+     
+     return array2    
    }
       
     }
@@ -202,7 +215,7 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
 
 
     function getEarningSumDuplicateTitleData(){
-      
+      let array3 =[]
       if(accountData){
         let result = []
         const filteredList = accountData.list.filter(i => i.amount > 0)
@@ -214,36 +227,13 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
       }
           this[a.title].amount += a.amount;
      }, Object.create(null));
-        
-      return result    
+     result.map(i => array3.push({ item:i.title, percent:Math.abs((i.amount / totalEarning).toFixed(4))})) 
+      return array3    
    }
     
      
     }
    
-
-
-    function getDataSpending(){
-      
-      let Sarray = getSpendingSumDuplicateTitleData();
-     
-      if(Sarray){
-        Sarray.map(i => array2.push({ item:i.title, percent:Math.abs((i.amount / totalSpending).toFixed(4))}))
-        
-      }
-    }
-
-
-    function getDataEarning(){
-     
-      let Earray = getEarningSumDuplicateTitleData();
-     
-      if(Earray){
-        Earray.map(i => array3.push({ item:i.title, percent:Math.abs((i.amount / totalEarning).toFixed(4))}))
-        
-      }
-      
-    }
 
   const classes = useStyles();
   const open = window.location.pathname === `/myAccounts/${params.accountId}/statis`
@@ -255,17 +245,6 @@ export default function FullScreenDialog({totalSpending, totalEarning}) {
   };
 
  
-  React.useEffect(() => {
-    if(open){
-      
-    getDataEarning()
-    getDataSpending()
-   
-  } 
-  }, [open])
- 
- 
-
 const cols = {
   percent: {
     formatter: (val) => {
@@ -290,7 +269,7 @@ const cols = {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              פילוח נתונים
+              פילוח נתונים - &apos;&apos;{accountData && accountData.title}&apos;&apos;
             </Typography>
           </Toolbar>  
         </AppBar>
@@ -299,41 +278,62 @@ const cols = {
            
            <Typography 
            variant='h5'
-           style={{textDecoration:'underline'}}
+           style={{
+             textDecoration:'underline',
+             color:`${Number(totalEarning + totalSpending).toFixed(2) > 0 ? 'green' : 'red'}`,
+            }}
            >
-           ₪ {Number(totalEarning + totalSpending).toFixed(2)} :מאזן נוכחי
+           ₪ {accountData ? ( <NumericLabel params={FormatOptions}>{Number(totalEarning + totalSpending).toFixed(2)}</NumericLabel>) : 'calculate...' } :מאזן נוכחי
            </Typography>
         
           <div className={classes.stasWrapper}>
           
           {totalEarning > 0 && (<div style={{display:'flex', flexDirection:'column', height:'100%',  width:'100%'}}>
-            <DialogTitle style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{Math.abs(totalEarning).toFixed(2)} :הכנסות</DialogTitle>
-            <PieChart data={array3} cols={cols} />
+            <DialogTitle style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}>₪ <NumericLabel params={FormatOptions}>{Math.abs(totalEarning).toFixed(2)}</NumericLabel> :הכנסות</DialogTitle>
+            <PieChart data={!getEarningSumDuplicateTitleData() ? [] : getEarningSumDuplicateTitleData()} cols={cols} />
             
             <div className={classes.datagridEarning}>
             <div style={{height:'100%'}}>
               <DataGrid
               columns={[
-                { field: 'id', hide:true },
-                { field: 'title', width: 130, headerName: 'קטגוריה',align:'right',type:'string' },
-                { field: 'amount',
-                width: 125, 
-                headerName: 'סכום',
-                align:'right',type: 'number',
-                headerAlign:'center',
-                valueFormatter: (params) => {
-                  const valueFormatted = Number(params.value).toLocaleString();
-                  return `${valueFormatted} ₪`;
-                },  },
-                { field: 'date',
-                width: 125, 
-                headerName: 'תאריך',
-                align:'right',
-                valueFormatter: (params) => {
-                  const date = new Date(parseInt(params.value))
-                  const valueFormatted = date.toLocaleDateString();
-                  return `${valueFormatted}`;
-                }, },
+                { 
+                  field: 'date',
+                  headerName: 'תאריך',
+                  align:'right',
+                  flex: 0.9,
+                  headerAlign:'right',
+                  valueFormatter: (params) => {
+                    const date = new Date(parseInt(params.value))
+                    const valueFormatted = date.toLocaleDateString();
+                    return `${valueFormatted}`;
+                  }, 
+                },
+                { 
+                  field: 'amount', 
+                  headerName: 'סכום',
+                  flex: 1,
+                  align:'right',type: 'number',
+                  headerAlign:'right',
+                  valueFormatter: (params) => {
+                    const valueFormatted = Number(params.value).toLocaleString();
+                    return `₪ ${valueFormatted}`;
+                  },  
+                },
+                { 
+                  field: 'title', 
+                  flex: 1,
+                  headerName: 'קטגוריה',
+                  align:'right',
+                  type:'string',
+                  headerAlign:'right' 
+                },
+                { 
+                  field: 'id', 
+                  hide:true 
+                },
+                
+               
+               
                 
                 ]}
                 rows={!getEarningSumDuplicateDataGrid() ? [] : getEarningSumDuplicateDataGrid()}
@@ -345,36 +345,56 @@ const cols = {
           )}
             
           {totalSpending < 0 && (<div style={{display:'flex', flexDirection:'column', height:'100%', width:'100%'}}>
-            <DialogTitle  style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪{' '}{ -Math.abs(totalSpending).toFixed(2)} :הוצאות</DialogTitle>
-          <PieChart data={array2} cols={cols} />
+            <DialogTitle  style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}>₪ <NumericLabel params={FormatOptions}>{-Math.abs(totalSpending).toFixed(2)}</NumericLabel> :הוצאות</DialogTitle>
+          <PieChart data={!getSpendingSumDuplicateTitleData() ? [] : getSpendingSumDuplicateTitleData() } cols={cols} />
           
           <div className={classes.datagridSpending}>
           <div style={{height:'100%'}}>
               <DataGrid
+              
               columns={[
-                { field: 'id', hide:true },
-                { field: 'title', width: 130, headerName: 'קטגוריה',align:'right',type:'string' },
-                { field: 'amount',width: 125,
-                 headerName: 'סכום',
-                 align:'right',
-                 type: 'number',
-                 headerAlign:'center',
-                 valueFormatter: (params) => {
-                  const valueFormatted = Number(params.value).toLocaleString();
-                  return `${valueFormatted} ₪`;
-                }, 
-              },
-                { field: 'date',
+                { 
+                field: 'date',
                 width: 125, 
                 headerName: 'תאריך',
+                flex: 1,
                 align:'right',
+                headerAlign:'right',
                 valueFormatter: (params) => {
                   const date = new Date(parseInt(params.value))
                   const valueFormatted = date.toLocaleDateString();
                   return `${valueFormatted}`;
-                }, },
+                }, 
+              },
+                { 
+                  field: 'amount',
+                  width: 125,
+                  flex: 1,
+                   headerName: 'סכום',
+                   align:'right',
+                   type: 'number',
+                   headerAlign:'right',
+                   valueFormatter: (params) => {
+                    const valueFormatted = Number(params.value).toLocaleString();
+                    return `₪ ${valueFormatted} `;
+                  }, 
+                },
                 
-                ]}
+               
+              { 
+                field: 'title', 
+                width: 130, 
+                headerName: 'קטגוריה',
+                align:'right',
+                type:'string',
+                headerAlign:'right', 
+              },
+                
+                { 
+                  field: 'id', 
+                  hide:true 
+                },
+               ]}
                 rows={!getSpendingSumDuplicateDataGrid() ? [] : getSpendingSumDuplicateDataGrid()}
               />
              </div>

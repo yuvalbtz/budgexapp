@@ -31,7 +31,7 @@ const styles = theme => ({
         overflowY:'scroll',
         display:'flex',
         [theme.breakpoints.down('sm')]:{
-            height: 'calc(100vh - 100px)',
+            height: 'calc(100vh - 110px)',
         },
         
       
@@ -108,13 +108,18 @@ const styles = theme => ({
       
     },
     SwipeableViews:{
-      overflowY:'hidden',
+      overflowY:'scroll',
       
          
       [theme.breakpoints.down('sm')]:{
-        height: 'calc(100vh - 110px)',
+      
+       height: 'calc(100vh - 110px)',
     },
-    }
+    },
+
+   
+
+
   });
 
 function TabContainer(props) {
@@ -298,6 +303,7 @@ function getUrltab(value){
           index={value}
           onChangeIndex={handleChangeIndex}
           className={classes.SwipeableViews}
+          
           >
           <TabContainer classes={classes.TabContainer} dir={theme.direction}><MatualAccounts/></TabContainer>
           <TabContainer classes={classes.TabContainer}  dir={theme.direction}><MyAccounts/></TabContainer>

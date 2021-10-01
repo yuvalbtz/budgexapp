@@ -17,12 +17,12 @@ const useStyles = makeStyles((theme) => ({
  },
      bg:{
        position:'absolute', 
-       top:'-20%',
-       right:'300px',
+       bottom:'calc(100% - 300px)',
+       right:'calc(100% - 300px)',
       backgroundColor: theme.palette.appColor.main,
        backgroundSize:'cover',
-       height: 400,
-       width: 400,
+       height: 500,
+       width: 500,
        borderRadius:'50%',
       [theme.breakpoints.down('xs')]:{
         display: 'none',

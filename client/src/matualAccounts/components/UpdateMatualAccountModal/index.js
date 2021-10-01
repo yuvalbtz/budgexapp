@@ -31,7 +31,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { SET_UpdateAccount_Modal_Open } from '../../../Redux/actionTypes';
-
+import {areEqual} from './ifArraysAreEqualFunc'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -172,7 +172,7 @@ export default function SimpleSlide() {
             setTitle(accountDetails.title)
             
             if(accountDetails.members && accountDetails.members.length > 0 ){
-              const AccountMembers = accountDetails.members.map(m => m.userId)
+              const AccountMembers = accountDetails.members.sort().map(m => m.userId)
               const MembersAlreadyInAccount = options.filter((user) =>  AccountMembers.includes(user.id))
               setMembersInAccount(MembersAlreadyInAccount)
               setSelectedFreinds(MembersAlreadyInAccount)
@@ -187,11 +187,7 @@ export default function SimpleSlide() {
 
     console.log("selected id" ,selectedFreindsId);
     
-    
-
-
-    
-  
+  console.log("ids", JSON.stringify(selectedFreindsId));
    React.useEffect(() => {
     
     if(ModalIsOpen){
@@ -307,9 +303,7 @@ export default function SimpleSlide() {
              
               /* loading */
               
-             
-        
-              renderTags={(tagValue, getTagProps) =>
+             renderTags={(tagValue, getTagProps) =>
               tagValue.map((option, index) => (
                   <Chip
                     label={option.username}
@@ -337,10 +331,6 @@ export default function SimpleSlide() {
       </FormControl>   
       </div> 
 
-
-
-
-
         
         </DialogContent>
         <DialogActions>
@@ -352,7 +342,7 @@ export default function SimpleSlide() {
             size={'small'}
             type="submit"
             onClick={onSubmit}
-            disabled={accountDetails && ((title.trim() === "" || title.trim() === accountDetails.title) && (accountDetails.members && JSON.stringify(selectedFreindsId) === JSON.stringify(accountDetails.members.map(id => id.userId))))}
+            disabled={accountDetails && ((title.trim() === "" || title.trim() === accountDetails.title) && accountDetails.members && areEqual(selectedFreindsId,accountDetails.members.map(user => user.userId)))}
           >
            <CheckIcon />
           </Fab>)}

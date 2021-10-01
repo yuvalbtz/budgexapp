@@ -59,22 +59,11 @@ const useStyles = makeStyles((theme) => ({
 function Index({accountId, setOpen}) {
     
     const classes = useStyles();
-    
-    const [open, setOpenModal] = React.useState(false);
-    
+     
     const params = useParams()
   
    const ModalIsOpen = window.location.pathname === `/matualAccounts/deleteAccount/${params.accountId}`
 
-
-
-
-
-  const handleClickOpen = () => { 
-    setOpenModal(true);
-  };
-
-  
 
     const [deleteAccount,{loading}] = useMutation(DELETE_ACCOUNT,
         {
@@ -92,7 +81,7 @@ function Index({accountId, setOpen}) {
     
     return (
         <>
-        <MenuItem className={classes.Delete} component={Link} to={`/matualAccounts/deleteAccount/${accountId}`} onClick={handleClickOpen} >מחק חשבון</MenuItem>
+        <MenuItem className={classes.Delete} component={Link} to={`/matualAccounts/deleteAccount/${accountId}`}>מחק חשבון</MenuItem>
         
       <Dialog
         open={ModalIsOpen}
@@ -102,13 +91,11 @@ function Index({accountId, setOpen}) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         style={{textAlign:'center'}}
-
-        
-      >
+        >
         <DialogTitle className={classes.dialogTitle} id="alert-dialog-slide-title">מחיקת חשבון</DialogTitle>
         <DialogContent >
           <DialogContentText id="alert-dialog-slide-description">
-           ? האם אתה בטוח שברצונך למחוק חשבון זה 
+           ? האם את/ה בטוח/ה שברצונך למחוק חשבון זה 
           </DialogContentText>
         </DialogContent>
         <DialogActions  style={{margin:'0 auto'}} >
