@@ -322,7 +322,8 @@ const cols = {
                 columns={[
               { 
                 field: 'date',
-                flex: 0.9,  
+                flex: 0.7,  
+                width: 125,
                 headerName: 'תאריך',
                 align:'right',
                 headerAlign:'right',
@@ -335,6 +336,7 @@ const cols = {
               { 
                 field: 'amount',
                 flex: 1, 
+                width: 125,
                 headerName: 'סכום',
                 align:'right',
                 type: 'number',
@@ -351,6 +353,7 @@ const cols = {
                 type:'string',
                 headerAlign:'right',
                 flex: 1,
+                width: 130,
                 
               },
               { 
@@ -385,7 +388,8 @@ const cols = {
              columns={[
                 { 
                 field: 'date',
-                flex: 0.9, 
+                flex: 0.7, 
+                width: 125,
                 headerName: 'תאריך',
                 align:'right',
                 headerAlign:'right',
@@ -401,6 +405,7 @@ const cols = {
                    headerName: 'סכום',
                    align:'right',
                    type: 'number',
+                   width: 125,
                    headerAlign:'right',
                    valueFormatter: (params) => {
                     const valueFormatted = Number(params.value).toLocaleString();
@@ -415,6 +420,7 @@ const cols = {
                 align:'right',
                 type:'string',
                 headerAlign:'right', 
+                width: 130,
                 flex: 1,
               },
                 

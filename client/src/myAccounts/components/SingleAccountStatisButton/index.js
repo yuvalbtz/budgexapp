@@ -300,7 +300,8 @@ const cols = {
                   field: 'date',
                   headerName: 'תאריך',
                   align:'right',
-                  flex: 0.9,
+                  flex: 0.7,
+                  width: 125,
                   headerAlign:'right',
                   valueFormatter: (params) => {
                     const date = new Date(parseInt(params.value))
@@ -312,6 +313,7 @@ const cols = {
                   field: 'amount', 
                   headerName: 'סכום',
                   flex: 1,
+                  width: 125,
                   align:'right',type: 'number',
                   headerAlign:'right',
                   valueFormatter: (params) => {
@@ -322,6 +324,7 @@ const cols = {
                 { 
                   field: 'title', 
                   flex: 1,
+                  width: 130,
                   headerName: 'קטגוריה',
                   align:'right',
                   type:'string',
@@ -357,7 +360,7 @@ const cols = {
                 field: 'date',
                 width: 125, 
                 headerName: 'תאריך',
-                flex: 1,
+                flex: 0.7,
                 align:'right',
                 headerAlign:'right',
                 valueFormatter: (params) => {
@@ -384,6 +387,7 @@ const cols = {
               { 
                 field: 'title', 
                 width: 130, 
+                flex: 1,
                 headerName: 'קטגוריה',
                 align:'right',
                 type:'string',
