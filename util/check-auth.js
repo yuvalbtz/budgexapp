@@ -1,6 +1,6 @@
 const {AuthenticationError} = require("apollo-server")
 const jwt = require("jsonwebtoken")
-const {SECRET_KEY} = require("../credentials.json")
+require('dotenv').config()
 
 module.exports = ({req}) => {
 
@@ -10,7 +10,7 @@ if(authHeader){
     if(token){
         try{
           
-            const user = jwt.verify(token,SECRET_KEY);
+            const user = jwt.verify(token,`${process.env.SECRET_KEY}`);
             console.log(user);
             return user;
         }catch(err){

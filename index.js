@@ -7,7 +7,6 @@ const bodyParser = require("body-parser")
 const jwt = require("jsonwebtoken")
 const expressPlayground = require('graphql-playground-middleware-express').default
 const expressJwt = require("express-jwt");
-const {SECRET_KEY} = require("./credentials.json")
 const typeDefs = require("./graphql/TypesDefs")
 const resolvers = require("./graphql/resolvers")
 const checkAuth = require("./util/check-auth")
@@ -38,7 +37,7 @@ app.use("/graphql",
           
             try{
               
-              const user =  jwt.verify(req.cookies.id, SECRET_KEY) 
+              const user =  jwt.verify(req.cookies.id, `${process.env.SECRET_KEY}`) 
              
               req.user = user
               console.log("user middleware",user);
@@ -99,9 +98,7 @@ mongoose
       console.log(
         `🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`,
       );
-    });    /* app.listen({port: process.env.PORT || 4000}, () => {
-      console.log(`server is running at ${server.graphqlPath}`)
-    }) */
+    });   
   })
  .catch(err => {
     console.log(err);

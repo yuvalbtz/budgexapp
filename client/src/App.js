@@ -17,7 +17,7 @@ import SplashScreen from './components/SplashScreen'
 
 function App() {
   /* document.body.style.overflow = "hidden" */
- /*  console.log = () => {} */
+  console.log = () => {}
  
   const {data, loading} = useQuery(GET_USER_STATE);
   const dispatch = useDispatch()
