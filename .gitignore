@@ -25,5 +25,3 @@ yarn-error.log*
 
 .env
 client/.env
-firebase.js
-teambudget-4a703-firebase-adminsdk-drgv5-60da8c0729.json
