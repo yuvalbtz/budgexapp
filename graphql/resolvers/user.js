@@ -4,8 +4,8 @@ const jwt = require("jsonwebtoken")
 const {UserInputError} = require("apollo-server")
 const {validatorsRegisterInput, validateLoginInput} = require("../../util/validators")
 const {SECRET_KEY} = require("../../credentials.json")
-
 const {auth} = require("../../firebase")
+require('dotenv').config()
 
 
 function generateToken(user){
@@ -14,7 +14,7 @@ function generateToken(user){
         email:user.email,
         username:user.username,
         profileImageUrl:user.profileImageUrl
-        },SECRET_KEY,{expiresIn:'7d'});
+        },`${process.env.SECRET_KEY}`,{expiresIn:'7d'});
 }
 
 

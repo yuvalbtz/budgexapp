@@ -91,7 +91,7 @@ app.use("/graphql",
 
 
 mongoose
-.connect('mongodb+srv://' + encodeURIComponent(`${username}:${password}`) +`@cluster0.z1c7r.mongodb.net/${dbName}?retryWrites=true&w=majority`,{useUnifiedTopology:true, useNewUrlParser:true})
+.connect('mongodb+srv://' + encodeURIComponent(`${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}`) +`@cluster0.z1c7r.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,{useUnifiedTopology:true, useNewUrlParser:true})
   .then(() => {
     return httpServer.listen({port: process.env.PORT || 4000}, () => {
       console.log(
