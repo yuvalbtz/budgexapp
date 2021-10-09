@@ -7,12 +7,11 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AddItemModal from '../../matualAccounts/components/AddItemModal';
 import UpdateItemModal from '../../matualAccounts/components/UpdateItemModal';
-import { SET_AddItem_Modal_Open, SET_Current_Account_Ui } from '../../Redux/actionTypes';
+import {SET_Current_Account_Ui } from '../../Redux/actionTypes';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import {useQuery} from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import {animateScroll} from 'react-scroll'
-import bgImages from '../../util/bg-images.json' 
 import Badge from '@material-ui/core/Badge';
 import StatisticButton from '../../matualAccounts/components/SingleAccountStatisButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -20,7 +19,7 @@ import NumericLabel from 'react-pretty-numbers';
 import Tooltip from '@material-ui/core/Tooltip';
 import SingleItem from '../../matualAccounts/components/SingleItemMatualAccount'
 import history from '../../util/history';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { Link,useParams } from 'react-router-dom';
 import ImageModal from '../../matualAccounts/components/ImageModal'
 import SearchButton from '../../matualAccounts/components/SearchMatualItemsButton' 
 

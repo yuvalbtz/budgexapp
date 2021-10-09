@@ -87,7 +87,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 const PieChart = ({data, cols}) => {
- //pie chart
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+  
+  //pie chart
 const defaultData = [
   { item: "ביגוד והלבשה", percent: 0.4 },
   { item: "class 2", percent: 0.21 },
@@ -96,23 +99,22 @@ const defaultData = [
   { item: "משכורת", percent: 0.09 },
   { item: "אוכל ופירות", percent: 0.04 },
 ];
- console.log('data', data);
+
 return (
    
     <Chart height={'50%'} width={'100%'}  data={data} scale={cols} interactions={['element-single-selected']} autoFit>
-		<Coordinate type="theta" radius={0.70} />
-			<Tooltip showTitle={false} />
-			<Axis visible={false} />
+		<Coordinate  type="theta" radius={ matches ? 0.70 : 0.40} />
+			<Tooltip  showTitle={false} />
+			<Axis  visible={false} />
 			<Interval
-			
         position="percent"
 				adjust="stack"
 				color="item"
         style={{
 					lineWidth:1,
 					stroke: "#fff",
-          
-				}}
+         }}
+      
         label={[
 					"item",
 					(item) => {
@@ -123,7 +125,9 @@ return (
 							},
 							
 						};
+            
 					},
+          
 				]}
 			/>
 		</Chart>
@@ -137,7 +141,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function FullScreenDialog({totalSpending, totalEarning}) {
-  
+ 
 
 //Number Format Options
 const FormatOptions = {
@@ -262,9 +266,8 @@ const FormatOptions = {
 
   const classes = useStyles();
   const open = window.location.pathname === `/matualAccounts/${params.accountId}/statis`
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.up('sm'));
- console.log('matches', matches);
+ 
+
   const handleClose = () => {
     history.goBack()
   };
@@ -278,6 +281,9 @@ const cols = {
     },
   },
 };
+
+
+
 
   return (
     
@@ -319,10 +325,10 @@ const cols = {
             <div className={classes.datagridEarning}>
               <div style={{height:'100%'}}>
               <DataGrid
-                columns={[
-              { 
+               columns={[
+                { 
                 field: 'date',
-                flex: 0.7,  
+                flex: 0.9,  
                 width: 125,
                 headerName: 'תאריך',
                 align:'right',
@@ -375,20 +381,19 @@ const cols = {
           )}
           
        
-
+          
        
           
           {totalSpending < 0 && (<div style={{display:'flex', flexDirection:'column', height:'100%', width:'100%'}}>
             <DialogTitle  style={{position:'relative', margin:'0 auto', textDecoration:'underline'}}> ₪ <NumericLabel params={FormatOptions}>{-Math.abs(totalSpending).toFixed(2)}</NumericLabel> :הוצאות</DialogTitle>
-          <PieChart data={!getSpendingSumDuplicateTitleData() ? [] : getSpendingSumDuplicateTitleData()} cols={cols} />
+          <PieChart  data={!getSpendingSumDuplicateTitleData() ? [] : getSpendingSumDuplicateTitleData()} cols={cols} />
           <div className={classes.datagridSpending}>
           <div style={{height:'100%'}}>
-              <DataGrid
-               
-             columns={[
+              <DataGrid 
+              columns={[
                 { 
                 field: 'date',
-                flex: 0.7, 
+                flex: 0.9, 
                 width: 125,
                 headerName: 'תאריך',
                 align:'right',

@@ -10,9 +10,11 @@ import Badge from '@material-ui/core/Badge';
 import { makeStyles} from '@material-ui/core/styles';
 import { Link,useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { locale } from 'dayjs/locale/de';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { SET_LightBoxImage } from '../../../Redux/actionTypes';
 import { useDispatch } from 'react-redux';
+import hebConf from 'dayjs/locale/he'
 const useStyles = makeStyles((theme) => ({
    
    details: {
@@ -167,7 +169,8 @@ const useStyles = makeStyles((theme) => ({
         display:'flex',
         justifyContent:'flex-end',
         zIndex:0,
-        margin:'0 3% 0 0'
+        margin:'0 3% 0 0',
+        
        },
 
        titleDetail:{
@@ -205,6 +208,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Index({item, accountId, ownerName}) {
   dayjs.extend(relativeTime)
+  dayjs.locale('de', hebConf)
    const classes = useStyles() 
    const dispatch = useDispatch()
    const params = useParams()
@@ -320,15 +324,16 @@ const FormatOptions = {
                 variant="subtitle2" 
                 color="textSecondary" 
                 className={classes.createdAtDetail}>
-                 {dayjs(parseInt(item.createdAt)).format('DD/MM/YYYY hh:mm:ss')} :נוצר לאחרונה
+                 {dayjs(parseInt(item.createdAt)).format('DD/MM/YYYY hh:mm:ss')} :נוצר  
                </Typography>
               
                <Typography 
                 variant="subtitle2" 
-                color="textSecondary" 
+                color="textSecondary"
                 className={classes.updatedAtDetail}>
-                 {dayjs(parseInt(item.updatedAt)).fromNow()} :עודכן לפני
+                 {dayjs(parseInt(item.updatedAt)).fromNow()}&nbsp;<span>:עודכן</span> 
                </Typography>
+               
               </div>
               
                </div>

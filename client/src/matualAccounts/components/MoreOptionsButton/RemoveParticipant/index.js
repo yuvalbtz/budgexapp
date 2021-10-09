@@ -113,7 +113,7 @@ function Index({accountId, setOpen}) {
         <DialogTitle className={classes.dialogTitle} id="alert-dialog-slide-title">יציאה מהחשבון</DialogTitle>
         <DialogContent >
           <DialogContentText id="alert-dialog-slide-description">
-           ? האם אתה בטוח שברצונך לצאת מחשבון זה 
+           ? האם את/ה בטוח/ה שברצונך לצאת מחשבון זה 
           </DialogContentText>
         </DialogContent>
         <DialogActions  style={{margin:'0 auto'}} >

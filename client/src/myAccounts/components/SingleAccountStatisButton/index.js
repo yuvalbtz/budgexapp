@@ -17,7 +17,7 @@ import {
 	Axis,
 	Coordinate,
 } from "bizcharts";
-import { DialogTitle } from '@material-ui/core';
+import { DialogTitle, useMediaQuery, useTheme } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
 import history from '../../../util/history';
 import { DataGrid } from '@material-ui/data-grid';
@@ -78,18 +78,20 @@ const useStyles = makeStyles((theme) => ({
 
 
 const PieChart = ({data, cols}) => {
- 
- return (
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
+  return (
    
     <Chart 
-    height={'60%'} 
+    height={'50%'} 
     width={'100%'}  
     
     data={data} 
     scale={cols} 
     interactions={['element-single-selected']} 
     autoFit>
-		<Coordinate type="theta" radius={0.70} />
+		<Coordinate type="theta" radius={matches ? 0.70 : 0.40} />
 			<Tooltip showTitle={false} />
 			<Axis visible={false} />
 			<Interval
@@ -145,8 +147,6 @@ const FormatOptions = {
   const accountData = useSelector(state => state.uiReducer.getCurrentAccountUi)
   
  
-  
-  
     function getSpendingSumDuplicateTitleData(){
       let array2 = []
       if(accountData){
@@ -280,7 +280,7 @@ const cols = {
            variant='h5'
            style={{
              textDecoration:'underline',
-             color:`${Number(totalEarning + totalSpending).toFixed(2) > 0 ? 'green' : 'red'}`,
+             color:`${Number(totalEarning + totalSpending).toFixed(2) > 0  ? 'green' : 'red'}`,
             }}
            >
            ₪ {accountData ? ( <NumericLabel params={FormatOptions}>{Number(totalEarning + totalSpending).toFixed(2)}</NumericLabel>) : 'calculate...' } :מאזן נוכחי
@@ -300,7 +300,7 @@ const cols = {
                   field: 'date',
                   headerName: 'תאריך',
                   align:'right',
-                  flex: 0.7,
+                  flex: 0.9,
                   width: 125,
                   headerAlign:'right',
                   valueFormatter: (params) => {
@@ -360,7 +360,7 @@ const cols = {
                 field: 'date',
                 width: 125, 
                 headerName: 'תאריך',
-                flex: 0.7,
+                flex: 0.9,
                 align:'right',
                 headerAlign:'right',
                 valueFormatter: (params) => {

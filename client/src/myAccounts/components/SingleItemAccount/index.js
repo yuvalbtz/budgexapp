@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useDispatch } from 'react-redux';
 import { SET_LightBoxImage } from '../../../Redux/actionTypes';
+import hebConf from 'dayjs/locale/he'
 const useStyles = makeStyles((theme) => ({
    
    details: {
@@ -203,7 +204,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Index({item, accountId}) {
    dayjs.extend(relativeTime)
-  
+   dayjs.locale('de', hebConf)
    const dispatch = useDispatch() 
   
   const classes = useStyles() 
@@ -320,14 +321,14 @@ const FormatOptions = {
                 variant="subtitle2" 
                 color="textSecondary" 
                 className={classes.createdAtDetail}>
-                 {dayjs(parseInt(item.createdAt)).format('DD/MM/YYYY hh:mm:ss')} :נוצר לאחרונה
+                 {dayjs(parseInt(item.createdAt)).format('DD/MM/YYYY hh:mm:ss')} :נוצר 
                </Typography>
               
                <Typography 
                 variant="subtitle2" 
                 color="textSecondary" 
                 className={classes.updatedAtDetail}>
-                 {dayjs(parseInt(item.updatedAt)).fromNow()} :עודכן לפני
+                {dayjs(parseInt(item.updatedAt)).fromNow()}&nbsp;<span>:עודכן</span> 
                </Typography>
               
               </div>

@@ -26,7 +26,7 @@ import ConfirmOrRemoveRequestButton from '../../notifications/components/Confirm
 import { SET_NotificationsCount } from '../../Redux/actionTypes';
 import LeaveMatualAccountButton from '../../notifications/components/LeaveMatualAccountButton'
 import { Link } from 'react-router-dom';
-
+import hebConf from 'dayjs/locale/he'
 
 
   const useStyles = makeStyles((theme) => ({
@@ -159,7 +159,7 @@ import { Link } from 'react-router-dom';
        style={{padding:'12px', justifyContent:'flex-end', display:'flex'}}
        color="textSecondary"
      >
-       {dayjs(parseInt(updatedAt)).fromNow()} :החשבון עודכן
+       {dayjs(parseInt(updatedAt)).fromNow()}&nbsp;<span>:החשבון עודכן</span>
        
      </Typography> 
            
@@ -176,6 +176,7 @@ import { Link } from 'react-router-dom';
 
 
 function Index() {
+  dayjs.locale('de', hebConf)
   dayjs.extend(relativeTime) 
    const classes = useStyles()
    
@@ -273,7 +274,7 @@ return (
             
             
             
-             {user && from === user.id &&  isConfirmed.length > 0 && isConfirmed.map(id => ( // user accept msg
+             {user && from === user.id &&  isConfirmed.length > 0 && isConfirmed.map(id => ( // user accept notification
                     
                     <div style={{textAlign:'center'}} key={id+1}>
                      
@@ -331,7 +332,7 @@ return (
                 style={{padding:'12px', justifyContent:'flex-end', display:'flex'}}
                 color="textSecondary"
               >
-              {dayjs(parseInt(createdAt)).fromNow()} :החשבון נוצר
+              {dayjs(parseInt(createdAt)).fromNow()}&nbsp;<span>:החשבון נוצר</span>
                 
               </Typography> 
               
@@ -351,7 +352,7 @@ return (
 
             
             
-     {user && isConfirmed.includes(user.id) && from !== user.id && to.includes(user.id) && (
+     {user && isConfirmed.includes(user.id) && from !== user.id  && (
                <React.Fragment>
                  <ListItem >
              <ListItemAvatar>
@@ -394,7 +395,7 @@ return (
                 style={{padding:'12px', justifyContent:'flex-end', display:'flex'}}
                 color="textSecondary"
               >
-               {dayjs(parseInt(createdAt)).fromNow()} :החשבון נוצר
+               {dayjs(parseInt(createdAt)).fromNow()}&nbsp;<span>:החשבון נוצר</span>
                 
               </Typography> 
               <div style={{margin:'0 auto',display:'flex'}}>

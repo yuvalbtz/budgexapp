@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -19,6 +17,7 @@ import history from '../../../util/history';
 import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
 import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 import Tooltip from '@material-ui/core/Tooltip'
+import { Grow } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     FreindIcons:{
         position:'absolute',
@@ -40,7 +39,9 @@ const useStyles = makeStyles((theme) => ({
       
 
 }))
-
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Grow direction="up" ref={ref} {...props} />;
+});
 
 function Index({members,accountId}) {
   const classes = useStyles();
@@ -121,7 +122,7 @@ if(!loading && members){
        </AvatarGroup> 
     </div>
   
-    <Dialog onClose={() => history.goBack()} aria-labelledby="simple-dialog-title" open={open}>
+    <Dialog TransitionComponent={Transition} onClose={() => history.goBack()} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title" style={{textAlign:'center'}}>חברים לחשבון</DialogTitle>
       <List>
        

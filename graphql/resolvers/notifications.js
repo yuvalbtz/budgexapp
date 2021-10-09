@@ -29,7 +29,7 @@ module.exports = {
                 const account = await matualAccount.findById(accountId)  
              
               if(account){
-                if(account.members.find(i => i.userId === userId && i.isConfirmed === true)){
+                if(account.members.find(i => i.userId == userId && i.isConfirmed === true)){
                     let id3 = account.members.filter((obj) => obj.userId === userId && obj.isConfirmed === true);  // remove user from account
                             id3.map((delId) => {
                             const userIndex = account.members.findIndex(m => m.userId == delId.userId)
@@ -47,7 +47,7 @@ module.exports = {
                           })
                 }else{
                     account.members.map(i => {  //user confirm request
-                        if(i.userId === userId){
+                        if(i.userId == userId){
                            i.isConfirmed = !i.isConfirmed
                            notification.isConfirmed.push(userId)
                         }

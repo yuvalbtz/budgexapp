@@ -117,7 +117,7 @@ width:300px;
   overflow-y:auto;
   transition: all 0.3s ease;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
-  
+
 }
 
 `;
@@ -203,7 +203,9 @@ color:whitesmoke;
 margin-left:12px;
 @media screen and (max-width:960px ){
   white-space: normal;
-
+  padding: 12px;
+  letter-spacing: 1px;
+  font-size: 1.4rem;
   margin-left:0; 
        
 }

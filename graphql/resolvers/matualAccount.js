@@ -166,43 +166,43 @@ module.exports = {
                 
                 const account = await MatualAccount.findById(accountId)
                 const accountNotification = await Notifications.findOne({accountId})    
-                      if(account){
-                            account.title = title
+                     
+                if(account){
+                            account.title = title 
                             let members = account.members; 
-                            let id3 = members.filter((obj) => freinds.indexOf(obj.userId) == -1);  // for delete user
-                            id3.map((delId) => {
+                            let deletedFreinds = members.filter((obj) => freinds.indexOf(obj.userId) == -1);  // for delete user
+                            console.log('id3',deletedFreinds);
+                            
+                            deletedFreinds.map((delId) => {
                             const userIndex = account.members.findIndex(m => m.userId == delId.userId)
                             account.members.splice(userIndex, 1)
                             
                             if(accountNotification){
-                                let ntfnIndex = accountNotification.to.findIndex(ntf => ntf == userId) // remove user from  notification
-                                let isConfirmIndex =  accountNotification.isConfirmed.findIndex(ntf => ntf == userId)
-                                let seenIndex = accountNotification.seen.findIndex(ntf => ntf == userId)
+                                let ntfnIndex = accountNotification.to.findIndex(ntf => ntf == delId.userId) // remove user from  notification
+                                let isConfirmIndex =  accountNotification.isConfirmed.findIndex(ntf => ntf == delId.userId)
+                                let seenIndex = accountNotification.seen.findIndex(ntf => ntf == delId.userId)
                                 accountNotification.to.splice(ntfnIndex,1)
                                 accountNotification.isConfirmed.splice(isConfirmIndex,1)
                                 accountNotification.seen.splice(seenIndex,1)
                                     
                             }
                         })
-                          
-                          
-                          
+                        
+                        //find new Freinds
+                        const newFreinds = freinds.filter((id1) => !account.members.some((id2) => id2.userId == id1 && id2.isConfirmed === true));
                             
-                            freinds.map(id => {
-                                let id2 = members.find(id2 => id2.userId === id) // for adding new users
-                                 console.log("add new ids",id2);
-                                
-                                 return !id2 && account.members.push({userId:id, isConfirmed:false, isIgnored:false})  
+                        newFreinds.map(id => { // for adding new users
+                            let freindsAlreadyInReq = members.find(id2 => id2.userId === id) 
+                            if(freindsAlreadyInReq){
+                                accountNotification.seen = []
+                            }  
+                            return !freindsAlreadyInReq ? account.members.push({userId:id, isConfirmed:false, isIgnored:false}) : null 
                             })
-                            account.members.filter(item => !freinds.includes(item.userId))
-                            accountNotification.to = freinds
+                            console.log('freinds', freinds);
+                            console.log('added freinds', newFreinds);
+                            accountNotification.to = newFreinds
                             
                             accountNotification.accountTitle = account.title
-                           
-                           
-                            /*  accountNotification.senderName = userName
-                            account.ownerName = userName  */
-                           
                            
                             await accountNotification.save()
                             
