@@ -10,7 +10,6 @@ const expressJwt = require("express-jwt");
 const {SECRET_KEY} = require("./credentials.json")
 const typeDefs = require("./graphql/TypesDefs")
 const resolvers = require("./graphql/resolvers")
-const {username, password, dbName} = require("./credentials.json")
 const checkAuth = require("./util/check-auth")
 const pubsub = new PubSub();
 const path = require('path');
