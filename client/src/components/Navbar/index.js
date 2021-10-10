@@ -11,9 +11,10 @@ import {
     NavMenu,
     HelloToUser,
     LinkStyle,
-    LogoutLinkStyle
+    LogoutLinkStyle,
+    Overlay
   } from './NavbarElements';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
  
 import {makeStyles} from '@material-ui/core'
 
@@ -24,6 +25,10 @@ import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
 import Badge from '@material-ui/core/Badge';
 import { useMutation} from '@apollo/client';
 import gql from 'graphql-tag'
+
+
+
+
 const useStyles = makeStyles((theme) => ({
 
    HelloToUser:{
@@ -34,21 +39,25 @@ const useStyles = makeStyles((theme) => ({
 },
 
 customBadge:{
+  color:theme.palette.notification.light,
+  backgroundColor:theme.palette.notification.main,
   '&.MuiBadge-anchorOriginTopLeftRectangle': {
     transform:'translate(0%, 30%)',
   }
 },
  
 customFabBadge:{
-    '&.makeStyles-customBadge-26.MuiBadge-anchorOriginTopLeftRectangle':{
+ 
+  color:theme.palette.notification.light,
+  backgroundColor:theme.palette.notification.main,
+  '&.makeStyles-customBadge-26.MuiBadge-anchorOriginTopLeftRectangle':{
         transform:'unset',
+     
       },
     },
 dismiss:{
   display: 'none',  
-  '&.MuiBadge-root':{
-      
-  },
+  
 
  
  
@@ -60,7 +69,7 @@ dismiss:{
      
 
 function Index(){
-    
+  
     const classes = useStyles() 
     const user = useSelector(state => state.userReducer.userDetails)
     const currentAccount = useSelector(state => state.uiReducer.getCurrentAccountUi)
@@ -75,7 +84,7 @@ function Index(){
      onCompleted:(data) => console.log('counting data', data)
    }) 
     
-    const dispatch = useDispatch()
+   
  
     const handleOnclick  = () => {
       setClick(!click)
@@ -109,7 +118,6 @@ function Index(){
         badgeContent={badgeCount} 
          max={99} 
         invisible={badgeCount === 0}
-        color='secondary'
         classes={{ badge:badgeCount > 0 ? classes.customFabBadge : classes.dismiss}}
         anchorOrigin={{
           vertical: 'top',
@@ -118,8 +126,8 @@ function Index(){
         ><FaBars/></Badge>) : <FaBars/>}</>)}
         </MobileIcon>
      
-
-     <NavMenu  click={click}>
+     <Overlay onClick={handleOnclick} click={click} />
+     <NavMenu  click={click}>   
           
      {user &&  (<LogoutLinkStyle><LogOutButton/></LogoutLinkStyle>)}
      
@@ -129,7 +137,7 @@ function Index(){
      
      {user && <Badge  badgeContent={badgeCount} max={99} 
       invisible={false}
-      color='secondary'
+      
       classes={{ badge:badgeCount > 0 ? classes.customBadge : classes.dismiss}}
       anchorOrigin={{
         vertical: 'top',

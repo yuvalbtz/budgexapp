@@ -300,7 +300,7 @@ const cols = {
                   field: 'date',
                   headerName: 'תאריך',
                   align:'right',
-                  flex: 0.9,
+                  flex: 1,
                   width: 125,
                   headerAlign:'right',
                   valueFormatter: (params) => {
@@ -312,7 +312,7 @@ const cols = {
                 { 
                   field: 'amount', 
                   headerName: 'סכום',
-                  flex: 1,
+                  flex: 0.9,
                   width: 125,
                   align:'right',type: 'number',
                   headerAlign:'right',
@@ -360,7 +360,7 @@ const cols = {
                 field: 'date',
                 width: 125, 
                 headerName: 'תאריך',
-                flex: 0.9,
+                flex: 1,
                 align:'right',
                 headerAlign:'right',
                 valueFormatter: (params) => {
@@ -372,7 +372,7 @@ const cols = {
                 { 
                   field: 'amount',
                   width: 125,
-                  flex: 1,
+                  flex: 0.9,
                    headerName: 'סכום',
                    align:'right',
                    type: 'number',

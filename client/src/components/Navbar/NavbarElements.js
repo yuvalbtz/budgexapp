@@ -92,6 +92,21 @@ display: none;
 `;
 
 
+
+export const Overlay = styled.div`
+@media screen and (max-width:960px ){
+  position:absolute;
+  top: 50px;
+  left: 0;
+  bottom: -100vh;
+  right:0;
+  background:rgba(0, 0, 0, 0.5);
+  visibility: ${({click}) => click ? "visible" : "hidden"};
+  transition: opacity 0.3s ease;
+  opacity:${({click}) => click ? 1 : 0};
+}
+`;
+
 export const NavMenu = styled.ul`
 position:relative;
 display:flex;
@@ -108,14 +123,14 @@ width:300px;
   justify-content:flex-end;
   margin:0;
   width:150px;
-  height:100vh;
+  height: 100vh;
   position:absolute;
-  right:0;
-  top:${({click}) => click ? "100%" : "-1000px"};
+  bottom: -100vh;
+  right:${({click}) => click ? "0%" : "-300px"};
   opacity:1;
   background:#242333;
   overflow-y:auto;
-  transition: all 0.3s ease;
+  transition: right 0.3s ease;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
 
 }
@@ -138,7 +153,8 @@ export const LinkStyle = styled(Link)`
     
     cursor: pointer;
     font-size:1rem;
-    transition:all 0.3s ease;
+    transition: all 0.2s ease-in-out;
+    
     &:hover {
      background-color:white;
      color:#242333;
@@ -151,6 +167,7 @@ export const LinkStyle = styled(Link)`
       align-items:none;
       height:3rem;
       
+
       &:hover {
       border:2px solid white;
       color:white;
@@ -175,7 +192,7 @@ export const LogoutLinkStyle = styled.div`
     
     cursor: pointer;
     font-size:1rem;
-    transition:all 0.3s ease;
+    transition: all 0.2s ease-in-out;
     &:hover {
      background-color:white;
      color:red;

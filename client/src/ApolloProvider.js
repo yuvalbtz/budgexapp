@@ -16,6 +16,7 @@ import {createMuiTheme} from '@material-ui/core'
 
 
 
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -29,6 +30,10 @@ const theme = createMuiTheme({
       main: '#DC143C',
       dark: '#ba000d',
       contrastText: '#fff',
+    },
+    notification:{
+     main: '#fa3e3e',
+     light:'whitesmoke'
     },
 
     appColor:{

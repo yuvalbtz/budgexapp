@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Grow direction="up" ref={ref} {...props} />;
+  return <Grow ref={ref} {...props} />;
 });
 
 function Index({members,accountId}) {

@@ -328,7 +328,7 @@ const cols = {
                columns={[
                 { 
                 field: 'date',
-                flex: 0.9,  
+                flex: 1,  
                 width: 125,
                 headerName: 'תאריך',
                 align:'right',
@@ -341,7 +341,7 @@ const cols = {
               },
               { 
                 field: 'amount',
-                flex: 1, 
+                flex: 0.9, 
                 width: 125,
                 headerName: 'סכום',
                 align:'right',
@@ -393,7 +393,7 @@ const cols = {
               columns={[
                 { 
                 field: 'date',
-                flex: 0.9, 
+                flex: 1, 
                 width: 125,
                 headerName: 'תאריך',
                 align:'right',
@@ -406,7 +406,7 @@ const cols = {
               },
                 { 
                   field: 'amount',
-                  flex: 1,
+                  flex: 0.9,
                    headerName: 'סכום',
                    align:'right',
                    type: 'number',
