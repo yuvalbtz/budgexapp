@@ -131,8 +131,6 @@ export default function SimpleSlide() {
   
   const {onSubmit} = useForm(updateAccountCallback, {
     title: title,
-  
-   
   });
  
   const selectedFreindsId =  selectedFreinds.map(f => f.id)
@@ -176,26 +174,23 @@ export default function SimpleSlide() {
               const MembersAlreadyInAccount = options.filter((user) =>  AccountMembers.includes(user.id))
               setMembersInAccount(MembersAlreadyInAccount)
               setSelectedFreinds(MembersAlreadyInAccount)
-              console.log("answer", MembersAlreadyInAccount);
+              // console.log("answer", MembersAlreadyInAccount);
              }else{
-              console.log("cancel event");  
+              // console.log("cancel event");  
               setMembersInAccount([])
             }
       }
         
     }
 
-    console.log("selected id" ,selectedFreindsId);
     
-  console.log("ids", JSON.stringify(selectedFreindsId));
    React.useEffect(() => {
     
     if(ModalIsOpen){
       setSelectedFreinds([])
-      UpdateAccountFeild()
+      UpdateAccountFeild()  
     }
-  
-     
+
    },[ModalIsOpen])
 
    React.useEffect(() => {

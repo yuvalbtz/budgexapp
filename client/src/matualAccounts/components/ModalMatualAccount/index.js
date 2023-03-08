@@ -191,11 +191,11 @@ export default function SimpleSlide() {
       <div>
      
       <Dialog
-        onEscapeKeyDown={() => history.goBack()}
+        onEscapeKeyDown={() => !ModalIsOpen}
         open={ModalIsOpen}
         TransitionComponent={Transition}
         keepMounted
-        onClose={() => !ModalIsOpen}
+        onClose={() => history.goBack()}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         style={{zIndex:1, textAlign:'center'}}

@@ -182,10 +182,6 @@ type Query{
     userSawNTF:[Notification]!
     
     
-    
-    
-    
-    
     uploadFile(file:Upload!):String!
 
 
@@ -197,9 +193,7 @@ type Query{
 
 type Subscription{
 
-
      addRequestToList:[Notification]!
-     
      itemChangedSubs:MatualAccount!
      accountChangedSubs:[MatualAccount]!
 }`

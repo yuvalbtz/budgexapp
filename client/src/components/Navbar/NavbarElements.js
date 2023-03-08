@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import {Link} from 'react-router-dom'
+
+
 export const Nav = styled.nav`
   background: ${({active}) => active ? "transparent" : "#242333" };
   width:100%;
@@ -8,11 +10,10 @@ export const Nav = styled.nav`
   justify-content:space-between;
   align-items:center;
   font-size:1rem;
-  position:fixed;
-  
+  position:fixed; 
   top:0;
   z-index:13;
-  transition: 0.8s all ease;
+  transition:all 0.8s  ease;
   @media screen and (max-width:960px){
     background: ${({click}) => click ? "#242333" : "#242333"};
     
@@ -23,15 +24,12 @@ export const Nav = styled.nav`
 
 
 export const NavbarContainer = styled.div`
-
 display:flex;
 align-items:center; 
-
 height:80px;
 z-index:0;
 width:100%;
 max-width:1000px;
-
 `;
 
 export const NavLogo = styled(Link)`
@@ -44,9 +42,7 @@ margin-left:12px;
 border-top:${({active}) => active === "false" ? "2px solid white" : "none"};
 @media screen and (max-width:960px){
 border-top:${({click}) => click === "true" ? "2px solid white" : "none"};
-
 }
-
 `;
 
 
@@ -149,15 +145,30 @@ export const LinkStyle = styled(Link)`
     width: fit-content;
    
     text-decoration: none;
-    padding: 1em 1em 1em 1em;
-    
+    padding: 0.8em;
+    position:relative ;
     cursor: pointer;
     font-size:1rem;
-    transition: all 0.2s ease-in-out;
+    letter-spacing:1px;
     
-    &:hover {
-     background-color:white;
-     color:#242333;
+    
+    &::after {
+      transform: translate3d(100%, 0, 0);
+      transition:  transform .2s ease-in-out, opacity .21s ease-in;
+      content: "";
+      width: 100%;
+      height: 2px;
+	    background-color: white;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      opacity:0;
+     
+    }
+
+    &:hover::after {
+      transform: translate3d(0, 0, 0);
+      opacity:1;
      
     }
 
@@ -169,7 +180,6 @@ export const LinkStyle = styled(Link)`
       
 
       &:hover {
-      border:2px solid white;
       color:white;
       background-color:#242333;
     }
@@ -186,16 +196,35 @@ export const LogoutLinkStyle = styled.div`
     color: whitesmoke;
     display: flex;
     align-items: center;
-    
     text-decoration: none;
-    padding: 1em 1em 1em 1em;
+    padding: 0.8em;
     
     cursor: pointer;
     font-size:1rem;
-    transition: all 0.2s ease-in-out;
-    &:hover {
-     background-color:white;
-     color:red;
+    transition: all 0.1s ease-in;
+    letter-spacing:1px;
+    position:relative;
+    
+    &::after {
+      transform: translate3d(100%, 0, 0);
+      transition:  transform .2s ease-in-out, opacity .21s ease-in, background-color .2s ease-in-out;
+      content: "";
+      width: 100%;
+      height: 2px;
+	    background-color: white;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      opacity:0; 
+      background-color:red;
+     
+    }
+
+    &:hover::after {
+      transform: translate3d(0, 0, 0);
+      opacity:1;
+      
+      
      
     }
 
@@ -206,7 +235,6 @@ export const LogoutLinkStyle = styled.div`
       height:3rem;
       
       &:hover {
-      border:2px solid white;
       color:white;
       background-color:#242333;
     }
@@ -226,8 +254,6 @@ margin-left:12px;
   margin-left:0; 
        
 }
-
-
 
 
 `;

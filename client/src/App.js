@@ -16,46 +16,36 @@ import SplashScreen from './components/SplashScreen'
 
 
 function App() {
+  // const user = useSelector(state => state.userReducer)
   /* document.body.style.overflow = "hidden" */
-  console.log = () => {}
+  console.log = () => {} 
  
   const {data, loading} = useQuery(GET_USER_STATE);
   const dispatch = useDispatch()
   
-  const user = useSelector(state => state.userReducer)
   
 
 useEffect(() => {
-  
  if(data){
    if(data.getUserState){
     dispatch({type:SET_USER, payload:data.getUserState})
-    console.log('1');
   }else if(!document.cookie.split('id2=')[1] || !localStorage.getItem("id")){
-    console.log('2');
     dispatch({type:SET_USER_LOGOUT})
     localStorage.clear()
     history.push('/')
    }else{
-    console.log('3');
     dispatch({type:SET_USER_LOGOUT})
     localStorage.clear()
     history.push('/') 
    }
- }
- 
- console.log(data);
-  
+ }  
   },[data,dispatch])   
  
-  
-  
-  
   if(loading){
     return (<SplashScreen/>)
   }
 
-console.log("APP", user);
+// console.log("APP", user);
 
 
 
@@ -97,7 +87,7 @@ console.log("APP", user);
 
 
      {/* my matualAccounts Routs */}
-     <AuthRoute exact path='/matualAccounts'  component={UserPage} />
+     <AuthRoute exact path='/matualAccounts' component={UserPage} />
      <AuthRoute exact path='/matualAccounts/addAccount'  component={UserPage}/>
      <AuthRoute exact path='/matualAccounts/deleteAccount/:accountId'  component={UserPage}/>
      <AuthRoute exact path='/matualAccounts/updateAccount/:accountId'  component={UserPage}/>

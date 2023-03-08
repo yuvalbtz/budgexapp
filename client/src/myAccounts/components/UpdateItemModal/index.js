@@ -2,14 +2,7 @@ import React,{useState} from 'react';
 import Slide from '@material-ui/core/Slide';
 import { makeStyles } from '@material-ui/core/styles';
 import {useSelector,useDispatch} from 'react-redux'
-import { Typography, 
-  
-  DialogContent, 
-  DialogActions, 
-  DialogContentText,
-  TextField,
-  FormControl, 
-  IconButton} from '@material-ui/core';
+import { Typography, DialogContent,DialogActions,DialogContentText,TextField,FormControl,IconButton} from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
@@ -276,12 +269,12 @@ export default function SimpleSlide({accountId}) {
     }
 
 React.useEffect(() =>{ 
-  UpdateFeildsOnOpen()
-  
+  UpdateFeildsOnOpen(); 
 
-
+  console.log(itemDetails);  
 } 
-  
+
+
   ,[ModalIsOpen])
     
   return (
@@ -384,7 +377,6 @@ React.useEffect(() =>{
           type="text" 
           label="תיאור"
           multiline
-          
         />
       </FormControl>  
       </div>
@@ -403,10 +395,7 @@ React.useEffect(() =>{
       />
        </FormControl>
        </div>   
-       
-       
-       
-        </DialogContent>
+       </DialogContent>
         <DialogActions>
         
         {loading ? (<CircularProgress variant='indeterminate'  style={{margin:'0 auto', color:'green'}} size={35}/>) 
@@ -425,8 +414,6 @@ React.useEffect(() =>{
            <CheckIcon />
           </Fab>)}
 
-        
-        
         </DialogActions>
         </form>
       </Dialog>

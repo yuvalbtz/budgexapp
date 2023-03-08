@@ -75,11 +75,12 @@ const useStyles = makeStyles((theme) => ({
 
     bgImage:{
         position:'absolute',
-        background:`url(https://creditkarma-cms-ca.imgix.net/wp-content/uploads/sites/2/2020/08/50-30-20-rule932275488.jpg?w=1024&auto=compress) no-repeat center center`,
+        background:`rgba(0, 0, 0, .30) url(https://creditkarma-cms-ca.imgix.net/wp-content/uploads/sites/2/2020/08/50-30-20-rule932275488.jpg?w=1024&auto=compress) no-repeat center center`,
         filter: 'blur(5px)',
         width: '100%',
         height:'100vh',
         backgroundSize:'cover',
+        backgroundBlendMode: "darken",
         zIndex:0 
       },
     

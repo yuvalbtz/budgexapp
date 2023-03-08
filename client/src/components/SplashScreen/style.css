@@ -13,7 +13,7 @@
   color: aliceblue;
   font-size: 3rem;
   font-weight: 600;
-  font-family: 'Varela Round';
+  font-family: 'Varela Round' !important;
 }
 
 .loader,.wrapper {

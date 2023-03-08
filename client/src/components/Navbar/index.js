@@ -131,7 +131,7 @@ function Index(){
           
      {user &&  (<LogoutLinkStyle><LogOutButton/></LogoutLinkStyle>)}
      
-     {user && window.location.pathname === ('/' || '/login' || '/register') && (<LinkStyle to='/myAccounts'>
+     {user && window.location.pathname === ('/' || '/login' || '/register') && ( <LinkStyle to='/myAccounts'>
        <li>חזור לחשבון</li>
       </LinkStyle>)}
      
@@ -147,24 +147,7 @@ function Index(){
             התראות  
           </LinkStyle></Badge>  }
      
-     
-    {/*  <LinkStyle to='/security'>
-       <li>אבטחה</li>
-        </LinkStyle>
-      */}
-      
-      {/*  <LinkStyle to='/policy'>
-       <li>מדיניות</li>
-      </LinkStyle> */}
-        
-       
-      
-      {/*   <LinkStyle to='/setting'>
-       <li>הגדרות</li>
-        </LinkStyle> */}
-
-       
-     
+    
      {!user && 
      (<><RegisterModalBtn/><LoginModalBtn/></>) } 
        

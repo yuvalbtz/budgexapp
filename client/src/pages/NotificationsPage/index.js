@@ -245,7 +245,7 @@ console.log(error);
 return (
         
           <Dialog
-          
+          onEscapeKeyDown={() => history.goBack()}
           fullScreen
           open={open}
           onClose={() => !open}

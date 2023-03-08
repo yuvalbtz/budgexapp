@@ -190,10 +190,7 @@ export default function SimpleSlide() {
           }}
         />
       </FormControl>
-        
-        
-        
-        </DialogContent>
+     </DialogContent>
         <DialogActions>
        {loading ? (<CircularProgress size={35} style={{margin:'0 auto', color:'green'}} />) : (
         <Fab
@@ -211,12 +208,7 @@ export default function SimpleSlide() {
        </DialogActions>
         </form>
       </Dialog>
-    </div>
-
-      
-
-
-      
+    </div>      
   );
 }
 

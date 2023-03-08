@@ -9,7 +9,7 @@ import MoreVertRoundedIcon from '@material-ui/icons/MoreVertRounded';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteMenuItem from './DeleteOptionAccount';
 import UpdateMenuItem from './UpdateOptionAccount'
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import history from '../../../util/history';
 import { useParams } from 'react-router-dom';
 

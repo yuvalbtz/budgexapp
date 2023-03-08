@@ -10,13 +10,7 @@ import Slide from '@material-ui/core/Slide';
 import Fab from '@material-ui/core/Fab';
 import PieChartRoundedIcon from '@material-ui/icons/PieChartRounded';
 import {useSelector} from 'react-redux'
-import {
-	Chart,
-	Interval,
-	Tooltip,
-	Axis,
-	Coordinate,
-} from "bizcharts";
+import {Chart,Interval,Tooltip,Axis,Coordinate} from "bizcharts";
 import { DialogTitle, useMediaQuery, useTheme } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
 import history from '../../../util/history';

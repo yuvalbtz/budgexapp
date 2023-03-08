@@ -61,7 +61,6 @@ const styles = theme => ({
     root: {
       backgroundColor: theme.palette.background.paper,
       width: '100%',
-      
       overflowY:'hidden',
       
     
@@ -198,8 +197,6 @@ function getUrltab(value){
 
   const handleChangeIndex = (index) => {
     getUrltab(index)
-   
-  
   };
 
   
@@ -309,11 +306,7 @@ function getUrltab(value){
           <TabContainer classes={classes.TabContainer}  dir={theme.direction}><MyAccounts/></TabContainer>
           <TabContainer  classes={classes.TabContainerProfile}  dir={theme.direction} ><Profile/></TabContainer>
         </SwipeableViews>
-        
-      
-      
-        
-       
+         
           {searchFabs.map((fab, index) => (
             <div key={index}>
                 <Zoom

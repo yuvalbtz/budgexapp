@@ -75,11 +75,14 @@ const useStyles = makeStyles((theme) => ({
 
     bgImage:{
         position:'absolute',
-        background:`url(https://www.moneycrashers.com/wp-content/uploads/2011/02/woman-making-budget.jpg) no-repeat center center`,
+        background:`rgba(0, 0, 0, .30) url(https://www.moneycrashers.com/wp-content/uploads/2011/02/woman-making-budget.jpg) no-repeat center center`,
         filter: 'blur(5px)',
         width: '100%',
         height:'100vh',
         backgroundSize:'cover',
+        backgroundBlendMode: "darken",
+
+
         zIndex:0 
       },
     
@@ -483,7 +486,7 @@ query($accountId:ID!){
             title
             id
             owner
-            list{
+            list{ 
               id
               title
               description

@@ -192,18 +192,7 @@ module.exports = {
               const formData = new FormData()
               
                 try{
-               /*  formData.append('file', file)
-                formData.append('upload_preset',"temed3va") */
-               
-               /// const {data} = await Axios.post("https://api.cloudinary.com/v1_1/dw4v5axnj/image/upload",file)
-                
-               
-
-
-
-                console.log("my data",data);
-                
-                
+                            
                 return "finish!";
                 }catch(err){
                  return new Error(err)

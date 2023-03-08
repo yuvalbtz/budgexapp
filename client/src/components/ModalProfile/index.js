@@ -113,7 +113,7 @@ const FAbEdit = ({setProfileImage}) => {
 
 
 
-//{file:fileSelected, upload_preset:'temed3va'}
+
 
 
 
@@ -201,11 +201,11 @@ function UpdateUserCallback(){
       <div>
      
       <Dialog
-         onEscapeKeyDown={() =>history.goBack()}
+        onEscapeKeyDown={() =>!ModalIsOpen}
         open={ModalIsOpen}
         TransitionComponent={Transition}
         keepMounted
-        onClose={() => !ModalIsOpen}
+        onClose={() => history.goBack()}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         style={{zIndex:1, textAlign:'center'}}
@@ -216,10 +216,7 @@ function UpdateUserCallback(){
         <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
           :עדכן את פרטי הפרופיל שלך
-          </DialogContentText>
-        
-          
-          
+          </DialogContentText> 
           <div>
           <FormControl className={classes.margin}>
           <FAbEdit setProfileImage={setProfileImage}/>
@@ -291,12 +288,7 @@ function UpdateUserCallback(){
         </DialogActions>
         </form>
       </Dialog>
-    </div>
-
-
-
-
-      
+    </div> 
   );
 }
 

@@ -1,9 +1,10 @@
 @font-face {
   font-family: 'Varela Round';
-  src: URL('./util/globalFont/VarelaRound-Regular.ttf') format('truetype');
+  src: url('./util/globalFont/VarelaRound-Regular.ttf') format('truetype');
 }
+
 *{
- font-family: 'Varela Round' !important; 
+ font-family:'varela Round' !important; 
 }
 
 html,body {

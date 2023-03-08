@@ -11,8 +11,5 @@ export const Footer = styled.footer`
     font-size: smaller;
     background:#242333;
     align-items:'center';
-    z-index:12;
-    
-    
-    
+    z-index:12; 
 `;

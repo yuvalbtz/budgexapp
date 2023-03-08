@@ -90,14 +90,8 @@ module.exports = {
              })
            }
       
-
-
-          
-
             password = await bcrypt.hash(password, 12);
             
-          
-
             const newUser = new User({
                 email,
                 username,
@@ -129,11 +123,7 @@ module.exports = {
             
             
             return {...res._doc, id: res._id, token}
-        
-        
-        
-        
-        
+       
             }, 
 
 
@@ -230,11 +220,6 @@ module.exports = {
                      return user;
 
                     }
-
-                 
-                  
-          
-          
           
                 }
 
@@ -245,9 +230,6 @@ module.exports = {
         async getUserState(_,__,context){
            
            try{        
-          
-             
-            
                 context.res.cookie("id2", context.req.user.id, {
                     httpOnly:false,
                     secure:false,
