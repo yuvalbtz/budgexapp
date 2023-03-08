@@ -42,13 +42,13 @@ const theme = createMuiTheme({
 
 
 const httpLink = new HttpLink({
-  uri: "https://budgex-app.onrender.com/graphql",
+  uri: process.env.REACT_APP_SERVER_URL,
   credentials:'include',
 });
 
 
 const wsLink = new WebSocketLink({
-  uri: "wss://budgex-app.onrender.com/graphql", //wss in production
+  uri: process.env.REACT_APP_WSS_SERVER_URL, //wss in production
   options: {
     reconnect: true
   }
@@ -71,6 +71,7 @@ const client = new ApolloClient({
     link: splitLink,
     cache: new InMemoryCache(),
   });
+
 
 
 export default (
