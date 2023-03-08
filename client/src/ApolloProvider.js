@@ -42,13 +42,13 @@ const theme = createMuiTheme({
 
 
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_SERVER_URL,
+  uri: "https://budgex-app.onrender.com/graphql",
   credentials:'include',
 });
 
 
 const wsLink = new WebSocketLink({
-  uri: process.env.REACT_APP_WSS_SERVER_URL, //wss in production
+  uri: "wss://budgex-app.onrender.com/graphql", //wss in production
   options: {
     reconnect: true
   }
