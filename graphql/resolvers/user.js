@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const {UserInputError} = require("apollo-server")
 const {validatorsRegisterInput, validateLoginInput} = require("../../util/validators")
-const {auth} = require("../../firebase")
+
 
 require('dotenv').config()
 
@@ -132,13 +132,13 @@ module.exports = {
 
             async resetPassword(_,{email}){
                 try{
-                    
-                    const res =  await User.findOne({email})
-                    let msg = "check your inbox mail to change the password!"
+                //   Not implementedyet....  // 
+                //     const res =  await User.findOne({email})
+                //     let msg = "check your inbox mail to change the password!"
                    
-                   await auth.sendPasswordResetEmail(email);
+                // //    await auth.sendPasswordResetEmail(email);
                   
-                       return {msg:msg}
+                //        return {msg:msg}
                  
                    
                 }catch(err){
