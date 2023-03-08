@@ -14,9 +14,6 @@ import { HttpLink } from '@apollo/client'
 import { ThemeProvider } from '@material-ui/core/styles';
 import {createMuiTheme} from '@material-ui/core'
 
-
-
-
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -74,8 +71,6 @@ const client = new ApolloClient({
     link: splitLink,
     cache: new InMemoryCache(),
   });
-
-
 
 
 export default (
