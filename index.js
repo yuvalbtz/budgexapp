@@ -76,14 +76,10 @@ app.use("/graphql",
         app.get('*', (req, res) => {
            res.sendFile(path.resolve(__dirname, 'public','index.html'));
         })
-      
-
-
-
-    const port = 4000   
-
-
-
+    
+    
+        const port = 4000   
+        
 mongoose
 .connect('mongodb+srv://' + encodeURIComponent(`${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}`) +`@teambudget.z4rvaz5.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,{useUnifiedTopology:true, useNewUrlParser:true})
   .then(() => {
