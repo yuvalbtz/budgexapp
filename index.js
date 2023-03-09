@@ -79,11 +79,11 @@ app.use("/graphql",
     
     
         const port = 4000   
-        
+
 mongoose
 .connect('mongodb+srv://' + encodeURIComponent(`${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}`) +`@teambudget.z4rvaz5.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,{useUnifiedTopology:true, useNewUrlParser:true})
   .then(() => {
-    return httpServer.listen({port: process.env.PORT || 4000}, () => {
+    return httpServer.listen({port: process.env.PORT || port}, () => {
       console.log(
         `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`,
       );
